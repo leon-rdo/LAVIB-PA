@@ -1,0 +1,48 @@
+body {
+  height: 100vh;
+  background: $radgrad;
+  color: white;
+}
+::-webkit-scrollbar {
+  /* Largura e cor da scrollbar (WebKit) */
+  width: 3px;
+  background: $radgrad;
+}
+::-webkit-scrollbar-thumb {
+  /* Estilos para a thumb (barra) (WebKit) */
+  background-color: $color1;
+}
+
+#gotTop {
+  a {
+    img {
+      width: 40px;
+    }
+  }
+}
+.arrow {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.arrow__icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  margin-top: -25px;
+  margin-left: -25px;
+  transform-style: preserve-3d;
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}

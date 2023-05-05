@@ -1,0 +1,95 @@
+.navbar-brand img {
+  width: 50px;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.025);
+}
+
+.nav-link {
+  color: #008E40;
+  font-size: x-large;
+}
+
+nav {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.nav-link:hover {
+  color: #012070;
+}
+
+body {
+  height: 100vh;
+  background: radial-gradient(circle, #ffffff 0%, rgba(0, 142, 64, 0.1411764706) 100%);
+  color: white;
+}
+
+::-webkit-scrollbar {
+  /* Largura e cor da scrollbar (WebKit) */
+  width: 3px;
+  background: radial-gradient(circle, #ffffff 0%, rgba(0, 142, 64, 0.1411764706) 100%);
+}
+
+::-webkit-scrollbar-thumb {
+  /* Estilos para a thumb (barra) (WebKit) */
+  background-color: #012070;
+}
+
+#gotTop a img {
+  width: 40px;
+}
+
+.arrow {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.arrow__icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  margin-top: -25px;
+  margin-left: -25px;
+  transform-style: preserve-3d;
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+footer {
+  margin-top: 2rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  padding-bottom: 15vh;
+}
+footer h4 {
+  color: #012070;
+}
+
+footer a {
+  color: white;
+}
+
+.tech-icon {
+  width: 20px;
+}
+
+.invert-color {
+  filter: invert(100%);
+}
+
+.vertical-line {
+  border-left: 1px solid #012070;
+  height: 9vw;
+  left: 50%;
+}
