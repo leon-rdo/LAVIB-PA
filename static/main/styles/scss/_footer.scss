@@ -1,16 +1,18 @@
 footer {
   margin-top: 2rem;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: #000000b0;
   color: #ffffff;
   padding-bottom: 15vh;
   h4 {
-    color: $color1;
+    color: #c3fbdc;
   }
 }
 footer a {
   color: white;
 }
-
+.tech-icon-block small {
+  font-size: 0.7rem;
+}
 .tech-icon {
   width: 20px;
 }

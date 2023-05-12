@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}
+LAVIB-PA · Eventos
+{% endblock %}
+{% block metatags %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center g-2 px-4 px-md-5 mt-5 mb-4">
+    <h2 class="display-1 d-flex d-md-block justify-content-center" id="subtitle">Eventos</h2>
+</div>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 d-flex justify-content-center g-4 px-4 px-md-0 pb-5 mb-5">
+    {% if eventos %}
+    {% for evento in eventos %}
+    <div class="col">
+        <div class="card h-100" data-tilt data-tilt-max="10" data-tilt-speed="100">
+            <div class="container-img ratio ratio-1x1">
+                <img src="{{ evento.imagem.url }}" class="card-img-top"
+                    alt='Imagem de divulgação do evento: "{{ evento.titulo }}"'>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ evento.titulo }}</h5>
+                <p class="card-text">{{ evento.descricao_curta }}</p>
+                <a href="{% url 'main:detalhes_eventos' evento.slug %}"><b class="text-body-secondary">Saiba
+                        mais.</b></a>
+            </div>
+            <div class="card-footer">
+                <small class="text-body-secondary">Em: {{ evento.data_hora }}</small><br>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="col-12">
+        <h1 class="display-4">Nenhum evento para os próximos dias!</h1>
+    </div>
+    {% endif %}
+</div>
+<div class="col-12 d-flex justify-content-center">      
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'main:eventos' %}" class="text-decoration-none">Eventos</a>
+            </li>
+        </ol>
+    </nav>
+</div>
+{% endblock %}

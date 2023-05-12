@@ -1,0 +1,26 @@
+.categories-link {
+    color: $color2;
+
+    &:hover {
+        color: $color1;
+    }
+}
+
+.container-image {
+    background-color: rgba(0, 0, 0, 0.4392156863);
+}
+
+.blog-image {
+    object-fit: contain;
+}
+
+.leave-comment {
+    background-color: #2f4f4f4e;
+    border-radius: 15px;
+}
+
+.comment {
+    ::first-letter {
+        text-transform: capitalize;
+    }
+}

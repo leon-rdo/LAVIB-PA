@@ -1,3 +1,12 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap");
+nav {
+  background-color: rgba(255, 255, 255, 0.443);
+}
+
+.navbar-brand {
+  color: #012070;
+}
 .navbar-brand img {
   width: 50px;
 }
@@ -11,10 +20,6 @@
   font-size: x-large;
 }
 
-nav {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
 .nav-link:hover {
   color: #012070;
 }
@@ -22,7 +27,13 @@ nav {
 body {
   height: 100vh;
   background: radial-gradient(circle, #ffffff 0%, rgba(0, 142, 64, 0.1411764706) 100%);
-  color: white;
+  color: black;
+}
+
+.background {
+  background-image: url("./Background.svg");
+  background-repeat: repeat;
+  background-size: 400px;
 }
 
 ::-webkit-scrollbar {
@@ -40,13 +51,51 @@ body {
   width: 40px;
 }
 
-.arrow {
+.container {
+  background-color: rgba(255, 255, 255, 0.6666666667);
+  border-radius: 5%;
+}
+
+.carousel button svg {
+  background-color: rgba(0, 142, 64, 0.6901960784);
+  border-radius: 10px;
+}
+.carousel .carousel-caption {
+  background-color: rgba(0, 0, 0, 0.4392156863);
+  backdrop-filter: blur(3px);
+}
+
+@media (min-width: 768px) {
+  .carousel button svg {
+    background-color: rgba(0, 142, 64, 0.6901960784);
+  }
+  .carousel button svg:hover {
+    background-color: #008e40;
+  }
+}
+h1 {
+  color: #012070;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 500 !important;
+}
+
+h2 {
+  color: #008E40;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 300 !important;
+}
+
+.main-logo {
+  width: 100%;
+}
+
+.virus {
   position: relative;
   width: 100px;
   height: 100px;
 }
 
-.arrow__icon {
+.virus__icon {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -66,18 +115,28 @@ body {
     transform: rotateY(360deg);
   }
 }
+.hyphenate {
+  hyphens: auto;
+  hyphenate-character: "-";
+  hyphenate-limit-chars: 4;
+}
+
 footer {
   margin-top: 2rem;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6901960784);
   color: #ffffff;
   padding-bottom: 15vh;
 }
 footer h4 {
-  color: #012070;
+  color: #c3fbdc;
 }
 
 footer a {
   color: white;
+}
+
+.tech-icon-block small {
+  font-size: 0.7rem;
 }
 
 .tech-icon {
@@ -92,4 +151,84 @@ footer a {
   border-left: 1px solid #012070;
   height: 9vw;
   left: 50%;
+}
+
+/*
+<div class="col">
+    <div class="card h-100">
+        <img src="{{  evento.image.url  }}" class="card-img-top" alt='Imagem de divulgação do evento: "{{ evento.titulo }}"'>
+        <div class="card-body">
+            <h5 class="card-title">{{ evento.titulo }}</h5>
+            <p class="card-text">{{ evento.descricao_curta }}</p>
+            <a href=""><small class="text-body-secondary">Saiba mais.</small></a>
+        </div>
+        <div class="card-footer">
+            <small class="text-body-secondary">Em: {{ evento.data_hora }}</small><br>
+        </div>
+    </div>
+</div> 
+*/
+.card {
+  transform-style: preserve-3d;
+  transform: perspective(1000px);
+}
+.card img {
+  object-fit: contain;
+}
+.card .card-title {
+  color: #012070;
+  transform: translateZ(30px);
+}
+.card .card-body {
+  transform: translateZ(30px);
+}
+.card .card-body a {
+  text-decoration: none;
+}
+.card .card-body a b {
+  color: #008E40 !important;
+}
+.card .card-body a b:hover {
+  color: #012070 !important;
+}
+
+.container-Image {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4392156863);
+}
+
+#big_image {
+  object-fit: contain;
+}
+
+.detalhes-evento {
+  background-color: rgba(0, 255, 153, 0.18);
+}
+
+.breadcrumb-item a {
+  color: #008E40;
+}
+
+.categories-link {
+  color: #008E40;
+}
+.categories-link:hover {
+  color: #012070;
+}
+
+.container-image {
+  background-color: rgba(0, 0, 0, 0.4392156863);
+}
+
+.blog-image {
+  object-fit: contain;
+}
+
+.leave-comment {
+  background-color: rgba(47, 79, 79, 0.3058823529);
+  border-radius: 15px;
+}
+
+.comment ::first-letter {
+  text-transform: capitalize;
 }

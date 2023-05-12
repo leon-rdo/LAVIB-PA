@@ -1,0 +1,74 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %}LAVIB-PA · Home{% endblock %}
+{% block metatags %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center g-2 my-5">
+    <div class="lavib-container col-12 col-md-7 text-center">
+        <h1 class="display-2">LAVIB-PA</h1>
+        <h1 class="display-6 text-uppercase pe-3" id="title"></h1>
+        <h2 class="display-3" id="subtitle">BLOG</h2>
+    </div>
+    <div class="col-12">
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="verCategorias" aria-labelledby="verCategoriasLabel">
+            <div class="offcanvas-header">
+                <h1 class="offcanvas-title" id="verCategoriasLabel">Categorias</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body p-0">
+                <ul class="list-group list-group-flush p-0">
+                    {% for category in all_categories %}
+                    <li class="list-group-item">
+                        <a class="mute-link categories-link text-decoration-none fs-4"
+                            href="{% url 'blog:categories' category.category %}">{{ category.category }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="d-flex align-items-center justify-content-between">
+            <h1 class="text-center">{{ category | title }}</h1>
+            <button class="btn btn-sm btn-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#verCategorias"
+                aria-controls="verCategorias">Outras categorias</button>
+        </div>
+        <hr>
+        {% for post in posts %}
+        <div class="card text-decoration-none border-3 border-success-subtle mb-3" style="max-width: 650px;" data-tilt data-tilt-max="10" data-tilt-speed="100">
+            <div class="row g-0">
+                <a href="{% url 'blog:post_detail' post.slug %}" class="col-md-4 d-flex ratio-1x1">
+                    <img src="{{ post.image.url }}" class="img-fluid object-fit-cover rounded-start" alt="{{ post.image.alt }}">
+                </a>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a class="text-decoration-none" href="{% url 'blog:post_detail' post.slug %}">
+                                {{ post.title }}
+                                {% if post.is_new_post %}
+                                <span class="badge rounded-pill text-bg-success">NOVO</span>
+                                {% endif %}
+                            </a>
+                        </h5>
+                        <p class="card-text">{{ post.headline }}</p>
+                        <p class="card-text"><small class="text-body-secondary">Criado em: {{ post.creation_date }}</small></p>
+                        <p class="card-text categories">
+                            <small>
+                                {% for category in post.categories.all %}
+                                <a class="mute-link categories-link text-decoration-none"
+                                    href="{% url 'blog:categories' category.category %}">{{ category.category }}</a>
+                                {% if not forloop.last %}
+                                ·
+                                {% endif %}
+                                {% endfor %}
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,16 +1,23 @@
-.navbar-brand img {
-  width: 50px;
-}
-.navbar-brand:hover {
-  transform: scale(1.025);
-}
-.nav-link {
-  color: $color2;
-  font-size: x-large;
-}
 nav {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.443);
 }
-.nav-link:hover {
+
+.navbar-brand {
   color: $color1;
+  img {
+    width: 50px;
+  }
 }
+
+  .navbar-brand:hover {
+    transform: scale(1.025);
+  }
+
+  .nav-link {
+    color: $color2;
+    font-size: x-large;
+  }
+
+  .nav-link:hover {
+    color: $color1;
+  }

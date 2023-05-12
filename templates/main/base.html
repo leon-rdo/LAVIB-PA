@@ -1,177 +1,173 @@
 {% load static %}
 <!doctype html>
 <html lang="pt-br">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="{% static 'main/images/icons/LAVIB-PA.svg' %}" type="image/x-icon">
-    <title>{% block title %}{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'main/styles/css/style.css' %}">
-    {% block metatags %}{% endblock %}
-  </head>
-  <body>
-    <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="#"><img src="{% static 'main/images/icons/LAVIB-PA.svg' %}" class="me-2" style="width: 50px;"><b>LAVIB-PA</b></a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Página Inicial</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Sobre nós</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Membros</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link">Eventos</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-    </header>
 
-    <main>{% block content %}{% endblock %}</main>
-    
-    <footer
-      class="footer navbar-fixed-bottom d-flex flex-column flex-md-row justify-content-around p-2 p-md-5"
-    >
-      <section class="contato d-flex align-items-center justify-content-center text-center mb-4 mb-md-0">
-        <div>
-          <h4
-            class="d-flex align-items-center justify-content-center justify-content-md-between"
-          >
-            Contato<img
-              class="tech-icon invert-color ms-3"
-              src="{% static '/main/images/icons/envelope-at.svg' %}"
-              alt="Ícone de envelope com @"
-            />
-          </h4>
-          <ul class="list-group list-group-numbered">
-            <li>
-              <p class="mb-0">
-                E-mail:
-                <a
-                  href="mailto:#@gmail.com"
-                  class="text-reset d-inline d-md-none d-lg-inline text-break"
-                  >#@gmail.com</a
-                >
-                <a
-                  href="mailto:#1212@gmail.com"
-                  class="text-reset d-none d-md-inline d-lg-none"
-                  >#<small style="font-size: 0.76rem"
-                    >@gmail.com</small
-                  ></a
-                >
-              </p>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="{% static 'main/images/icons/LAVIB-PA.svg' %}" type="image/x-icon">
+  <title>{% block title %}{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'main/styles/css/style.css' %}">
+  <meta http-equiv="pragma" content="no-cache">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"
+    defer></script>
+  <script src="{% static 'main/scripts/animations.js' %}" defer></script>
+  <script src="{% static 'main/scripts/vanilla-tilt.min.js' %}" defer></script>
+  {% block metatags %}{% endblock %}
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'main:index' %}"><img src="{% static 'main/images/icons/LAVIB-PA.svg' %}" class="me-2"
+            style="width: 50px;"><b>LAVIB-PA</b></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            {% with request.resolver_match.url_name as url_name %}
+            <li class="nav-item me-3">
+              <a class="nav-link {% if url_name == 'index' %}active{% endif %}" href="{% url 'main:index' %}">Início</a>
             </li>
+            <li class="nav-item me-3">
+              <a class="nav-link {% if url_name == 'sobre' %}active{% endif %}" href="{% url 'main:sobre' %}">Sobre
+                nós</a>
+            </li>
+            <li class="nav-item me-3">
+              <a class="nav-link {% if url_name == 'eventos' %}active{% endif %}"
+                href="{% url 'main:eventos' %}">Eventos</a>
+            </li>
+            <li class="nav-item me-3">
+              <a class="nav-link {% if url_name == 'blog' %}active{% endif %}" href="{% url 'blog:index' %}">Blog</a>
+            </li>
+            {% endwith %}
           </ul>
         </div>
-      </section>
-      <hr class="d-inline d-md-none">
-      <div class="vertical-line d-none d-md-block mx-2"></div>
-      <section class="technologies d-flex align-items-center justify-content-center text-center  mb-4 mb-md-0">
+      </div>
+    </nav>
+  </header>
+
+  <div class="background">
+    <div class="container">
+      <main>
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+
+    <footer
+      class="footer container-fluid navbar-fixed-bottom d-flex flex-column flex-md-row justify-content-around p-2 p-md-5 pt-5">
+      <section class="contato d-flex align-items-center justify-content-center text-center mb-4 mb-md-0">
         <div>
-          <h4
-            class="d-flex align-items-center justify-content-center justify-content-md-between"
-          >
-            Tecnologias neste site<img
-              class="tech-icon invert-color ms-3"
-              src="{% static '/main/images/icons/info-circle-fill.svg' %}"
-              alt="Ícone de informações: letra i dentro de um círculo"
-            />
+          <h4 class="d-flex align-items-center justify-content-center justify-content-md-between">
+            Contato<img class="tech-icon invert-color ms-3" src="{% static '/main/images/icons/envelope-at.svg' %}"
+              alt="Ícone de envelope com @" />
           </h4>
-          <div
-            class="d-flex align-items-center justify-content-center justify-content-md-evenly flex-column flex-md-row"
-          >
-            <style>
-              .tech-icon-block small{
-                font-size: 0.7rem;
-              }
-            </style>
-            <div class="tech-icon-block d-flex flex-column align-items-center font-monospace me-3">
-              <img
-              class="tech-icon"
-              src="{% static '/main/images/icons/shields/HTML Shield.svg' %}"
-              alt="Ícone de um arquivo HTML"
-            />
-            <small>HTML</small>
-          </div>
-            
-            <div class="tech-icon-block d-flex flex-column align-items-center font-monospace me-3">
-              <img
-              class="tech-icon"
-              src="{% static '/main/images/icons/shields/CSS Shield.svg' %}"
-              alt="Ícone de um arquivo CSS"
-            />
-            <small>CSS</small>
-          </div>
-            
-            <div class="tech-icon-block d-flex flex-column align-items-center font-monospace me-3">
-              <img
-              class="tech-icon"
-              src="{% static '/main/images/icons/shields/Sass Shield.svg' %}"
-              alt="Ícone de um arquivo SCSS"
-            />
-            <small>SCSS</small>
-          </div>
-            
-            <div class="tech-icon-block d-flex flex-column align-items-center font-monospace me-3">
-              <img
-              class="tech-icon"
-              src="{% static '/main/images/icons/shields/JS Shield.svg' %}"
-              alt="Ícone de um arquivo Javascript"
-            />
-            <small>Javascript</small>
-          </div>
-            
-            <div class="tech-icon-block d-flex flex-column align-items-center font-monospace me-3">
-              <img
-              class="tech-icon"
-              src="{% static '/main/images/icons/shields/Bootstrap Shield.png' %}"
-              alt="Ícone do Bootstrap"
-            />
-            <small>Bootstrap</small>
-          </div>
-            
-            <div class="tech-icon-block d-flex flex-column align-items-center font-monospace me-3">
-              <img class="tech-icon" src="{% static '/main/images/icons/shields/Django Shield.svg' %}"
-              alt="Ícone do Django"
-            />
-            <small>Django</small>
-          </div>
-            
-          </div>
+
+          <address>
+            <ul class="list-group list-group-numbered">
+              <li>
+                <p class="mb-0">
+                  E-mail:
+                  <a href="mailto:lavib.pa@gmail.com"
+                    class="text-reset d-inline d-md-none d-lg-inline text-break">lavib.pa@gmail.com</a>
+                  <a href="mailto:#1212@gmail.com" class="text-reset d-none d-md-inline d-lg-none">lavib.pa<small
+                      style="font-size: 0.76rem">@gmail.com</small></a>
+                </p>
+              </li>
+            </ul>
+          </address>
         </div>
       </section>
       <hr class="d-inline d-md-none">
       <div class="vertical-line d-none d-md-block mx-2"></div>
-      <section class="d-flex align-items-center justify-content-center mb-4 mb-md-0"  id="repository">
-        <div class=" text-center">
-          <h4
-            class="d-flex align-items-center justify-content-center justify-content-md-between"
-          >
-            Repositório<img
-              class="tech-icon invert-color ms-3"
-              src="{% static '/main/images/icons/github.svg' %}"
-              alt="Ícone do GitHub"
-            />
+      <section class="technologies d-flex align-items-center justify-content-center text-center mb-4 mb-md-0">
+        <div>
+          <h4 class="d-flex align-items-center justify-content-center justify-content-md-between">
+            Tecnologias neste site<img class="tech-icon invert-color ms-3"
+              src="{% static '/main/images/icons/info-circle-fill.svg' %}"
+              alt="Ícone de informações: letra i dentro de um círculo" />
           </h4>
-          <a
-            class="text-reset fw-bold"
-            href="https://github.com/leon-rdo/LAVIB-PA"
-            >LAVIB-PA</a
-          >
+          <div class="d-flex align-items-center justify-content-center flex-wrap">
+            <div class="tech-icon-block d-md-flex flex-column align-items-center font-monospace me-3">
+              <img class="tech-icon" src="{% static '/main/images/icons/shields/HTML Shield.svg' %}"
+                alt="Ícone de um arquivo HTML" />
+              <small>HTML</small>
+            </div>
+          
+            <div class="tech-icon-block d-md-flex flex-column align-items-center font-monospace me-3">
+              <img class="tech-icon" src="{% static '/main/images/icons/shields/CSS Shield.svg' %}"
+                alt="Ícone de um arquivo CSS" />
+              <small>CSS</small>
+            </div>
+          
+            <div class="tech-icon-block d-md-flex flex-column align-items-center font-monospace me-3">
+              <img class="tech-icon" src="{% static '/main/images/icons/shields/Sass Shield.svg' %}"
+                alt="Ícone de um arquivo SCSS" />
+              <small>SCSS</small>
+            </div>
+          
+            <div class="tech-icon-block d-md-flex flex-column align-items-center font-monospace me-3">
+              <img class="tech-icon" src="{% static '/main/images/icons/shields/JS Shield.svg' %}"
+                alt="Ícone de um arquivo Javascript" />
+              <small>Javascript</small>
+            </div>
+          
+            <div class="tech-icon-block d-md-flex flex-column align-items-center font-monospace me-3">
+              <img class="tech-icon" src="{% static '/main/images/icons/shields/Bootstrap Shield.png' %}"
+                alt="Ícone do Bootstrap" />
+              <small>Bootstrap</small>
+            </div>
+          
+            <div class="tech-icon-block d-md-flex flex-column align-items-center font-monospace me-3">
+              <img class="tech-icon" src="{% static '/main/images/icons/shields/Django Shield.svg' %}"
+                alt="Ícone do Django" />
+              <small>Django</small>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+      <hr class="d-inline d-md-none">
+      <div class="vertical-line d-none d-md-block mx-2"></div>
+      <section class="d-flex align-items-center justify-content-center mb-4 mb-md-0" id="repository">
+        <div class=" text-center">
+          <h4 class="d-flex align-items-center justify-content-center justify-content-md-between">
+            Repositório<img class="tech-icon invert-color ms-3" src="{% static '/main/images/icons/github.svg' %}"
+              alt="Ícone do GitHub" />
+          </h4>
+          <a class="text-reset fw-bold" href="https://github.com/leon-rdo/LAVIB-PA">LAVIB-PA</a>
         </div>
       </section>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-  </body>
+  </div>
+
+  <div id="gotTop" class="virus position-fixed d-inline-flex" style="bottom: 20px; right: 20px">
+    <a href="#top">
+      <img src="{% static 'main/images/icons/Vírus_Bacteriófago.svg' %}" class="virus__icon" alt="Vírus bacteriófago" />
+    </a>
+  </div>
+
+  <script>
+    // Mostrar ou ocultar a seta com base na posição da janela
+    var virus = document.querySelector(".virus");
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 0) {
+        virus.style.display = "block";
+      } else {
+        virus.style.display = "none";
+      }
+    });
+
+    // Ocultar a seta inicialmente
+    virus.style.display = "none";
+  </script>
+  {% block more_script %}{% endblock %}
+</body>
+
 </html>

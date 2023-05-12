@@ -1,7 +1,56 @@
 {% extends "main/base.html" %}
+{% load static %}
 {% block title %}LAVIB-PA · Home{% endblock %}
 {% block metatags %}{% endblock %}
 
 {% block content %}
-    <h1 class="display-1">Liga Acadêmica de Virologia e Bacteriologia</h1>
+<div class="row justify-content-center align-items-center g-2 my-5">
+    <div class="lavib-container col-12 col-md-7">
+        <h1 class="display-2 text-center">LAVIB-PA</h1>
+        <h1 class="display-6 text-center text-uppercase pe-3" id="title"></h1>
+        <h2 class="display-4 text-center" id="subtitle">Bem vindos! &#x1F9EB;&#x1F9A0;&#x1F499;</h2>
+    </div>
+    <div class="col-12 col-md-5 d-flex justify-content-center">
+        <figure>
+            <img class="main-logo" src="{% static 'main/images/icons/LAVIB-PA.svg' %}" alt="Logo da LAVIB-PA" data-tilt data-tilt-full-page-listening>
+        </figure>
+    </div>
+    <div class="row justify-content-center align-items-center g-2 my-5">
+        <div class="col-12 col-md-4 text-center">
+            <h1 class="display-2">ÚLTIMAS NOTÍCIAS!</h1>
+        </div>
+        <div class="col-12 col-md-8">
+            <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    {% for item in carousel_items %}
+                    <button type="button" data-bs-target="#carouselId" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" {% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+                    {% endfor %}
+                </div>
+                <div class="carousel-inner ratio ratio-16x9" role="listbox">
+                    {% for item in carousel_items %}
+                    <a href="{{ item.link }}" class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{{ item.image.url }}" class="h-100 w-100 d-block object-fit-contain" alt="{{ item.image_description }}">
+                        <div class="carousel-caption d-none d-md-block p-1">
+                            <h3 class="">{{ item.caption_title }}</h3>
+                            <p class="fs-5">{{ item.caption_text }}</p>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentcolor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                        <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                      </svg>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentcolor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                      </svg>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

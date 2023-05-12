@@ -1,0 +1,45 @@
+/*
+<div class="col">
+    <div class="card h-100">
+        <img src="{{  evento.image.url  }}" class="card-img-top" alt='Imagem de divulgação do evento: "{{ evento.titulo }}"'>
+        <div class="card-body">
+            <h5 class="card-title">{{ evento.titulo }}</h5>
+            <p class="card-text">{{ evento.descricao_curta }}</p>
+            <a href=""><small class="text-body-secondary">Saiba mais.</small></a>
+        </div>
+        <div class="card-footer">
+            <small class="text-body-secondary">Em: {{ evento.data_hora }}</small><br>
+        </div>
+    </div>
+</div> 
+*/
+
+.card {
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+
+    img {
+        object-fit: contain;
+    }
+
+    .card-title {
+        color: $color1;
+        transform: translateZ(30px);
+    }
+
+    .card-body {
+        transform: translateZ(30px);
+
+        a {
+            text-decoration: none;
+
+            b {
+                color: $color2 !important;
+
+                &:hover {
+                    color: $color1 !important;
+                }
+            }
+        }
+    }
+}
