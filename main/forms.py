@@ -9,13 +9,7 @@ class InscritoForm(ModelForm):
     telefone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label=_('Telefone'))
     curso = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label=_('Curso'))
     instituicao = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label=_('Instituição'))
-    evento = forms.ModelChoiceField(
-            queryset=Evento.objects.all(),
-            empty_label=None,
-            widget=forms.Select(attrs={'class': 'form-control'}),
-            label=_('Evento')
-        )
 
     class Meta:
         model = Inscrito
-        fields = '__all__'
+        fields = ['nome', 'email', 'telefone', 'curso', 'instituicao']

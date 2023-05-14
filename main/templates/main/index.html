@@ -4,6 +4,15 @@
 {% block metatags %}{% endblock %}
 
 {% block content %}
+{% if alerta %}
+  {% for alerta in alerta %}
+    <div class="alert alert-{{ alerta.cor }} alert-dismissible fade show" role="alert"
+        style="position: absolute; margin-top: -60px;">
+        <strong>{{ alerta.negrito }}</strong> {{ alerta.texto }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+{% endif %}
 <div class="row justify-content-center align-items-center g-2 my-5">
     <div class="lavib-container col-12 col-md-7">
         <h1 class="display-2 text-center">LAVIB-PA</h1>
@@ -12,7 +21,7 @@
     </div>
     <div class="col-12 col-md-5 d-flex justify-content-center">
         <figure>
-            <img class="main-logo" src="{% static 'main/images/icons/LAVIB-PA.svg' %}" alt="Logo da LAVIB-PA" data-tilt data-tilt-full-page-listening>
+            <img class="main-logo" src="{% static 'main/images/icons/LAVIB-PA.svg' %}" alt="Logo da LAVIB-PA"rq3q3>
         </figure>
     </div>
     <div class="row justify-content-center align-items-center g-2 my-5">

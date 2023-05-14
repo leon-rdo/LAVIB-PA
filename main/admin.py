@@ -14,4 +14,4 @@ admin.site.register(Index_Carousel_Item)
 admin.site.register(Text)
 admin.site.register(Sobre_Text)
 admin.site.register(Evento, EventoAdmin)
-
+admin.site.register(Alerta)

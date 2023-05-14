@@ -20,7 +20,7 @@ LAVIB-PA · {{ evento.titulo }}
       </figure>
     <div class="col-12 my-5">
       <p class="fs-5" style="text-align: justify;">{{ evento.descricao | linebreaks }}</p>
-
+      <p class="lead">Valor: {% if evento.valor == 0 %}<b class="text-success">GRÁTIS!</b>{% else %}<b class="text-success">R$ {{ evento.valor }}</b>{% endif %}</p>
       {% if evento.convidados == '' %}
       <!-- Nada é exibido -->
       {% else %}
@@ -36,9 +36,8 @@ LAVIB-PA · {{ evento.titulo }}
       {% else %}
       <p class="fs-5">Vagas restantes: {{ evento.vagas_restantes }}</p>
       {% endif %}
-      
       <hr>
-      <h2 class="text-center lead fs-4">Data do evento: <time>{{ evento.data_hora }}</time> | Valor: {% if evento.valor == 0 %}<b class="text-success">GRÁTIS!</b>{% else %}R$ {{ evento.valor }}{% endif %} | Local: {{ evento.local }}</h2>
+      <h2 class="text-center lead fs-4">Data do evento: <time>{{ evento.data_hora }}</time> | Local: {{ evento.local }}</h2>
       
       <div class="col-12 d-flex justify-content-center mt-5">
         {% if evento.vagas_restantes == -1 or evento.vagas_restantes > 0 %}

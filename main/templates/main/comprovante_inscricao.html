@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
 {% block title %}
-Inscrição · {{ evento.titulo }}
+Coprovante de Inscrição
 {% endblock %}
 {% block metatags %}
 {% endblock %}
@@ -28,15 +28,17 @@ Inscrição · {{ evento.titulo }}
             <h2>Dados do Inscrito:</h2>
             <p class="mb-1">Nome: {{ inscrito.nome }}</p>
             <p class="mb-1">
-                Nº Inscrição:
-                {% if inscrito.numero_inscricao < 10 %}
-                000{{ inscrito.numero_inscricao }}
-                {% elif inscrito.numero_inscricao > 100 %}
-                0{{ inscrito.numero_inscricao }}
+                Nº Inscrição: 
+                {% if inscrito.numero_inscricao|length == 1 %}
+                    000{{ inscrito.numero_inscricao }}
+                {% elif inscrito.numero_inscricao|length == 2 %}
+                    00{{ inscrito.numero_inscricao }}
+                {% elif inscrito.numero_inscricao|length == 3 %}
+                    0{{ inscrito.numero_inscricao }}
                 {% else %}
-                00{{ inscrito.numero_inscricao }}
+                    {{ inscrito.numero_inscricao }}
                 {% endif %}
-            </p>
+            </p>            
             <p class="mb-1">Data da Inscrição: <time>{{ inscrito.data_hora_inscricao }}</time></p>
             {% if inscrito.curso %}
             <p class="mb-1">Cursando {{ inscrito.curso }} em {{ inscrito.instituicao }}</p>

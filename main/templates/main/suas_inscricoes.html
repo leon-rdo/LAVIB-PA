@@ -1,0 +1,51 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %}LAVIB-PA · Suas Inscrições{% endblock %}
+{% block metatags %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center g-2 pt-4 px-4 px-md-5 mt-5">
+    <h2 class="display-2 d-flex d-md-block justify-content-center" id="subtitle">Consultar Inscrições</h2>
+</div>
+<div class="row justify-content-center align-items-center px-4 px-md-5">
+    <form class="col-12 col-md-6 mb-5" method="post" action="{% url 'main:suas_inscricoes' %}">
+        {% csrf_token %}
+        <label for="emailInput" class="form-label mb-2">Digite seu e-mail:</label>
+        <input type="email" class="form-control mb-2" id="emailInput" name="email"
+            placeholder="Digite aqui seu e-mail para a consulta" required>
+        <button type="submit" class="btn btn-success">Consultar</button>
+    </form>
+    {% if inscricoes %}
+    <div class="col-12 mb-5">
+        <h2>Suas inscrições:</h2>
+        {% for inscricao in inscricoes %}
+        <div class="card mb-3" style="max-width: 650px;">
+            <div class="row g-0">
+                <a href="{% url 'main:detalhes_eventos' inscricao.evento.slug %}" class="col-md-4 d-flex ratio-1x1">
+                    <img src="{{ inscricao.evento.imagem.url }}" class="img-fluid object-fit-cover rounded-start" alt="{{ inscricao.evento.titulo }}">
+                </a>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <a href="{% url 'main:detalhes_eventos' inscricao.evento.slug %}">
+                            <h5 class="card-title">{{ inscricao.evento.titulo }}</h5>
+                        </a>
+                        <p class="card-text mb-0">{{ inscricao.evento.descricao_curta }}</p>
+                        <p class="card-text mb-0"><small class="text-body-secondary">Inscrito em: {{ inscricao.data_hora_inscricao }}</small></p>
+                        <p class="card-text mt-0"><small class="text-body-secondary">Evento em: {{ inscricao.evento.data_hora }}</small></p>
+                        <a class="btn btn-success btn-sm m-0" href="{% url 'main:comprovante_inscricao' inscricao.evento.slug %}?numero_inscricao={{ inscricao.numero_inscricao }}">Ver Comprovante</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        {% if inscricoes is not None %}
+        <div class="col-12 mb-5">
+            <h2>Suas inscrições:</h2>
+            <p><b class="text-danger mb-5">Você não possui inscrições.</b></p>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
