@@ -1,56 +1,328 @@
 {% extends 'main/base.html' %}
 {% load static %}
-{% block title %}
-Coprovante de Inscrição
-{% endblock %}
-{% block metatags %}
-{% endblock %}
+{% block title %}Comprovante de Inscrição{% endblock %}
+{% block metatags %}{% endblock %}
 
 {% block content %}
 <div class="row d-flex justify-content-center align-items-center my-5 p-2 p-md-5">
     <div class="col-12 col-lg-7">
-        <h1 class="display-5 m-0">Comprovante de Inscrição</h1>
-        <h2>Evento: {{ evento.titulo }}</h2>
+        {% if messages and not inscrito.pagamento_confirmado %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong>Comprovante enviado!</strong> Aguarde a confirmação do seu pagamento.
+                <small>Volte a esta página.</small>
+            </div>
+        {% endif %}
+
+        <div class="d-flex align-items-center justify-content-between">
+            {% if inscrito.pagamento_confirmado %}
+            <h1 class="display-5 m-0">Comprovante de Inscrição</h1>
+            {% else %}
+            <h1 class="display-6 m-0">Comprovante de Pré-Inscrição</h1>
+            {% endif %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#008E40" class="bi bi-printer-fill" viewBox="0 0 16 16" id="print-icon" onclick="imprimirComprovante()">
+                <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
+                <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+            </svg>           
+        </div>
+        <h2 class="mt-2">Evento: {{ evento.titulo }}</h2>
         <div class="col-12 detalhes-evento mb-3">
             <p class="mb-1">Data: <time>{{ evento.data_hora }}</time></p>
             <p class="mb-1">Local: {{ evento.local }}</p>
             {% if evento.carga_horaria != 0 %}
-            <p class="mb-1">Carga horária: {{ evento.carga_horaria }} horas <b class="text-danger">(Isto não vale como
-                    certificado)</b></p>
+            <p class="mb-1">Carga horária: {{ evento.carga_horaria }} horas <b class="text-danger">(Isto não vale como certificado)</b></p>
             {% else %}
-            <!-- Não faz nada -->
+            <!-- Não há carga horária para este evento -->
             {% endif %}
             {% if evento.mensagem_comprovante %}
             <p class="mb-1 bold"><b>{{ evento.mensagem_comprovante }}</b></p>
             {% endif %}
         </div>
         <div class="col">
-            <h2>Dados do Inscrito:</h2>
-            <p class="mb-1">Nome: {{ inscrito.nome }}</p>
+            <h2 class="mt-2">Dados do Inscrito:</h2>
+            <p class="mb-1" id="nome">Nome: {{ inscrito.nome }}</p>
             <p class="mb-1">
-                Nº Inscrição: 
-                {% if inscrito.numero_inscricao|length == 1 %}
-                    000{{ inscrito.numero_inscricao }}
-                {% elif inscrito.numero_inscricao|length == 2 %}
-                    00{{ inscrito.numero_inscricao }}
-                {% elif inscrito.numero_inscricao|length == 3 %}
-                    0{{ inscrito.numero_inscricao }}
-                {% else %}
-                    {{ inscrito.numero_inscricao }}
-                {% endif %}
-            </p>            
+                Nº Inscrição: {{ inscrito.numero_inscricao }}
+            </p>
             <p class="mb-1">Data da Inscrição: <time>{{ inscrito.data_hora_inscricao }}</time></p>
-            {% if inscrito.curso %}
-            <p class="mb-1">Cursando {{ inscrito.curso }} em {{ inscrito.instituicao }}</p>
+
+            {% if evento.cursos.exists %}
+                {% if inscrito.cursos.count == 1 %}
+                    <h2 class="my-2">Curso selecionado:</h2>
+                {% else %}
+                    <h2 class="my-2">Cursos escolhidos:</h2>
+                {% endif %}
+            <p>
+                {% for curso in inscrito.cursos.all %}
+                    {{ curso.nome }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
             {% endif %}
+
+            {% if evento.valor == 0 and not evento.cursos.all %}
+                <!-- Evento gratuito sem cursos -->
+                <div class="d-flex align-items-center justify-content-center mt-4" id="qrCodeContainer">
+                    <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code">
+                </div>
+            {% elif evento.valor == 0 and evento.cursos.all %}
+            {% if not evento.possui_cursos_pagos %}
+                <!-- Evento gratuito com cursos gratuitos -->
+                <div class="d-flex align-items-center justify-content-center mt-4" id="qrCodeContainer">
+                    <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code">
+                </div>
+            {% else %}
+                <!-- Evento gratuito com cursos pagos -->
+                {% if inscrito.pagamento_confirmado %}
+                <!-- Pagamento confirmado -->
+                <p class="text-success mt-4 mb-0">Valor pago:</p>
+                <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-transparent">{{ evento.titulo }} - R$ {{ evento.valor }}</li>
+                {% for curso in inscrito.cursos.all %}
+                    <li class="list-group-item bg-transparent">{{ curso.nome }} - R$ {{ curso.valor }}</li>
+                {% endfor %}
+                </ul>
+                <small class="text-success">Valor total: R$ {{ valor_total }}</small>
+                <div class="d-flex align-items-center justify-content-center mt-5" id="qrCodeContainer">
+                <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code" class="img-fluid mb-3">
+                </div>
+                {% if inscrito.comprovante %}
+                <div class="d-flex justify-content-center mb-3">
+                    <button type="button" class="btn btn-info btn-sm mt-5" data-bs-toggle="modal" data-bs-target="#ComprovanteModal" data-bs-dismiss="offcanvas">
+                        Ver Comprovante Enviado
+                    </button>
+                </div>
+                {% endif %}
+                {% else %}
+                <!-- Pagamento não confirmado -->
+                <p>Valor a pagar:</p>
+                <ul class="list-group list-group-flush">
+                    {% if evento.valor != 0 %}
+                    <li class="list-group-item bg-transparent">{{ evento.titulo }} - R$ {{ evento.valor }}</li>
+                    {% endif %}
+                    {% for curso in inscrito.cursos.all %}
+                    <li class="list-group-item bg-transparent">{{ curso.nome }} - R$ {{ curso.valor }}</li>
+                    {% endfor %}
+                </ul>
+                <small class="text-secondary">Valor total: <b>R$ {{ valor_total }}</b></small>
+                <br>
+                <button class="btn btn-success my-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#pagamentoOffcanvas">Pague aqui</button>
+                <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="pagamentoOffcanvas" aria-labelledby="pagamentoOffcanvasLabel">
+                    <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="pagamentoOffcanvasLabel">Pague aqui</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg/800px-Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg.png" alt="QR Code" class="img-fluid mb-3">
+                    <p class="text-center mt-0"><b>Valor: R$ {{ valor_total }}</b></p>
+                    <div class="mt-0 border-start border-2 border-success-subtle p-2">
+                        <p class="mb-2">Já pagou? Envie-nos o comprovante!</p>
+                        <form method="POST" enctype="multipart/form-data" class="d-flex align-items-center justify-content-between">
+                        {% csrf_token %}
+                        {{ comprovante_form.comprovante }}
+                        <button type="submit" class="btn btn-sm btn-success ms-1">Enviar</button>
+                        </form>                          
+                        <p class="my-1">E-mail:
+                        <a href="mailto:lavib.pa@gmail.com" class="text-reset d-inline d-md-none d-lg-inline text-break">
+                            lavib.pa@gmail.com
+                        </a>
+                        </p>
+                        <p class="mb-1">Telefone:
+                        <a href="callto:91988734569" class="text-reset d-inline d-md-none d-lg-inline text-break">
+                            91 9 8873-4569
+                        </a>
+                        </p>
+                    </div>
+                    {% if inscrito.comprovante %}
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-info btn-sm mt-5" data-bs-toggle="modal" data-bs-target="#ComprovanteModal" data-bs-dismiss="offcanvas">
+                            Ver Comprovante Enviado
+                        </button>
+                    </div>
+                    {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            {% endif %}
+            {% elif evento.valor > 0 %}
+            {% if not evento.possui_cursos_pagos %}
+                <!-- Evento pago com cursos gratuitos -->
+                {% if inscrito.pagamento_confirmado %}
+                <!-- Pagamento confirmado -->
+                <p class="text-success mt-4 mb-0">Valor pago:</p>
+                <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-transparent">{{ evento.titulo }} - R$ {{ evento.valor }}</li>
+                {% for curso in inscrito.cursos.all %}
+                    <li class="list-group-item bg-transparent">{{ curso.nome }} - R$ {{ curso.valor }}</li>
+                {% endfor %}
+                </ul>
+                <small class="text-success">Valor total: R$ {{ valor_total }}</small>
+                <div class="d-flex align-items-center justify-content-center mt-5" id="qrCodeContainer">
+                    <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code" class="img-fluid mb-3">
+                </div>
+                {% if inscrito.comprovante %}
+                <div class="d-flex justify-content-center mb-3">
+                    <button type="button" class="btn btn-info btn-sm mt-5" data-bs-toggle="modal" data-bs-target="#ComprovanteModal" data-bs-dismiss="offcanvas">
+                        Ver Comprovante Enviado
+                    </button>
+                </div>
+                {% endif %}
+                {% else %}
+                <!-- Pagamento não confirmado -->
+                <p>Valor a pagar:</p>
+                <ul class="list-group list-group-flush">
+                    {% if evento.valor != 0 %}
+                    <li class="list-group-item bg-transparent">{{ evento.titulo }} - R$ {{ evento.valor }}</li>
+                    {% endif %}
+                    {% for curso in inscrito.cursos.all %}
+                    <li class="list-group-item bg-transparent">{{ curso.nome }} - R$ {{ curso.valor }}</li>
+                    {% endfor %}
+                </ul>
+                <small class="text-secondary">Valor total: <b>R$ {{ valor_total }}</b></small>
+                <br>
+                <button class="btn btn-success my-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#pagamentoOffcanvas">Pague aqui</button>
+                <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="pagamentoOffcanvas" aria-labelledby="pagamentoOffcanvasLabel">
+                    <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="pagamentoOffcanvasLabel">Pague aqui</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg/800px-Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg.png" alt="QR Code" class="img-fluid mb-3">
+                    <p class="text-center mt-0"><b>Valor: R$ {{ valor_total }}</b></p>
+                    <div class="mt-0 border-start border-2 border-success-subtle p-2">
+                        <p class="mb-2">Já pagou? Envie-nos o comprovante!</p>
+                        <form method="POST" enctype="multipart/form-data" class="d-flex align-items-center justify-content-between">
+                        {% csrf_token %}
+                        {{ comprovante_form.comprovante }}
+                        <button type="submit" class="btn btn-sm btn-success ms-1">Enviar</button>
+                        </form>                          
+                        <p class="my-1">E-mail:
+                        <a href="mailto:lavib.pa@gmail.com" class="text-reset d-inline d-md-none d-lg-inline text-break">
+                            lavib.pa@gmail.com
+                        </a>
+                        </p>
+                        <p class="mb-1">Telefone:
+                        <a href="callto:91988734569" class="text-reset d-inline d-md-none d-lg-inline text-break">
+                            91 9 8873-4569
+                        </a>
+                        </p>
+                    </div>
+                    {% if inscrito.comprovante %}
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-info btn-sm mt-5" data-bs-toggle="modal" data-bs-target="#ComprovanteModal" data-bs-dismiss="offcanvas">
+                            Ver Comprovante Enviado
+                        </button>
+                    </div>
+                    {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            {% else %}
+                <!-- Evento pago com cursos pagos -->
+                {% if inscrito.pagamento_confirmado %}
+                <!-- Pagamento confirmado -->
+                <p class="text-success mt-4 mb-0">Valor pago:</p>
+                <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-transparent">{{ evento.titulo }} - R$ {{ evento.valor }}</li>
+                {% for curso in inscrito.cursos.all %}
+                    <li class="list-group-item bg-transparent">{{ curso.nome }} - R$ {{ curso.valor }}</li>
+                {% endfor %}
+                </ul>
+                <small class="text-success">Valor total: R$ {{ valor_total }}</small>
+                <div class="d-flex align-items-center justify-content-center mt-5" id="qrCodeContainer">
+                <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code" class="img-fluid mb-3">
+                </div>
+                {% if inscrito.comprovante %}
+                <div class="d-flex justify-content-center mb-3">
+                    <button type="button" class="btn btn-info btn-sm mt-5" data-bs-toggle="modal" data-bs-target="#ComprovanteModal" data-bs-dismiss="offcanvas">
+                        Ver Comprovante Enviado
+                    </button>
+                </div>
+                {% endif %}
+                {% else %}
+                <!-- Pagamento não confirmado -->
+                <p>Valor a pagar:</p>
+                <ul class="list-group list-group-flush">
+                    {% if evento.valor != 0 %}
+                    <li class="list-group-item bg-transparent">{{ evento.titulo }} - R$ {{ evento.valor }}</li>
+                    {% endif %}
+                    {% for curso in inscrito.cursos.all %}
+                    <li class="list-group-item bg-transparent">{{ curso.nome }} - R$ {{ curso.valor }}</li>
+                    {% endfor %}
+                </ul>
+                <small class="text-secondary">Valor total: <b>R$ {{ valor_total }}</b></small>
+                <br>
+                <button class="btn btn-success my-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#pagamentoOffcanvas">Pague aqui</button>
+                <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="pagamentoOffcanvas" aria-labelledby="pagamentoOffcanvasLabel">
+                    <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="pagamentoOffcanvasLabel">Pague aqui</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg/800px-Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg.png" alt="QR Code" class="img-fluid mb-3">
+                    <p class="text-center mt-0"><b>Valor: R$ {{ valor_total }}</b></p>
+                    <div class="mt-0 border-start border-2 border-success-subtle p-2">
+                        <p class="mb-2">Já pagou? Envie-nos o comprovante!</p>
+                        <form method="POST" enctype="multipart/form-data" class="d-flex align-items-center justify-content-between">
+                        {% csrf_token %}
+                        {{ comprovante_form.comprovante }}
+                        <button type="submit" class="btn btn-sm btn-success ms-1">Enviar</button>
+                        </form>                          
+                        <p class="my-1">E-mail:
+                        <a href="mailto:lavib.pa@gmail.com" class="text-reset d-inline d-md-none d-lg-inline text-break">
+                            lavib.pa@gmail.com
+                        </a>
+                        </p>
+                        <p class="mb-1">Telefone:
+                        <a href="callto:91988734569" class="text-reset d-inline d-md-none d-lg-inline text-break">
+                            91 9 8873-4569
+                        </a>
+                        </p>
+                    </div>
+                    {% if inscrito.comprovante %}
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-info btn-sm mt-5" data-bs-toggle="modal" data-bs-target="#ComprovanteModal" data-bs-dismiss="offcanvas">
+                            Ver Comprovante Enviado
+                        </button>
+                    </div>
+                    {% endif %}
+                    </div>
+                </div>
+                
+                {% endif %}
+            {% endif %}
+            {% endif %}
+            
+            {% if inscrito.comprovante %}
+            <div class="modal fade" id="ComprovanteModal" tabindex="-1" aria-labelledby="ComprovanteModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ComprovanteModalLabel">Meu Comprovante de Pagamento</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-center">
+                            <img src="{{ inscrito.comprovante.url }}" class="img-fluid" alt='Comprovante do pagamento da inscrição no evento "{{ evento.titulo }}".'>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            {% endif %}
+            
+
             <div class="d-flex justify-content-evenly">
-                <button class="btn btn-success my-3" onclick="shareOnWhatsApp()">Compartilhar</button>
+                <button class="btn btn-warning my-3" onclick="shareOnWhatsApp()">Compartilhar</button>
                 <button class="btn btn-danger my-3" onclick="cancelInscription()">Cancelar Inscrição</button>
             </div>
         </div>
+        
     </div>
 </div>
-<div class="col-12 d-flex justify-content-center">      
+<div class="col-12 d-flex justify-content-center">
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb d-flex justify-content-center">
             <li class="breadcrumb-item d-flex justify-content-center">
@@ -67,22 +339,32 @@ Coprovante de Inscrição
             </li>
         </ol>
     </nav>
-  </div>
+</div>
 {% endblock %}
 
 {% block more_script %}
 <script>
+
+    // Função para compartilhar evento no WhatsApp
     function shareOnWhatsApp() {
-        var currentUrl = window.location.href;
-        var whatsappUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(currentUrl);
+        var shareText = 'Já me inscrevi no evento "{{ evento.titulo }}", inscreva-se também em: http://127.0.0.1:8003{% url "main:eventos" %}.';
+        var whatsappUrl = 'https://api.whatsapp.com/send?text=' + shareText;
         window.open(whatsappUrl, '_blank');
     }
 
+    // Função pare evniar e-mail solicitando o cancelamento
     function cancelInscription() {
         const subject = encodeURIComponent("Solicitação de Cancelamento de Inscrição em Evento");
         const body = encodeURIComponent("Solicito o cancelamento de minha inscrição no evento: {{ evento.titulo }}\nNome: {{ inscrito.nome }}\nNúmero de Inscrição: {{ inscrito.numero_inscricao }}");
         const mailtoLink = `mailto:lavib.pa@gmail.com?subject=${subject}&body=${body}`;
         window.location.href = mailtoLink;
+    }
+
+    // Função para Imprimir o Comprovante
+    function imprimirComprovante() {
+        // Redireciona para a mesma URL com o parâmetro 'imprimir' adicionado
+        var url = window.location.href + '&imprimir=true';
+        window.open(url, '_blank');
     }
 </script>
 {% endblock %}

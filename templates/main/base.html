@@ -36,10 +36,9 @@
               <a class="nav-link {% if url_name == 'index' %}active{% endif %}" href="{% url 'main:index' %}">Início</a>
             </li>
             <li class="nav-item me-3">
-              <a class="nav-link {% if url_name == 'sobre' %}active{% endif %}" href="{% url 'main:sobre' %}">Sobre
-                nós</a>
+              <a class="nav-link {% if url_name == 'sobre' %}active{% endif %}" href="{% url 'main:sobre' %}">Sobre nós</a>
             </li>
-            <li class="nav-item {% if url_name == 'eventos' %}active{% endif %} dropdown">
+            <li class="nav-item {% if url_name == 'eventos' %}active{% endif %} dropdown me-3">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Eventos
               </a>
@@ -51,6 +50,9 @@
                   <a class="dropdown-item" href="{% url 'main:suas_inscricoes' %}">Suas Inscrições</a>
                 </li>
               </ul>
+            </li>
+            <li class="nav-item me-3">
+              <a class="nav-link {% if url_name == 'sobre' %}active{% endif %}" href="{% url 'main:patrocinadores' %}">Parcerias</a>
             </li>
             <li class="nav-item me-3">
               <a class="nav-link {% if url_name == 'blog' %}active{% endif %}" href="{% url 'blog:index' %}">Blog</a>
@@ -95,52 +97,25 @@
       </section>
       <hr class="d-inline d-md-none">
       <div class="vertical-line d-none d-md-block mx-2"></div>
-      <section class="technologies d-flex align-items-center justify-content-center text-center mb-4 mb-md-0">
+      <section class="sponsors d-flex align-items-center justify-content-center text-center mb-4 mb-md-0">
         <div>
-          <h4 class="d-flex align-items-center justify-content-center justify-content-md-between">
-            Tecnologias neste site<img class="tech-icon invert-color ms-3"
-              src="{% static '/main/images/icons/info-circle-fill.svg' %}"
-              alt="Ícone de informações: letra i dentro de um círculo" />
-          </h4>
+          <a href="{% url 'main:patrocinadores' %}" style="text-decoration: none;">
+            <h4 class="d-flex align-items-center justify-content-center justify-content-md-between">
+              Nossos patrocinadores<img class="tech-icon invert-color ms-3"
+                src="{% static '/main/images/icons/info-circle-fill.svg' %}"
+                alt="Ícone de informações: letra i dentro de um círculo" />
+            </h4>
+          </a> 
           <div class="d-flex align-items-center justify-content-center flex-wrap">
-            <div class="tech-icon-block d-md-flex flex-column align-items-center font-monospace me-3">
-              <img class="tech-icon" src="{% static '/main/images/icons/shields/HTML Shield.svg' %}"
-                alt="Ícone de um arquivo HTML" />
-              <small>HTML</small>
-            </div>
-          
-            <div class="tech-icon-block d-md-flex flex-column align-items-center font-monospace me-3">
-              <img class="tech-icon" src="{% static '/main/images/icons/shields/CSS Shield.svg' %}"
-                alt="Ícone de um arquivo CSS" />
-              <small>CSS</small>
-            </div>
-          
-            <div class="tech-icon-block d-md-flex flex-column align-items-center font-monospace me-3">
-              <img class="tech-icon" src="{% static '/main/images/icons/shields/Sass Shield.svg' %}"
-                alt="Ícone de um arquivo SCSS" />
-              <small>SCSS</small>
-            </div>
-          
-            <div class="tech-icon-block d-md-flex flex-column align-items-center font-monospace me-3">
-              <img class="tech-icon" src="{% static '/main/images/icons/shields/JS Shield.svg' %}"
-                alt="Ícone de um arquivo Javascript" />
-              <small>Javascript</small>
-            </div>
-          
-            <div class="tech-icon-block d-md-flex flex-column align-items-center font-monospace me-3">
-              <img class="tech-icon" src="{% static '/main/images/icons/shields/Bootstrap Shield.png' %}"
-                alt="Ícone do Bootstrap" />
-              <small>Bootstrap</small>
-            </div>
-          
-            <div class="tech-icon-block d-md-flex flex-column align-items-center font-monospace me-3">
-              <img class="tech-icon" src="{% static '/main/images/icons/shields/Django Shield.svg' %}"
-                alt="Ícone do Django" />
-              <small>Django</small>
-            </div>
+            {% for patrocinador in patrocinadores %}
+            <a href="{{ patrocinador.link }}" class="sponsor-img-block d-md-flex flex-column align-items-center font-monospace me-3" target="_blank" style="text-decoration: none;">
+              <img class="sponsor-img" src="{{ patrocinador.imagem.url }}"
+                alt="Logomarca de {{ patrocinador.nome }}" />
+              <small>{{ patrocinador.nome }}</small>
+            </a>
+            {% endfor %}
           </div>
-          
-        </div>
+        </div>   
       </section>
       <hr class="d-inline d-md-none">
       <div class="vertical-line d-none d-md-block mx-2"></div>

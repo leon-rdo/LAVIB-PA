@@ -1,23 +1,37 @@
 {% extends 'main/base.html' %}
 {% load static %}
-{% block title %}
-LAVIB-PA · Inscrição
-{% endblock %}
+{% block title %}LAVIB-PA · Inscrição{% endblock %}
 {% block metatags %}
 {% endblock %}
 
 {% block content %}
-<div class="row d-flex justify-content-center mx-auto p-5 my-5">
+<div class="row d-flex justify-content-center mx-auto p-2 p-md-5 my-5">
   <div class="col-lg-7">
     <h2 class="display-5">Inscreva-se no Evento:</h2>
     <h2 class="display-6 mb-3">"{{ evento.titulo }}"</h2>
-    <form class="col-12 col-md-6" method="POST">
+    <form class="col-12 col-md-6" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      {{ form.as_p }}
+      
+      {{ form.nome.label_tag }}
+      {{ form.nome }}
+      {{ form.email.label_tag }}
+      {{ form.email }}
+      {{ form.telefone.label_tag }}
+      {{ form.telefone }}
+      {{ form.graduacao.label_tag }}
+      {{ form.graduacao }}
+      {{ form.instituicao.label_tag }}
+      {{ form.instituicao }}
+
+      {% if form.cursos.field.queryset.exists %}
+        {{ form.cursos.label_tag }}
+        {{ form.cursos }}
+      {% endif %}
+
       {% if evento.vagas_restantes == 0 %}
-      <button type="reset" class="btn w-100 btn-danger" disabled>VAGAS ESGOTADAS</button>
+        <button type="reset" class="btn w-100 btn-danger mt-3" disabled>VAGAS ESGOTADAS</button>
       {% else %}
-      <button type="submit" class="btn w-100 btn-success">Enviar</button>
+        <button type="submit" class="btn w-100 btn-success mt-3">Enviar</button>
       {% endif %}
     </form>
   </div>
@@ -25,16 +39,16 @@ LAVIB-PA · Inscrição
 <div class="col-12 d-flex justify-content-center">      
   <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a href="{% url 'main:eventos' %}" class="text-decoration-none">Eventos</a>
-          </li>
-        <li class="breadcrumb-item">
-          <a href="{% url 'main:detalhes_eventos' evento.slug %}" class="text-decoration-none">{{ evento.titulo }}</a>
-        </li>
-        <li class="breadcrumb-item">
-          <a href="{% url 'main:inscricao' evento_slug=evento.slug %}" class="text-decoration-none">Inscrição</a>
-        </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'main:eventos' %}" class="text-decoration-none">Eventos</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'main:detalhes_eventos' evento.slug %}" class="text-decoration-none">{{ evento.titulo }}</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'main:inscricao' evento_slug=evento.slug %}" class="text-decoration-none">Inscrição</a>
+      </li>
     </ol>
-</nav>
+  </nav>
 </div>
 {% endblock %}

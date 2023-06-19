@@ -1,3 +1,7 @@
 Django
 python-dotenv
 Pillow
+qrcode
+WeasyPrint
+pandas
+xlsxwriter

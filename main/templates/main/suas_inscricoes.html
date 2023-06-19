@@ -11,8 +11,7 @@
     <form class="col-12 col-md-6 mb-5" method="post" action="{% url 'main:suas_inscricoes' %}">
         {% csrf_token %}
         <label for="emailInput" class="form-label mb-2">Digite seu e-mail:</label>
-        <input type="email" class="form-control mb-2" id="emailInput" name="email"
-            placeholder="Digite aqui seu e-mail para a consulta" required>
+        <input type="email" class="form-control mb-2" id="emailInput" name="email" placeholder="Digite aqui seu e-mail para a consulta" required>
         <button type="submit" class="btn btn-success">Consultar</button>
     </form>
     {% if inscricoes %}

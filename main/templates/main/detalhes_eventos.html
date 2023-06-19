@@ -15,12 +15,14 @@ LAVIB-PA · {{ evento.titulo }}
     </div>
   </div>
   <div class="row d-flex justify-content-center px-1 px-md-5 mb-5">
-      <figure class="col-12 col-md-6 container-Image d-flex align-items-center justify-content-center ratio ratio-16x9 rounded-5 p-1">
-          <img src="{{ evento.imagem.url }}" class="img-fluid" id="big_image" alt='Convite para {{ evento.titulo }}' />
-      </figure>
+    <figure
+      class="col-12 col-md-6 container-Image d-flex align-items-center justify-content-center ratio ratio-16x9 rounded-5 p-1">
+      <img src="{{ evento.imagem.url }}" class="img-fluid" id="big_image" alt='Convite para {{ evento.titulo }}' />
+    </figure>
     <div class="col-12 my-5">
       <p class="fs-5" style="text-align: justify;">{{ evento.descricao | linebreaks }}</p>
-      <p class="lead">Valor: {% if evento.valor == 0 %}<b class="text-success">GRÁTIS!</b>{% else %}<b class="text-success">R$ {{ evento.valor }}</b>{% endif %}</p>
+      <p class="lead">Valor: {% if evento.valor == 0 %}<b class="text-success">GRÁTIS!</b>{% else %}<b
+          class="text-success">R$ {{ evento.valor }}</b>{% endif %}</p>
       {% if evento.convidados == '' %}
       <!-- Nada é exibido -->
       {% else %}
@@ -31,14 +33,44 @@ LAVIB-PA · {{ evento.titulo }}
       {% endif %}
       {% if evento.vagas_restantes == -1 %}
       <p class="fs-5"><b class="text-success">VAGAS ILIMITADAS!</b>
-      {% elif evento.vagas_restantes == 0 %}
+        {% elif evento.vagas_restantes == 0 %}
       <p class="fs-5"><b class="text-danger">VAGAS ESGOTADAS!</b>
-      {% else %}
+        {% else %}
       <p class="fs-5">Vagas restantes: {{ evento.vagas_restantes }}</p>
       {% endif %}
+
       <hr>
-      <h2 class="text-center lead fs-4">Data do evento: <time>{{ evento.data_hora }}</time> | Local: {{ evento.local }}</h2>
+
+      {% if evento.cursos.all.exists %}
+      <h2>Cursos</h2>
+      <div class="card-group box-cursos flex-nowrap">
+        {% for curso in evento.cursos.all %}
+        <div class="card card-cursos my-2 me-2">
+          <div class="ratio ratio-1x1 bg-secondary-subtle">
+            <img src="{{ curso.imagem.url }}" class="card-img-top object-fit-contain"
+              alt='Imagem de divulgação do curso: "{{ curso.nome }}"'>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title mb-2">{{ curso.nome }}</h3>
+            <p class="card-text mb-1">{{ curso.descricao }}</p>
+            {% if curso.professor %}
+            <p class="card-text mb-0">Professor: {{ curso.professor }}</p>
+            {% endif %}
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <p class="card-text mb-0">Valor: R$ {{ curso.valor }}</p>
+            <p class="card-text mb-0">{{ curso.vagas }} vagas</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
       
+      <hr>
+
+      {% endif %}
+
+      <h2 class="text-center lead fs-4"><b>Data do evento:</b> <time>{{ evento.data_hora }}</time> | <b>Local:</b> {{ evento.local }}</h2>
+
       <div class="col-12 d-flex justify-content-center mt-5">
         {% if evento.vagas_restantes == -1 or evento.vagas_restantes > 0 %}
         <a href="{% url 'main:inscricao' evento_slug=evento.slug %}" class="btn btn-lg btn-success">INSCREVA-SE AQUI</a>
@@ -49,16 +81,16 @@ LAVIB-PA · {{ evento.titulo }}
     </div>
   </div>
 </article>
-<div class="col-12 d-flex justify-content-center">      
+<div class="col-12 d-flex justify-content-center">
   <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <a href="{% url 'main:eventos' %}" class="text-decoration-none">Eventos</a>
-        </li>
-        <li class="breadcrumb-item">
-          <a href="{% url 'main:detalhes_eventos' evento.slug %}" class="text-decoration-none">{{ evento.titulo }}</a>
-        </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'main:eventos' %}" class="text-decoration-none">Eventos</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'main:detalhes_eventos' evento.slug %}" class="text-decoration-none">{{ evento.titulo }}</a>
+      </li>
     </ol>
-</nav>
+  </nav>
 </div>
 {% endblock %}

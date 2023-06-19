@@ -22,8 +22,7 @@ LAVIB-PA · Eventos
             <div class="card-body">
                 <h5 class="card-title">{{ evento.titulo }}</h5>
                 <p class="card-text">{{ evento.descricao_curta }}</p>
-                <a href="{% url 'main:detalhes_eventos' evento.slug %}"><b class="text-body-secondary">Saiba
-                        mais.</b></a>
+                <a href="{% url 'main:detalhes_eventos' evento.slug %}"><b class="text-body-secondary">Saiba mais.</b></a>
             </div>
             <div class="card-footer">
                 <small class="text-body-secondary">Em: {{ evento.data_hora }}</small><br>

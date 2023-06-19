@@ -1,7 +1,7 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap");
 nav {
-  background-color: rgba(255, 255, 255, 0.443);
+  background-color: rgba(255, 255, 255, 0.4431372549);
 }
 
 .navbar-brand {
@@ -24,6 +24,14 @@ nav {
   color: #012070;
 }
 
+.dropdown-menu {
+  background: linear-gradient(39deg, rgba(255, 255, 255, 0.7098039216) 40%, rgba(98, 182, 136, 0.4117647059) 80%);
+}
+.dropdown-menu li :hover {
+  background-color: #008E40;
+  color: white;
+}
+
 body {
   height: 100vh;
   background: radial-gradient(circle, #ffffff 0%, rgba(0, 142, 64, 0.1411764706) 100%);
@@ -38,13 +46,16 @@ body {
 
 ::-webkit-scrollbar {
   /* Largura e cor da scrollbar (WebKit) */
-  width: 3px;
+  width: 5px;
+  height: 5px;
   background: radial-gradient(circle, #ffffff 0%, rgba(0, 142, 64, 0.1411764706) 100%);
 }
 
 ::-webkit-scrollbar-thumb {
   /* Estilos para a thumb (barra) (WebKit) */
   background-color: #012070;
+  width: 5px;
+  height: 5px;
 }
 
 #gotTop a img {
@@ -135,11 +146,11 @@ footer a {
   color: white;
 }
 
-.tech-icon-block small {
+.sponsor-img-block small {
   font-size: 0.7rem;
 }
 
-.tech-icon {
+.sponsor-img {
   width: 20px;
 }
 
@@ -201,8 +212,28 @@ footer a {
   object-fit: contain;
 }
 
+.box-cursos {
+  height: 40rem;
+  overflow-y: scroll;
+}
+
+@media (min-width: 768px) {
+  .box-cursos {
+    height: 40rem;
+    overflow-y: visible;
+    overflow-x: scroll;
+  }
+  .card-cursos {
+    max-width: 20rem;
+    min-width: 20rem;
+  }
+}
 .detalhes-evento {
   background-color: rgba(0, 255, 153, 0.18);
+}
+
+#print-icon {
+  cursor: pointer;
 }
 
 .breadcrumb-item a {

@@ -1,23 +1,35 @@
 nav {
-  background-color: rgba(255, 255, 255, 0.443);
+  background-color: #ffffff71;
 }
 
 .navbar-brand {
   color: $color1;
+
   img {
     width: 50px;
   }
 }
 
-  .navbar-brand:hover {
-    transform: scale(1.025);
-  }
+.navbar-brand:hover {
+  transform: scale(1.025);
+}
 
-  .nav-link {
-    color: $color2;
-    font-size: x-large;
-  }
+.nav-link {
+  color: $color2;
+  font-size: x-large;
+}
 
-  .nav-link:hover {
-    color: $color1;
+.nav-link:hover {
+  color: $color1;
+}
+
+.dropdown-menu {
+  background: $radgrad2;
+
+  li {
+    :hover {
+      background-color: $color2;
+      color: white;
+    }
   }
+}

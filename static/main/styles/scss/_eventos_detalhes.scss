@@ -2,6 +2,25 @@
   width: 100%;
   background-color: $light_black;
 }
+
 #big_image {
   object-fit: contain;
+}
+
+.box-cursos {
+  height: 40rem;
+  overflow-y: scroll;
+}
+
+@media (min-width: 768px) {
+  .box-cursos {
+    height: 40rem;
+    overflow-y: visible;
+    overflow-x: scroll;
+  }
+
+  .card-cursos {
+    max-width: 20rem;
+    min-width: 20rem;
+  }
 }

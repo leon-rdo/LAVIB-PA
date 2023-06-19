@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}LAVIB-PA · Patrocinadores{% endblock %}
+{% block metatags %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center g-2 px-4 px-md-5 mt-5 mb-4">
+    <h2 class="display-2 d-flex d-md-block justify-content-center pt-3" id="subtitle">Nossos Patrocinadores</h2>
+</div>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 d-flex justify-content-center g-4 px-4 px-md-0 pb-5 mb-5">
+    {% if patrocinadores %}
+    {% for patrocinador in patrocinadores %}
+    <div class="col">
+        <div class="card h-100" data-tilt data-tilt-max="10" data-tilt-speed="100">
+            <div class="container-img ratio ratio-1x1">
+                <img src="{{ patrocinador.imagem.url }}" class="card-img-top"
+                    alt='Imagem de divulgação do patrocinador: "{{ patrocinador.nome }}"'>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ patrocinador.nome }}</h5>
+                {% if patrocinador.texto %}<p class="card-text">{{ patrocinador.texto }}</p>{% endif %}
+                <a href="{{ patrocinador.link }}" target="_blank"><b class="text-body-secondary">Saiba
+                        mais.</b></a>
+            </div>
+   
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="col-12">
+        <h1 class="display-4">Nenhum patrocinador para os próximos dias!</h1>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

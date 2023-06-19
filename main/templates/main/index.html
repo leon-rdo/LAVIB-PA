@@ -5,13 +5,13 @@
 
 {% block content %}
 {% if alerta %}
-  {% for alerta in alerta %}
-    <div class="alert alert-{{ alerta.cor }} alert-dismissible fade show" role="alert"
-        style="position: absolute; margin-top: -60px;">
-        <strong>{{ alerta.negrito }}</strong> {{ alerta.texto }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  {% endfor %}
+{% for alerta in alertas %}
+<div class="alert alert-{{ alerta.cor }} alert-dismissible fade show" role="alert"
+    style="position: absolute; margin-top: -60px;">
+    <strong>{{ alerta.negrito }}</strong> {{ alerta.texto }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
 {% endif %}
 <div class="row justify-content-center align-items-center g-2 my-5">
     <div class="lavib-container col-12 col-md-7">
@@ -21,45 +21,96 @@
     </div>
     <div class="col-12 col-md-5 d-flex justify-content-center">
         <figure>
-            <img class="main-logo" src="{% static 'main/images/icons/LAVIB-PA.svg' %}" alt="Logo da LAVIB-PA"rq3q3>
+            <img class="main-logo" src="{% static 'main/images/icons/LAVIB-PA.svg' %}" alt="Logo da LAVIB-PA" rq3q3>
         </figure>
     </div>
-    <div class="row justify-content-center align-items-center g-2 my-5">
-        <div class="col-12 col-md-4 text-center">
-            <h1 class="display-2">ÚLTIMAS NOTÍCIAS!</h1>
-        </div>
-        <div class="col-12 col-md-8">
-            <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    {% for item in carousel_items %}
-                    <button type="button" data-bs-target="#carouselId" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" {% endif %} aria-label="Slide {{ forloop.counter }}"></button>
-                    {% endfor %}
-                </div>
-                <div class="carousel-inner ratio ratio-16x9" role="listbox">
-                    {% for item in carousel_items %}
-                    <a href="{{ item.link }}" class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ item.image.url }}" class="h-100 w-100 d-block object-fit-contain" alt="{{ item.image_description }}">
-                        <div class="carousel-caption d-none d-md-block p-1">
-                            <h3 class="">{{ item.caption_title }}</h3>
-                            <p class="fs-5">{{ item.caption_text }}</p>
-                        </div>
-                    </a>
-                    {% endfor %}
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentcolor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
-                        <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
-                      </svg>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentcolor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-                      </svg>
-                    <span class="visually-hidden">Next</span>
-                </button>
+</div>
+<div class="row justify-content-center align-items-center g-2 my-5">
+    <div class="col-12 col-md-4 text-center">
+        <h1 class="display-2">ÚLTIMAS NOTÍCIAS!</h1>
+    </div>
+    <div class="col-12 col-md-8">
+        <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                {% for item in carousel_items %}
+                <button type="button" data-bs-target="#carouselId" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" {% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+                {% endfor %}
             </div>
+            <div class="carousel-inner ratio ratio-16x9" role="listbox">
+                {% for item in carousel_items %}
+                <a href="{{ item.link }}" class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <img src="{{ item.image.url }}" class="h-100 w-100 d-block object-fit-contain"
+                        alt="{{ item.image_description }}">
+                    <div class="carousel-caption d-none d-md-block p-1">
+                        <h3 class="">{{ item.caption_title }}</h3>
+                        <p class="fs-5">{{ item.caption_text }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentcolor"
+                    class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                    <path
+                        d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z" />
+                </svg>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentcolor"
+                    class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                    <path
+                        d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                </svg>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
     </div>
+</div>
+<div class="row justify-content-center align-items-center g-2 px-1 px-md-5 mb-5">
+    <h1>Diretoria 2023</h1>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-5">
+        {% for diretor in diretores %}       
+          <div class="col">
+            <div class="card" style="overflow: hidden;">
+              <div class="ratio ratio-1x1">
+                <img src="{{ diretor.foto.url }}" class="card-img-top object-fit-cover img-fluid" alt="Foto de {{ diretor.nome }}">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">{{ diretor.nome }}</h5>
+                <div class="d-flex">
+                  <div class="btn-group btn-group-sm Box-RedesSociais" role="group" style="max-height: 60px;">
+                    {% if diretor.lattes %}
+                      <a href="{{ diretor.lattes }}" class="btn btn-outline-primary" target="_blank">
+                        <img class="RedeSocialLogo img-fluid" src="{% static 'main/images/icons/redes_sociais/LattesLogo.svg' %}" alt="Ícone do Lattes"/>
+                      </a>
+                    {% endif %}
+                    {% if diretor.linkedin %}
+                      <a href="{{ diretor.linkedin }}" class="btn btn-outline-primary" target="_blank">
+                        <img class="RedeSocialLogo img-fluid" src="{% static 'main/images/icons/redes_sociais/LinkedInLogo.svg' %}" alt="Ícone do LinkedIn"/>
+                      </a>
+                    {% endif %}
+                    {% if diretor.instagram %}
+                      <a href="{{ diretor.instagram }}" class="btn btn-outline-primary" target="_blank">
+                        <img class="RedeSocialLogo img-fluid" src="{% static 'main/images/icons/redes_sociais/InstagramLogo.svg' %}" alt="Ícone do Instagram"/>
+                      </a>
+                    {% endif %}
+                    {% if diretor.twitter %}
+                      <a href="{{ diretor.twitter }}" class="btn btn-outline-primary" target="_blank">
+                        <img class="RedeSocialLogo img-fluid" src="{% static 'main/images/icons/redes_sociais/TwitterLogo.svg' %}" alt="Ícone do Twitter"/>
+                      </a>
+                    {% endif %}
+                    {% if diretor.facebook %}
+                      <a href="{{ diretor.facebook }}" class="btn btn-outline-primary" target="_blank">
+                        <img class="RedeSocialLogo img-fluid" src="{% static 'main/images/icons/redes_sociais/FacebookLogo.svg' %}" alt="Ícone do Facebook"/>
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>      
 </div>
 {% endblock %}
