@@ -138,7 +138,9 @@ def confirmar_pagamento(modeladmin, request, queryset):
 
 class InscritoInline(admin.StackedInline):
     model = Inscrito
-
+    readonly_fields = ['numero_inscricao', 'data_hora_inscricao']
+    
+@admin.register(Evento)
 class EventoAdmin(admin.ModelAdmin):
     actions = [gerar_planilha_evento]
     inlines = [InscritoInline]
@@ -150,7 +152,8 @@ class EventoAdmin(admin.ModelAdmin):
         perms = super().get_model_perms(request)
         perms['gerar_planilha_evento'] = perms['change']
         return perms
-    
+
+@admin.register(Curso)
 class CursoAdmin(admin.ModelAdmin):
     actions = [gerar_planilha_curso]
 
@@ -162,24 +165,40 @@ class CursoAdmin(admin.ModelAdmin):
         perms['gerar_planilha_curso'] = perms['change']
         return perms
 
+class EventoTituloFilter(admin.SimpleListFilter):
+    title = 'Evento'
+    parameter_name = 'evento_titulo'
+
+    def lookups(self, request, model_admin):
+        eventos = set([inscrito.evento.titulo for inscrito in Inscrito.objects.all()])
+        return [(evento, evento) for evento in eventos]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(evento__titulo=self.value())
+
+@admin.register(Inscrito)
 class InscritoAdmin(admin.ModelAdmin):
+    ordering = ['numero_inscricao']
     actions = [confirmar_pagamento]
+    list_display = ['numero_inscricao', 'nome', 'evento_titulo', 'pagamento_confirmado']
+    list_filter = ['pagamento_confirmado', EventoTituloFilter]
+    search_fields = ['nome']
+    readonly_fields = ['numero_inscricao', 'data_hora_inscricao']
+    list_display_links = ['nome']
 
-    def get_nome_com_evento(self, inscrito):
-        return f"{inscrito.nome} - {inscrito.evento.titulo}"
+    def evento_titulo(self, obj):
+        return obj.evento.titulo
 
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        queryset = queryset.select_related('evento')  # Carregar evento relacionado em uma única consulta
-        return queryset
+    evento_titulo.short_description = 'Evento'
 
-    list_display = ['get_nome_com_evento', 'pagamento_confirmado', 'data_hora_inscricao']
 
 admin.site.register(Index_Carousel_Item)
 admin.site.register(Diretor)
-admin.site.register(Sobre_Text)
-admin.site.register(Evento, EventoAdmin)
+admin.site.register(Settings)
 admin.site.register(Alerta)
-admin.site.register(Inscrito, InscritoAdmin)
 admin.site.register(Patrocinador)
-admin.site.register(Curso, CursoAdmin)
+admin.site.register(Redes_Sociais)
+
+admin.site.site_header = 'Administração de LAVIB-PA'
+admin.site.index_title = 'LAVIB-PA'

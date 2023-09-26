@@ -3,8 +3,6 @@ from django.utils import timezone
 from uuid import uuid4
 from django.db import models
 from django.utils.text import slugify
-from django.core.exceptions import ValidationError
-from django.utils.deconstruct import deconstructible
 
 class Index_Carousel_Item(models.Model):
 
@@ -18,10 +16,8 @@ class Index_Carousel_Item(models.Model):
         return self.caption_title
 
     class Meta:
-        db_table = ''
-        managed = True
-        verbose_name = 'Index_Carousel_Item'
-        verbose_name_plural = 'Index_Carousel_Items'
+        verbose_name = 'Notícia'
+        verbose_name_plural = 'Notícias'
 
 class Diretor(models.Model):
 
@@ -53,6 +49,7 @@ class Alerta(models.Model):
     negrito = models.CharField(max_length=50, blank=True, null=True)
     texto = models.CharField(max_length=100)
     cor = models.CharField(max_length=40, default='warning', choices=COLORS)
+    link = models.URLField(max_length=200, blank=True, null=True)
 
     class Meta:
         verbose_name = "Alerta"
@@ -73,14 +70,6 @@ class Patrocinador(models.Model):
 
     def __str__(self):
         return self.nome
-
-class Sobre_Text(models.Model):
-    
-    paragraph = models.TextField(default='')    
-
-    class Meta:
-        verbose_name = "Sobre_Text"
-        verbose_name_plural = "Sobre_Texts"
 
 class Curso(models.Model):
 
@@ -142,23 +131,22 @@ class Evento(models.Model):
 class Inscrito(models.Model):
     
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
-    numero_inscricao = models.PositiveSmallIntegerField()
-    nome = models.CharField(default='', max_length=80)
-    email = models.EmailField(default='')
-    telefone = models.CharField(default='', max_length=18)
-    graduacao = models.CharField(max_length=50, null=True, blank=True)
+    numero_inscricao = models.PositiveSmallIntegerField('Nº')
+    nome = models.CharField('Nome:',default='', max_length=80)
+    email = models.EmailField('E-mail:', default='')
+    telefone = models.CharField('Telefone:', default='', max_length=18)
+    graduacao = models.CharField('Cursando:', max_length=50, null=True, blank=True)
     cursos = models.ManyToManyField(Curso, blank=True)
-    instituicao = models.CharField(null=True, blank=True, max_length=50)
-    data_hora_inscricao = models.DateTimeField(auto_now_add=True)
+    instituicao = models.CharField('Instituição:', null=True, blank=True, max_length=50)
+    data_hora_inscricao = models.DateTimeField('Data da Inscrição:', auto_now_add=True)
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='inscritos')
-    pagamento_confirmado = models.BooleanField(default=False)
-    data_limite_pagamento = models.DateTimeField(null=True, blank=True)
+    pagamento_confirmado = models.BooleanField('Pagou?', default=False)
+    data_limite_pagamento = models.DateTimeField('Data limite de pagamento:', null=True, blank=True)
     comprovante = models.ImageField(
         upload_to='main/images/comprovantes',
         null=True,
         blank=True,
     )
-
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -190,4 +178,31 @@ class Inscrito(models.Model):
         unique_together = ('email', 'evento')
 
     def __str__(self):
-        return f"Inscrição #{str(self.numero_inscricao)} - {self.nome}"
+        return self.evento.titulo
+
+class Settings(models.Model):
+
+    email = models.EmailField(default='lavib.pa@gmail.com', max_length=254)
+    telefone = models.CharField(default='91991487970', max_length=18)
+    qrcode_pagamento = models.ImageField(upload_to='main/images')
+    sobre_nos = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        verbose_name = 'Configurações'
+        verbose_name_plural = 'Configurações'
+
+class Redes_Sociais(models.Model):
+
+    nome = models.CharField(default='', max_length=50)
+    icone = models.FileField(upload_to="main/images/RedesSociais", max_length=100)
+    url = models.URLField(default='', max_length=200)
+
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        verbose_name = 'Redes Sociais'
+        verbose_name_plural = 'Redes Sociais'

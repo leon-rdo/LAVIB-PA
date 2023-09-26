@@ -4,6 +4,7 @@
 
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="{% static 'main/images/icons/LAVIB-PA.svg' %}" type="image/x-icon">
   <title>{% block title %}{% endblock %}</title>
@@ -16,6 +17,7 @@
     defer></script>
   <script src="{% static 'main/scripts/animations.js' %}" defer></script>
   <script src="{% static 'main/scripts/vanilla-tilt.min.js' %}" defer></script>
+  
   {% block metatags %}{% endblock %}
 </head>
 
@@ -58,6 +60,11 @@
               <a class="nav-link {% if url_name == 'blog' %}active{% endif %}" href="{% url 'blog:index' %}">Blog</a>
             </li>
             {% endwith %}
+            {% if user.is_staff %}     
+            <li class="nav-item">
+              <a class="nav-link" href="/admin">Administração</a>
+            </li>
+            {% endif %}
           </ul>
         </div>
       </div>
@@ -81,14 +88,17 @@
           </h4>
 
           <address>
-            <ul class="list-group list-group-numbered">
-              <li>
-                <p class="mb-0">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item text-white border-0 bg-transparent">  
+                <p class="mb-0 text-start">
                   E-mail:
-                  <a href="mailto:lavib.pa@gmail.com"
-                    class="text-reset d-inline d-md-none d-lg-inline text-break">lavib.pa@gmail.com</a>
-                  <a href="mailto:#1212@gmail.com" class="text-reset d-none d-md-inline d-lg-none">lavib.pa<small
-                      style="font-size: 0.76rem">@gmail.com</small></a>
+                  <a href="mailto:{{ settings.email }}" class="text-reset d-inline d-md-none d-lg-inline text-break">{{ settings.email }}</a>
+                </p>
+              </li>
+              <li class="list-group-item text-white border-0 bg-transparent">  
+                <p class="mb-0 text-start">
+                  Telefone:
+                  <a href="tel:{{ settings.telefone }}" class="text-reset d-inline d-md-none d-lg-inline text-break">{{ settings.telefone }}</a>
                 </p>
               </li>
             </ul>
@@ -130,27 +140,47 @@
       </section>
     </footer>
   </div>
-
-  <div id="gotTop" class="virus position-fixed d-inline-flex" style="bottom: 20px; right: 20px">
-    <a href="#top">
-      <img src="{% static 'main/images/icons/Vírus_Bacteriófago.svg' %}" class="virus__icon" alt="Vírus bacteriófago" />
-    </a>
+  <div class="sticky-container">
+    <div class="dropstart">
+        <button class="btn btn-light ratio ratio-1x1 rounded-5 overflow-hidden move" type="button"
+            data-bs-toggle="dropdown" aria-expanded="false" style="width: 50px; height: 50px;"
+            id="btn-social-media">
+            <div id="carouselExampleSlidesOnly" class="carousel carousel-fade" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="2000">
+                        <img src="{% static 'main/images/icons/redes_sociais/Instagram Round Green Logo.svg' %}" class="d-block w-100">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="2000">
+                        <img src="{% static 'main/images/icons/redes_sociais/Twitter Round Green Logo.svg' %}" class="d-block w-100">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="2000">
+                        <img src="{% static 'main/images/icons/redes_sociais/YouTube Round Green Logo.svg' %}" class="d-block w-100">
+                    </div>
+                </div>
+            </div>
+        </button>
+        <ul class="dropdown-menu" id="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Facebook</a></li>
+            <li><a class="dropdown-item" href="#">Instagram</a></li>
+            <li><a class="dropdown-item" href="#">Twitter</a></li>
+        </ul>
+    </div>
   </div>
 
-  <script>
-    // Mostrar ou ocultar a seta com base na posição da janela
-    var virus = document.querySelector(".virus");
-    window.addEventListener("scroll", function () {
-      if (window.scrollY > 0) {
-        virus.style.display = "block";
-      } else {
-        virus.style.display = "none";
-      }
-    });
+ <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var btnSocialMedia = document.getElementById("btn-social-media");
+        var dropdownMenu = document.getElementById("dropdown-menu");
 
-    // Ocultar a seta inicialmente
-    virus.style.display = "none";
-  </script>
+        btnSocialMedia.addEventListener("click", function () {
+            if (dropdownMenu.classList.contains("show")) {
+                btnSocialMedia.classList.remove("move");
+            } else {
+                btnSocialMedia.classList.add("move");
+            }
+        });
+    });
+</script>
   {% block more_script %}{% endblock %}
 </body>
 

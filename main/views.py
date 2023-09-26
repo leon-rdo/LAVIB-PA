@@ -1,11 +1,9 @@
 import base64
 import io
-from ipaddress import summarize_address_range
 import json
 import uuid
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.template.loader import get_template
 from django.urls import reverse
 from django.views import generic
 from main.forms import ComprovanteForm, InscritoForm
@@ -14,33 +12,28 @@ import qrcode
 from weasyprint import HTML
 from django.template.loader import render_to_string
 from django.contrib import messages
-from django.core.mail import EmailMessage, EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
-class IndexView(generic.ListView):
+class IndexView(generic.TemplateView):
     template_name = "main/index.html"
-    model = Index_Carousel_Item
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["carousel_items"] = self.get_queryset()
+        context["carousel_items"] = Index_Carousel_Item.objects.all()
         context["alertas"] = Alerta.objects.all()
         context["diretores"] = Diretor.objects.all()
         return context
 
 
-class SobreView(generic.ListView):
+class SobreView(generic.TemplateView):
     template_name = "main/sobre.html"
-    model = Sobre_Text
-    context_object_name = "sobre_texts"
-
 
 class EventosView(generic.ListView):
     template_name = "main/eventos.html"
     model = Evento
     context_object_name = "eventos"
-
 
 class DetalhesEventosView(generic.DetailView):
     template_name = "main/detalhes_eventos.html"
@@ -166,11 +159,11 @@ class ComprovanteInscricaoView(generic.DetailView):
 
         # Passa o valor do QR Code como contexto para o template
         context = {
-            'qr_code_image': base64.b64encode(qr_code_image.read()).decode('utf-8'),
+            'qr_code_inscricao': base64.b64encode(qr_code_image.read()).decode('utf-8'),
             'inscrito': inscrito,
             'evento': evento,
             'valor_total': valor_total,
-            'comprovante_form': ComprovanteForm()
+            'comprovante_form': ComprovanteForm(),
         }
 
         if 'imprimir' in request.GET:
@@ -227,7 +220,7 @@ class ComprovanteInscricaoView(generic.DetailView):
 
         # Passa o valor do QR Code como contexto para o template
         context = {
-            'qr_code_image': base64.b64encode(qr_code_image.read()).decode('utf-8'),
+            'qr_code_inscricao': base64.b64encode(qr_code_image.read()).decode('utf-8'),
             'inscrito': inscrito,
             'evento': evento,
             'valor_total': valor_total,

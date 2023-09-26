@@ -13,7 +13,6 @@
                 <small>Volte a esta página.</small>
             </div>
         {% endif %}
-
         <div class="d-flex align-items-center justify-content-between">
             {% if inscrito.pagamento_confirmado %}
             <h1 class="display-5 m-0">Comprovante de Inscrição</h1>
@@ -62,13 +61,13 @@
             {% if evento.valor == 0 and not evento.cursos.all %}
                 <!-- Evento gratuito sem cursos -->
                 <div class="d-flex align-items-center justify-content-center mt-4" id="qrCodeContainer">
-                    <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code">
+                    <img src="data:image/png;base64,{{ qr_code_inscricao }}" class="img-fluid" alt="QR Code da Inscrição">
                 </div>
             {% elif evento.valor == 0 and evento.cursos.all %}
             {% if not evento.possui_cursos_pagos %}
                 <!-- Evento gratuito com cursos gratuitos -->
                 <div class="d-flex align-items-center justify-content-center mt-4" id="qrCodeContainer">
-                    <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code">
+                    <img src="data:image/png;base64,{{ qr_code_inscricao }}" class="img-fluid" alt="QR Code da Inscrição">
                 </div>
             {% else %}
                 <!-- Evento gratuito com cursos pagos -->
@@ -83,7 +82,7 @@
                 </ul>
                 <small class="text-success">Valor total: R$ {{ valor_total }}</small>
                 <div class="d-flex align-items-center justify-content-center mt-5" id="qrCodeContainer">
-                <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code" class="img-fluid mb-3">
+                <img src="data:image/png;base64,{{ qr_code_inscricao }}" alt="QR Code da Inscrição" class="img-fluid mb-3">
                 </div>
                 {% if inscrito.comprovante %}
                 <div class="d-flex justify-content-center mb-3">
@@ -112,7 +111,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
                     </div>
                     <div class="offcanvas-body">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg/800px-Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg.png" alt="QR Code" class="img-fluid mb-3">
+                    <img src="{{ LAVIB_info.qrcode_pagamento.url }}" alt="QR Code para Pagamento" class="img-fluid mb-3">
                     <p class="text-center mt-0"><b>Valor: R$ {{ valor_total }}</b></p>
                     <div class="mt-0 border-start border-2 border-success-subtle p-2">
                         <p class="mb-2">Já pagou? Envie-nos o comprovante!</p>
@@ -156,8 +155,8 @@
                 {% endfor %}
                 </ul>
                 <small class="text-success">Valor total: R$ {{ valor_total }}</small>
-                <div class="d-flex align-items-center justify-content-center mt-5" id="qrCodeContainer">
-                    <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code" class="img-fluid mb-3">
+                <div class="d-flex align-items-center justify-content-center mt-4" id="qrCodeContainer">
+                    <img src="data:image/png;base64,{{ qr_code_inscricao }}" class="img-fluid" alt="QR Code da Inscrição">
                 </div>
                 {% if inscrito.comprovante %}
                 <div class="d-flex justify-content-center mb-3">
@@ -186,7 +185,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
                     </div>
                     <div class="offcanvas-body">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg/800px-Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg.png" alt="QR Code" class="img-fluid mb-3">
+                    <img src="{{ LAVIB_info.qrcode_pagamento.url }}" alt="QR Code para Pagamento" class="img-fluid mb-3">
                     <p class="text-center mt-0"><b>Valor: R$ {{ valor_total }}</b></p>
                     <div class="mt-0 border-start border-2 border-success-subtle p-2">
                         <p class="mb-2">Já pagou? Envie-nos o comprovante!</p>
@@ -229,7 +228,7 @@
                 </ul>
                 <small class="text-success">Valor total: R$ {{ valor_total }}</small>
                 <div class="d-flex align-items-center justify-content-center mt-5" id="qrCodeContainer">
-                <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code" class="img-fluid mb-3">
+                <img src="data:image/png;base64,{{ qr_code_inscricao }}" alt="QR Code da Inscrição" class="img-fluid mb-3">
                 </div>
                 {% if inscrito.comprovante %}
                 <div class="d-flex justify-content-center mb-3">
@@ -258,7 +257,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
                     </div>
                     <div class="offcanvas-body">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg/800px-Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg.png" alt="QR Code" class="img-fluid mb-3">
+                    <img src="{{ LAVIB_info.qrcode_pagamento.url }}" alt="QR Code para Pagamento" class="img-fluid mb-3">
                     <p class="text-center mt-0"><b>Valor: R$ {{ valor_total }}</b></p>
                     <div class="mt-0 border-start border-2 border-success-subtle p-2">
                         <p class="mb-2">Já pagou? Envie-nos o comprovante!</p>

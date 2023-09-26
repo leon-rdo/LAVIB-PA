@@ -18,10 +18,13 @@
     </div>
 </div>
 <div class="row justify-content-center align-items-center p-2 px-md-5 g-2">
-    <div class="col-12" style="text-align: justify;">
-        {% for paragraph in sobre_texts %}
-        <p class="fs-5">{{ paragraph.paragraph }}</p>
-        {% endfor %}
+    <div class="col-12 fs-5" style="text-align: justify;">
+        {% if settings.sobre_nos %}
+            {{ settings.sobre_nos | linebreaks }}
+        {% else %}
+            <h1 class="display-3">Estamos trabalhando nisso!</h1>
+        {% endif %}
+
     </div>
 </div>
 {% endblock %}

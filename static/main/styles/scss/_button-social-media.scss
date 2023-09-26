@@ -1,0 +1,47 @@
+#btn-social-media {
+    transition: bottom 1s ease-in-out, transform 0.2s ease-in-out, opacity 0.5s ease-in-out;
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    cursor: pointer;
+    z-index: 9999;
+}
+
+#btn-social-media.move {
+    animation: btn-social-media-anim 10s infinite;
+}
+
+@keyframes btn-social-media-anim {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+
+    25% {
+        transform: translateX(-10px) translateY(0);
+    }
+
+    50% {
+        transform: translateX(0) translateY(-10px);
+    }
+
+    75% {
+        transform: translateX(10px) translateY(0);
+    }
+
+    100% {
+        transform: translateX(0) translateY(0);
+    }
+}
+
+.sticky-container {
+    position: sticky;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 15px;
+    margin-right: 15px;
+    z-index: 999;
+}
+
+.dropdown-menu {
+    min-width: 100px;
+}

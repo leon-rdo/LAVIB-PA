@@ -1451,15 +1451,18 @@
                     Contato
                 </h4>
                 <address>
-                    <ul class="list-group list-group-numbered">
-                        <li>
-                            <p class="m-0">
-                                E-mail:
-                                <a href="mailto:lavib.pa@gmail.com"
-                                    class="text-reset d-inline d-md-none d-lg-inline text-break">
-                                    lavib.pa@gmail.com
-                                </a>
-                            </p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-white border-0 bg-transparent">  
+                          <p class="mb-0 text-start">
+                            E-mail:
+                            <a href="mailto:{{ contato.email }}" class="text-reset d-inline d-md-none d-lg-inline text-break">{{ contato.email }}</a>
+                          </p>
+                        </li>
+                        <li class="list-group-item text-white border-0 bg-transparent">  
+                          <p class="mb-0 text-start">
+                            Telefone:
+                            <a href="tel:{{ contato.telefone }}" class="text-reset d-inline d-md-none d-lg-inline text-break">{{ contato.telefone }}</a>
+                          </p>
                         </li>
                     </ul>
                 </address>

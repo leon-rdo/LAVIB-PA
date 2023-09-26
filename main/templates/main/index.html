@@ -4,21 +4,21 @@
 {% block metatags %}{% endblock %}
 
 {% block content %}
-{% if alerta %}
-{% for alerta in alertas %}
-<div class="alert alert-{{ alerta.cor }} alert-dismissible fade show" role="alert"
-    style="position: absolute; margin-top: -60px;">
-    <strong>{{ alerta.negrito }}</strong> {{ alerta.texto }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endfor %}
-{% endif %}
-<div class="row justify-content-center align-items-center g-2 my-5">
+<div class="row justify-content-center align-items-center g-2 my-5" style="position: relative;">
     <div class="lavib-container col-12 col-md-7">
         <h1 class="display-2 text-center">LAVIB-PA</h1>
         <h1 class="display-6 text-center text-uppercase pe-3" id="title"></h1>
         <h2 class="display-4 text-center" id="subtitle">Bem vindos! &#x1F9EB;&#x1F9A0;&#x1F499;</h2>
     </div>
+    {% if alertas %}
+    {% for alerta in alertas %}
+    <div class="alert alert-{{ alerta.cor }} alert-dismissible fade show" role="alert"
+        style="position: absolute; top: -50px; opacity: 90%; max-width: 95%; ">
+        <strong>{{ alerta.negrito }}</strong> {{ alerta.texto }} {% if alerta.link %}<a href="{{ alerta.link }}" style="text-decoration: none; color: black;" target="_blank"><b class="small">Clique aqui.</b></a>{% endif %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
     <div class="col-12 col-md-5 d-flex justify-content-center">
         <figure>
             <img class="main-logo" src="{% static 'main/images/icons/LAVIB-PA.svg' %}" alt="Logo da LAVIB-PA" rq3q3>
