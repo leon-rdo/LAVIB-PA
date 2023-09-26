@@ -82,6 +82,8 @@ class InscricaoView(generic.FormView):
         inscrito = form.save(commit=False)
         evento_slug = self.kwargs['evento_slug']
         evento = get_object_or_404(Evento, slug=evento_slug)
+        if Inscrito.objects.filter(email=inscrito.email, evento=evento).exists():
+            return self.form_invalid(form, 'Inscrito com este e-mail já existe!')
         inscrito.evento = evento
         inscrito.save()
 
@@ -108,6 +110,13 @@ class InscricaoView(generic.FormView):
         numero_inscricao = inscrito.numero_inscricao
         redirecionar_url = f"{comprovante_url}?numero_inscricao={numero_inscricao}"
         return redirect(redirecionar_url)
+    
+    def form_invalid(self, form, message):
+        if message is not None:
+            messages.error(self.request, message)
+        else:
+            messages.error(self.request, 'Algo deu errado!')
+        return super().form_invalid(form)
 
 
 def create_qr_code_image(json_data):

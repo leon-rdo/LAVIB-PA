@@ -6,16 +6,16 @@ from .models import Curso, Evento, Inscrito
 from django.forms.widgets import CheckboxSelectMultiple
 
 class InscritoForm(ModelForm):
-    nome = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label=_('Nome'))
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}), label=_('E-mail'))
-    telefone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label=_('Telefone'))
-    graduacao = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label=_('Cursando'))
-    instituicao = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label=_('Instituição'))
+    nome = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success'}), label=_('Nome'))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control border border-success'}), label=_('E-mail'))
+    telefone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success'}), label=_('Telefone'))
+    graduacao = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success'}), label=_('Cursando'), help_text=_('Caso não esteja cursando nada, deixe em branco.'), required=False)
+    instituicao = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success'}), label=_('Instituição'), help_text=_('Caso não esteja cursando nada, deixe em branco.'), required=False)
     cursos = forms.ModelMultipleChoiceField(
-    queryset=Curso.objects.all(),
-    widget=forms.CheckboxSelectMultiple(attrs={'class': 'my-1'}),
-    label=_('Cursos'),
-    required=False
+        queryset=Curso.objects.all(),
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'my-1'}),
+        label=_('Cursos'),
+        required=False
     )
 
     def __init__(self, *args, **kwargs):

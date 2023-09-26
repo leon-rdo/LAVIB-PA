@@ -5,38 +5,49 @@
 {% endblock %}
 
 {% block content %}
-<div class="row d-flex justify-content-center mx-auto p-2 p-md-5 my-5">
-  <div class="col-lg-7">
+<div class="row flex-column align-items-center mx-auto p-2 p-md-5 my-5">
+  {% if messages %}
+  <div class="col-12 col-md-8 col-lg-5">
+    {% for message in messages %}
+    <div
+      class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show"
+      role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="col-12 col-md-8 col-lg-5 d-flex flex-column align-items-center text-center">
     <h2 class="display-5">Inscreva-se no Evento:</h2>
     <h2 class="display-6 mb-3">"{{ evento.titulo }}"</h2>
-    <form class="col-12 col-md-6" method="POST" enctype="multipart/form-data">
+    <form class="w-100" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      
-      {{ form.nome.label_tag }}
-      {{ form.nome }}
-      {{ form.email.label_tag }}
-      {{ form.email }}
-      {{ form.telefone.label_tag }}
-      {{ form.telefone }}
-      {{ form.graduacao.label_tag }}
-      {{ form.graduacao }}
-      {{ form.instituicao.label_tag }}
-      {{ form.instituicao }}
+
+      {% for field in form %}
+      {% if field != form.cursos %}
+      <div class="form-floating mb-3">
+        {{ field }}
+        {{ field.label_tag }}
+        <small class="form-text">{{ field.help_text }}</small>
+      </div>
+      {% endif %}
+      {% endfor %}
 
       {% if form.cursos.field.queryset.exists %}
-        {{ form.cursos.label_tag }}
-        {{ form.cursos }}
+      {{ form.cursos.label_tag }}
+      {{ form.cursos }}
       {% endif %}
 
       {% if evento.vagas_restantes == 0 %}
-        <button type="reset" class="btn w-100 btn-danger mt-3" disabled>VAGAS ESGOTADAS</button>
+      <button type="reset" class="btn w-100 btn-danger mt-3" disabled>VAGAS ESGOTADAS</button>
       {% else %}
-        <button type="submit" class="btn w-100 btn-success mt-3">Enviar</button>
+      <button type="submit" class="btn w-100 btn-success mt-3">Enviar</button>
       {% endif %}
     </form>
   </div>
 </div>
-<div class="col-12 d-flex justify-content-center">      
+<div class="col-12 d-flex justify-content-center">
   <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
