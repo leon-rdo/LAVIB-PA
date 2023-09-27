@@ -13,14 +13,12 @@ body {
 }
 
 ::-webkit-scrollbar {
-  /* Largura e cor da scrollbar (WebKit) */
   width: 5px;
   height: 5px;
   background: $radgrad;
 }
 
 ::-webkit-scrollbar-thumb {
-  /* Estilos para a thumb (barra) (WebKit) */
   background-color: $color1;
   width: 5px;
   height: 5px;

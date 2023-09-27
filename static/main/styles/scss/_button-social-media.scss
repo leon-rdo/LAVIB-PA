@@ -34,10 +34,9 @@
 }
 
 .sticky-container {
-    position: sticky;
+    position: fixed;
     bottom: 0;
     right: 0;
-    margin-bottom: 15px;
     margin-right: 15px;
     z-index: 999;
 }

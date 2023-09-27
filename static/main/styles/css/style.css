@@ -45,14 +45,12 @@ body {
 }
 
 ::-webkit-scrollbar {
-  /* Largura e cor da scrollbar (WebKit) */
   width: 5px;
   height: 5px;
   background: radial-gradient(circle, #ffffff 0%, rgba(0, 142, 64, 0.1411764706) 100%);
 }
 
 ::-webkit-scrollbar-thumb {
-  /* Estilos para a thumb (barra) (WebKit) */
   background-color: #012070;
   width: 5px;
   height: 5px;
@@ -273,10 +271,9 @@ footer a {
   }
 }
 .sticky-container {
-  position: sticky;
+  position: fixed;
   bottom: 0;
   right: 0;
-  margin-bottom: 15px;
   margin-right: 15px;
   z-index: 999;
 }
