@@ -38,25 +38,23 @@
               <a class="nav-link {% if url_name == 'index' %}active{% endif %}" href="{% url 'main:index' %}">Início</a>
             </li>
             <li class="nav-item me-3">
-              <a class="nav-link {% if url_name == 'sobre' %}active{% endif %}" href="{% url 'main:sobre' %}">Sobre
-                nós</a>
+              <a class="nav-link {% if url_name == 'sobre' %}active{% endif %}" href="{% url 'main:sobre' %}">Sobre nós</a>
             </li>
-            <li class="nav-item {% if url_name == 'eventos' %}active{% endif %} dropdown me-3">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
+            <li class="nav-item dropdown me-3">
+              <a class="nav-link dropdown-toggle {% if url_name == 'eventos' or url_name == 'suas_inscricoes' %}active{% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Eventos
               </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" href="{% url 'main:eventos' %}">Nossos Eventos</a>
+                  <a class="dropdown-item {% if url_name == 'eventos' %}active{% endif %}" href="{% url 'main:eventos' %}">Nossos Eventos</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="{% url 'main:suas_inscricoes' %}">Suas Inscrições</a>
+                  <a class="dropdown-item {% if url_name == 'suas_inscricoes' %}active{% endif %}" href="{% url 'main:suas_inscricoes' %}">Suas Inscrições</a>
                 </li>
               </ul>
             </li>
             <li class="nav-item me-3">
-              <a class="nav-link {% if url_name == 'sobre' %}active{% endif %}"
+              <a class="nav-link {% if url_name == 'patrocinadores' %}active{% endif %}"
                 href="{% url 'main:patrocinadores' %}">Parcerias</a>
             </li>
             <li class="nav-item me-3">
