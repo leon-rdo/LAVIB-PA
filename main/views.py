@@ -2,9 +2,9 @@ import base64
 import io
 import json
 import uuid
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 from main.forms import ComprovanteForm, InscritoForm
 from .models import *
@@ -152,6 +152,8 @@ class ComprovanteInscricaoView(generic.DetailView):
         valor_evento = evento.valor
         valor_cursos = inscrito.cursos.aggregate(total=models.Sum('valor'))['total'] or 0
         valor_total = valor_evento + valor_cursos
+        if inscrito.desconto is not None:
+            valor_total -= inscrito.desconto.valor
 
         # Cria um objeto com os dados do participante
         participant_data = {
@@ -200,7 +202,16 @@ class ComprovanteInscricaoView(generic.DetailView):
 
         inscrito = get_object_or_404(Inscrito, numero_inscricao=numero_inscricao, evento__slug=evento_slug)
         evento = get_object_or_404(Evento, slug=evento_slug)
-
+        cupom = request.POST.get('cupom')
+        
+        if cupom and evento.descontos.filter(cupom=cupom).exists():
+            inscrito.desconto = Desconto.objects.filter(cupom=cupom).first()
+            inscrito.save()  # Salve o objeto modificado
+            return HttpResponseRedirect(reverse('main:suas_inscricoes'))
+        elif cupom and not evento.descontos.filter(cupom=cupom).exists():
+            messages.error(self.request, 'Cupom não identificado!')         
+            return self.render_to_response(self.get_context_data())
+        
         comprovante_form = ComprovanteForm(request.POST, request.FILES)
 
         if comprovante_form.is_valid():
@@ -208,11 +219,13 @@ class ComprovanteInscricaoView(generic.DetailView):
             inscrito.comprovante = comprovante_file
             inscrito.save()
 
-            messages.success(request, '')
+            messages.success(request, 'Comprovante enviado!')
 
         valor_evento = evento.valor
         valor_cursos = inscrito.cursos.aggregate(total=models.Sum('valor'))['total'] or 0
         valor_total = valor_evento + valor_cursos
+        if inscrito.desconto is not None:
+            valor_total -= inscrito.desconto.valor
 
         # Cria um objeto com os dados do participante
         participant_data = {
@@ -237,7 +250,6 @@ class ComprovanteInscricaoView(generic.DetailView):
         }
 
         return render(request, self.template_name, context)
-
 
 
 class ConsultaInscricaoView(generic.FormView):

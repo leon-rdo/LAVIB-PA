@@ -113,6 +113,10 @@
                     <div class="offcanvas-body">
                     <img src="{{ LAVIB_info.qrcode_pagamento.url }}" alt="QR Code para Pagamento" class="img-fluid mb-3">
                     <p class="text-center mt-0"><b>Valor: R$ {{ valor_total }}</b></p>
+                    <form method="post">
+                        <input type="text" class="form-control" name="cupom">
+                        <button class="btn btn-success" type="submit">Enviar</button>
+                    </form>
                     <div class="mt-0 border-start border-2 border-success-subtle p-2">
                         <p class="mb-2">Já pagou? Envie-nos o comprovante!</p>
                         <form method="POST" enctype="multipart/form-data" class="d-flex align-items-center justify-content-between">
@@ -170,13 +174,16 @@
                 <p>Valor a pagar:</p>
                 <ul class="list-group list-group-flush">
                     {% if evento.valor != 0 %}
-                    <li class="list-group-item bg-transparent">{{ evento.titulo }} - R$ {{ evento.valor }}</li>
+                    <li class="list-group-item bg-transparent">{{ evento.titulo }}: + R$ {{ evento.valor }}</li>
                     {% endif %}
                     {% for curso in inscrito.cursos.all %}
-                    <li class="list-group-item bg-transparent">{{ curso.nome }} - R$ {{ curso.valor }}</li>
+                    <li class="list-group-item bg-transparent">{{ curso.nome }}: + R$ {{ curso.valor }}</li>
                     {% endfor %}
+                    {% if inscrito.desconto %}
+                    <li class="list-group-item bg-transparent text-success">{{ inscrito.desconto.cupom }}: - R$ {{ inscrito.desconto.valor }}</li>
+                    {% endif %}
                 </ul>
-                <small class="text-secondary">Valor total: <b>R$ {{ valor_total }}</b></small>
+                <small class="text-secondary">Valor total a pagar: <b>R$ {{ valor_total }}</b></small>
                 <br>
                 <button class="btn btn-success my-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#pagamentoOffcanvas">Pague aqui</button>
                 <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="pagamentoOffcanvas" aria-labelledby="pagamentoOffcanvasLabel">
@@ -187,6 +194,14 @@
                     <div class="offcanvas-body">
                     <img src="{{ LAVIB_info.qrcode_pagamento.url }}" alt="QR Code para Pagamento" class="img-fluid mb-3">
                     <p class="text-center mt-0"><b>Valor: R$ {{ valor_total }}</b></p>
+                    <form method="post" class="mb-3">
+                        <div class="form-floating mb-2">
+                            {% csrf_token %}
+                            <input type="text" class="form-control" name="cupom" id="cupom" placeholder="dummy">
+                            <label for="cupom">Cupom de Desconto:</label>
+                        </div>
+                        <button class="btn btn-sm btn-success" type="submit">Enviar</button>
+                    </form>
                     <div class="mt-0 border-start border-2 border-success-subtle p-2">
                         <p class="mb-2">Já pagou? Envie-nos o comprovante!</p>
                         <form method="POST" enctype="multipart/form-data" class="d-flex align-items-center justify-content-between">

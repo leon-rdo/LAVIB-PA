@@ -89,6 +89,19 @@ class Curso(models.Model):
         return self.nome
 
 
+class Desconto(models.Model):
+
+    cupom = models.CharField('Cupom', max_length=25)
+    valor = models.DecimalField('Valor', max_digits=4, decimal_places=2)
+    
+    class Meta:
+        verbose_name = "Desconto"
+        verbose_name_plural = "Descontos"
+
+    def __str__(self):
+        return self.cupom
+
+
 class Evento(models.Model):
     
     titulo = models.CharField(max_length=50)
@@ -104,6 +117,7 @@ class Evento(models.Model):
     convidados = models.CharField(max_length=100, null=True, blank=True)
     cursos = models.ManyToManyField(Curso, verbose_name="Cursos", blank=True)
     slug = models.SlugField(max_length=100, unique=True, null=False, editable=False)
+    descontos = models.ManyToManyField(Desconto, verbose_name="Descontos", blank=True, default=None)
 
     def possui_cursos_pagos(self):
         return self.cursos.filter(valor__gt=0).exists()
@@ -147,7 +161,7 @@ class Inscrito(models.Model):
         null=True,
         blank=True,
     )
-
+    desconto = models.ForeignKey(Desconto, verbose_name="Desconto", on_delete=models.CASCADE, blank=True, null=True, default=None)
     def save(self, *args, **kwargs):
         if not self.pk:
             # É uma nova instância, defina a data e hora limite para o pagamento como 24 horas a partir do momento atual
@@ -184,7 +198,9 @@ class Settings(models.Model):
 
     email = models.EmailField(default='lavib.pa@gmail.com', max_length=254)
     telefone = models.CharField(default='91991487970', max_length=18)
+    chave_pix = models.CharField(max_length=50)
     qrcode_pagamento = models.ImageField(upload_to='main/images')
+    nome_conta = models.CharField(max_length=100)
     sobre_nos = models.TextField(blank=True)
 
     def __str__(self):

@@ -199,6 +199,7 @@ admin.site.register(Settings)
 admin.site.register(Alerta)
 admin.site.register(Patrocinador)
 admin.site.register(Redes_Sociais)
+admin.site.register(Desconto)
 
 admin.site.site_header = 'Administração de LAVIB-PA'
 admin.site.index_title = 'LAVIB-PA'
