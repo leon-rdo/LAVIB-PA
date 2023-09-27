@@ -1,24 +1,29 @@
 footer {
-  margin-top: 2rem;
   background-color: #000000b0;
   color: #ffffff;
   padding-bottom: 15vh;
+
   h4 {
     color: #c3fbdc;
   }
 }
+
 footer a {
   color: white;
 }
+
 .sponsor-img-block small {
   font-size: 0.7rem;
 }
+
 .sponsor-img {
   width: 20px;
 }
+
 .invert-color {
   filter: invert(100%);
 }
+
 .vertical-line {
   border-left: 1px solid $color1;
   height: 9vw;
