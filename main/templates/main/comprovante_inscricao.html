@@ -315,7 +315,31 @@
 
             <div class="d-flex justify-content-evenly">
                 <button class="btn btn-warning my-3" onclick="shareOnWhatsApp()">Compartilhar</button>
-                <button class="btn btn-danger my-3" onclick="cancelInscription()">Cancelar Inscrição</button>
+                <button type="button" class="btn btn-danger my-3" data-bs-toggle="modal" data-bs-target="#cancelInscriptionModal">
+                    Cancelar Inscrição
+                </button>                
+                <div class="modal fade" id="cancelInscriptionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Deseja cancelar sua inscrição?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" style="text-align: justify;">
+                        <p>
+                            Para efetuar o cancelamento de sua inscrição, pressione o botão <em>"Sim, cancelar inscrição"</em> abaixo. Ao clicar, você será redirecionado para uma página onde poderá enviar um e-mail com uma mensagem padrão de solicitação de cancelamento.
+                        </p>
+                        <p>
+                            Qualquer problema, contate <a class="text-success" href="mailto:lavib.pa@gmail.com">lavib.pa@gmail.com</a>.
+                        </p>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="cancelInscription()">Sim, cancelar inscrição</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
             </div>
         </div>
         
