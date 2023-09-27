@@ -6,11 +6,11 @@ from .models import Curso, Evento, Inscrito
 from django.forms.widgets import CheckboxSelectMultiple
 
 class InscritoForm(ModelForm):
-    nome = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success'}), label=_('Nome'))
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control border border-success'}), label=_('E-mail'))
-    telefone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success'}), label=_('Telefone'))
-    graduacao = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success'}), label=_('Cursando'), help_text=_('Caso não esteja cursando nada, deixe em branco.'), required=False)
-    instituicao = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success'}), label=_('Instituição'), help_text=_('Caso não esteja cursando nada, deixe em branco.'), required=False)
+    nome = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success', 'placeholder': 'dummy'}), label=_('Nome'))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control border border-success', 'placeholder': 'dummy'}), label=_('E-mail'))
+    telefone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success', 'placeholder': 'dummy'}), label=_('Telefone'))
+    graduacao = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success', 'placeholder': 'dummy'}), label=_('Cursando'), help_text=_('Caso não esteja cursando nada, deixe em branco.'), required=False)
+    instituicao = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success', 'placeholder': 'dummy'}), label=_('Instituição'), help_text=_('Caso não esteja cursando nada, deixe em branco.'), required=False)
     cursos = forms.ModelMultipleChoiceField(
         queryset=Curso.objects.all(),
         widget=forms.CheckboxSelectMultiple(attrs={'class': 'my-1'}),

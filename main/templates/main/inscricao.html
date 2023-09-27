@@ -63,3 +63,13 @@
   </nav>
 </div>
 {% endblock %}
+
+{% block more_script %}
+<script>
+  labels = document.getElementsByTagName('label');
+  Array.from(labels).forEach((element) =>
+    element.classList.add('text-success')
+  );
+</script>
+{% endblock more_script %}
+
