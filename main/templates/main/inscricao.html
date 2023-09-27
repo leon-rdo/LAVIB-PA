@@ -29,15 +29,22 @@
       <div class="form-floating mb-3">
         {{ field }}
         {{ field.label_tag }}
-        <small class="form-text">{{ field.help_text }}</small>
+        <div class="w-100 text-start">
+          <small class="form-text">{{ field.help_text }}</small>
+        </div>
       </div>
+      {% else %}
+        {% if form.cursos.field.queryset.exists %}
+          <div class="w-100 d-flex align-items-start flex-column fs-5">
+            {{ form.cursos.label_tag }}
+            {{ form.cursos }}
+          </div>
+          <div class="w-100 text-start">
+            <small class="small form-text">{{ form.cursos.help_text }}</small>
+          </div>
+        {% endif %}
       {% endif %}
       {% endfor %}
-
-      {% if form.cursos.field.queryset.exists %}
-      {{ form.cursos.label_tag }}
-      {{ form.cursos }}
-      {% endif %}
 
       {% if evento.vagas_restantes == 0 %}
       <button type="reset" class="btn w-100 btn-danger mt-3" disabled>VAGAS ESGOTADAS</button>

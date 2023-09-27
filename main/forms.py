@@ -14,8 +14,9 @@ class InscritoForm(ModelForm):
     cursos = forms.ModelMultipleChoiceField(
         queryset=Curso.objects.all(),
         widget=forms.CheckboxSelectMultiple(attrs={'class': 'my-1'}),
-        label=_('Cursos'),
-        required=False
+        label=_('Selecione os cursos que deseja fazer:'),
+        required=False,
+        help_text=_('Verifique os preços na página anterior!')
     )
 
     def __init__(self, *args, **kwargs):
