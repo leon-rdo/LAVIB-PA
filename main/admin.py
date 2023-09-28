@@ -5,6 +5,11 @@ import pandas as pd
 import xlsxwriter
 from .views import enviar_email_html
 
+
+admin.site.site_header = 'Administração de LAVIB-PA'
+admin.site.index_title = 'LAVIB-PA'
+
+
 def gerar_planilha_evento(modeladmin, request, queryset):
     eventos = queryset  # Eventos selecionados
 
@@ -139,6 +144,7 @@ def confirmar_pagamento(modeladmin, request, queryset):
 class InscritoInline(admin.StackedInline):
     model = Inscrito
     readonly_fields = ['numero_inscricao', 'data_hora_inscricao']
+
     
 @admin.register(Evento)
 class EventoAdmin(admin.ModelAdmin):
@@ -153,6 +159,7 @@ class EventoAdmin(admin.ModelAdmin):
         perms['gerar_planilha_evento'] = perms['change']
         return perms
 
+
 @admin.register(Curso)
 class CursoAdmin(admin.ModelAdmin):
     actions = [gerar_planilha_curso]
@@ -165,6 +172,7 @@ class CursoAdmin(admin.ModelAdmin):
         perms['gerar_planilha_curso'] = perms['change']
         return perms
 
+
 class EventoTituloFilter(admin.SimpleListFilter):
     title = 'Evento'
     parameter_name = 'evento_titulo'
@@ -176,6 +184,7 @@ class EventoTituloFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         if self.value():
             return queryset.filter(evento__titulo=self.value())
+
 
 @admin.register(Inscrito)
 class InscritoAdmin(admin.ModelAdmin):
@@ -192,18 +201,40 @@ class InscritoAdmin(admin.ModelAdmin):
 
     evento_titulo.short_description = 'Evento'
 
+
+@admin.register(Index_Carousel_Item)
+class IndexCarouselItemAdmin(admin.ModelAdmin):
+    list_display = ['caption_title', 'link']
+
+
+@admin.register(Diretor)
+class DiretorAdmin(admin.ModelAdmin):
+    list_display = ['nome', 'ano']
+    search_fields = ['nome']
+
+
+@admin.register(Settings)
+class SettingsAdmin(admin.ModelAdmin):
+    list_display = ['email', 'telefone', 'chave_pix', 'nome_conta']
+    fieldsets = [
+        ('Informações da Liga', {"fields": ['email', 'telefone']}),
+        ('Informações de Pagamento', {"fields": ['chave_pix', 'qrcode_pagamento', 'nome_conta']}),
+        ('Alerta', {"fields": ['alerta_negrito', 'alerta_text', 'alerta_cor', 'alerta_link']}),
+        ('Sobre a LAVIB-PA', {"fields": ['sobre_nos']})
+    ]
+
+
+@admin.register(Patrocinador)
+class PatrocinadorAdmin(admin.ModelAdmin):
+    list_display = ['nome', 'link']
+
+
+@admin.register(Redes_Sociais)
+class RedesSociaisAdmin(admin.ModelAdmin):
+    list_display = ['nome', 'url']
+
+
 @admin.register(Desconto)
 class DescontoAdmin(admin.ModelAdmin):
     list_display = ['cupom', 'valor', 'cupons_restantes']
     readonly_fields = ['cupons_restantes']
-
-
-admin.site.register(Index_Carousel_Item)
-admin.site.register(Diretor)
-admin.site.register(Settings)
-admin.site.register(Alerta)
-admin.site.register(Patrocinador)
-admin.site.register(Redes_Sociais)
-
-admin.site.site_header = 'Administração de LAVIB-PA'
-admin.site.index_title = 'LAVIB-PA'
