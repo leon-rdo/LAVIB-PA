@@ -69,6 +69,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'LAVIBPA.context_processors.patrocinadores',
                 'LAVIBPA.context_processors.settings',
+                'LAVIBPA.context_processors.redes_sociais',
             ],
         },
     },

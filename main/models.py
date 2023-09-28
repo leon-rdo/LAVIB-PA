@@ -225,7 +225,6 @@ class Settings(models.Model):
 class Redes_Sociais(models.Model):
 
     nome = models.CharField('Nome', default='', max_length=50)
-    icone = models.FileField('Ícone', upload_to="main/images/RedesSociais", max_length=100)
     url = models.URLField('Link', default='', max_length=200)
 
     def __str__(self):
