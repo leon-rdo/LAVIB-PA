@@ -5,7 +5,7 @@ import json
 import crcmod
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.views import generic
 from main.forms import ComprovanteForm, InscritoForm
 from .models import *
