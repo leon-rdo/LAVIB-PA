@@ -37,27 +37,6 @@ class Diretor(models.Model):
         verbose_name = "Diretor"
         verbose_name_plural = "Diretores"
 
-class Alerta(models.Model):
-
-    COLORS = (
-        ('warning', 'Amarelo'),
-        ('danger', 'Vermelho'),
-        ('info', 'Azul'),
-        ('secondary', 'Preto')
-    )
-
-    negrito = models.CharField(max_length=50, blank=True, null=True)
-    texto = models.CharField(max_length=100)
-    cor = models.CharField(max_length=40, default='warning', choices=COLORS)
-    link = models.URLField(max_length=200, blank=True, null=True)
-
-    class Meta:
-        verbose_name = "Alerta"
-        verbose_name_plural = "Alertas"
-
-    def __str__(self):
-        return self.negrito
-    
 class Patrocinador(models.Model):
 
     nome = models.CharField(max_length=20)
@@ -205,13 +184,33 @@ class Inscrito(models.Model):
         return self.evento.titulo
 
 class Settings(models.Model):
-
+    
+    COLORS = (
+        ('warning', 'Amarelo'),
+        ('danger', 'Vermelho'),
+        ('info', 'Azul'),
+        ('secondary', 'Preto')
+    )
+    
     email = models.EmailField(default='lavib.pa@gmail.com', max_length=254)
     telefone = models.CharField(default='91991487970', max_length=18)
     chave_pix = models.CharField(max_length=50)
     qrcode_pagamento = models.ImageField(upload_to='main/images')
     nome_conta = models.CharField(max_length=100)
     sobre_nos = models.TextField(blank=True)
+    alerta_negrito = models.CharField(max_length=50, blank=True, null=True)
+    alerta_text = models.CharField(max_length=100)
+    alerta_cor = models.CharField(max_length=40, default='warning', choices=COLORS)
+    alerta_link = models.URLField(max_length=200, blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Alerta"
+        verbose_name_plural = "Alertas"
+
+    def __str__(self):
+        return self.negrito
+    
+
 
     def __str__(self):
         return self.email
@@ -219,6 +218,7 @@ class Settings(models.Model):
     class Meta:
         verbose_name = 'Configurações'
         verbose_name_plural = 'Configurações'
+
 
 class Redes_Sociais(models.Model):
 

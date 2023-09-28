@@ -5,14 +5,12 @@
 
 {% block content %}
 <div class="row justify-content-center align-items-center g-2 my-5" style="position: relative;">
-  {% if alertas %}
-  {% for alerta in alertas %}
+  {% if settings.alerta_text or settings.alerta_negrito %}
   <div class="alert alert-{{ alerta.cor }} alert-dismissible fade show" role="alert"
       style="position: absolute; top: -50px; opacity: 90%; max-width: 95%; ">
-      <strong>{{ alerta.negrito }}</strong> {{ alerta.texto }} {% if alerta.link %}<a href="{{ alerta.link }}" style="text-decoration: none; color: black;" target="_blank"><b class="small">Clique aqui.</b></a>{% endif %}
+      <strong>{{ settings.alerta_negrito }}</strong> {{ settings.alerta_text }} {% if settings.alerta_link %}<a href="{{ settings.alerta_link }}" style="text-decoration: none; color: black;" target="_blank"><b class="small">Clique aqui.</b></a>{% endif %}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-  {% endfor %}
   {% endif %}
     <div class="lavib-container col-12 col-md-7">
         <h1 class="display-2 text-center">LAVIB-PA</h1>

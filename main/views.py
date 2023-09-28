@@ -23,7 +23,6 @@ class IndexView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["carousel_items"] = Index_Carousel_Item.objects.all()
-        context["alertas"] = Alerta.objects.all()
         context["diretores"] = Diretor.objects.all()
         return context
 
