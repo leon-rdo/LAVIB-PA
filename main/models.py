@@ -6,11 +6,11 @@ from django.utils.text import slugify
 
 class Index_Carousel_Item(models.Model):
 
-    image = models.ImageField(upload_to='main/images/indexCarousel')
-    image_description = models.CharField(max_length=100, default='')
-    caption_title = models.CharField(max_length=50, default='')
-    caption_text = models.CharField(max_length=250, default='')
-    link = models.URLField(default='')
+    image = models.ImageField('Imagem', upload_to='main/images/indexCarousel')
+    image_description = models.CharField('Descrição da Imagem', max_length=100, default='', help_text='Isto é importante para acessibilidade.')
+    caption_title = models.CharField('Título da Notícia', max_length=50, default='')
+    caption_text = models.CharField('Texto da Notícia', max_length=250, default='')
+    link = models.URLField('Link da Notícia', default='')
 
     def __str__(self):
         return self.caption_title
@@ -21,14 +21,14 @@ class Index_Carousel_Item(models.Model):
 
 class Diretor(models.Model):
 
-    nome = models.CharField(max_length=60)
-    foto = models.ImageField(upload_to='main/images/diretoria')
-    ano = models.PositiveSmallIntegerField(default=datetime.date.today().year)
-    lattes = models.URLField(max_length=200, blank=True, null=True)
-    linkedin = models.URLField(max_length=200, blank=True, null=True)
-    instagram = models.URLField(max_length=200, blank=True, null=True)
-    twitter = models.URLField(max_length=200, blank=True, null=True)
-    facebook = models.URLField(max_length=200, blank=True, null=True)
+    nome = models.CharField('Nome', max_length=60)
+    foto = models.ImageField('Foto', upload_to='main/images/diretoria')
+    ano = models.PositiveSmallIntegerField('Ano', default=datetime.date.today().year)
+    lattes = models.URLField('Lattes', max_length=200, blank=True, null=True)
+    linkedin = models.URLField('LinkedIn', max_length=200, blank=True, null=True)
+    instagram = models.URLField('Instagram', max_length=200, blank=True, null=True)
+    twitter = models.URLField('Twitter', max_length=200, blank=True, null=True)
+    facebook = models.URLField('Facebook', max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.nome
@@ -39,9 +39,9 @@ class Diretor(models.Model):
 
 class Patrocinador(models.Model):
 
-    nome = models.CharField(max_length=20)
-    imagem = models.ImageField(upload_to='main/images/patrocinadores')
-    link = models.URLField(default='#', max_length=200)
+    nome = models.CharField('Nome', max_length=20)
+    imagem = models.ImageField('Imagem', upload_to='main/images/patrocinadores')
+    link = models.URLField('Link', default='#', max_length=200)
 
     class Meta:
         verbose_name = "Patrocinador"
@@ -53,12 +53,12 @@ class Patrocinador(models.Model):
 class Curso(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
-    imagem = models.ImageField(upload_to='main/images/cursos')
-    nome = models.CharField(max_length=50)
-    descricao = models.CharField(max_length=300)
-    professor = models.CharField(max_length=100, blank=True, null=True, default=None)
-    valor = models.DecimalField(max_digits=4, decimal_places=2)
-    vagas = models.PositiveSmallIntegerField(default=None, null=True, blank=True)
+    imagem = models.ImageField('Imagem', upload_to='main/images/cursos')
+    nome = models.CharField('Nome', max_length=50)
+    descricao = models.CharField('Descrição', max_length=300)
+    professor = models.CharField('Professor', max_length=100, blank=True, null=True, default=None)
+    valor = models.DecimalField('Valor', max_digits=4, decimal_places=2)
+    vagas = models.PositiveSmallIntegerField('Vagas', default=None, null=True, blank=True)
 
     class Meta:
         verbose_name = "Curso"
@@ -72,7 +72,7 @@ class Desconto(models.Model):
 
     cupom = models.CharField('Cupom', max_length=25)
     valor = models.DecimalField('Valor', max_digits=4, decimal_places=2)
-    quantidade = models.PositiveSmallIntegerField('Quantidade:', null=True)
+    quantidade = models.PositiveSmallIntegerField('Quantidade', null=True)
     
     @property
     def cupons_restantes(self):
@@ -93,24 +93,26 @@ class Desconto(models.Model):
 
 class Evento(models.Model):
     
-    titulo = models.CharField(max_length=50)
-    descricao_curta = models.CharField(max_length=150)
-    descricao = models.TextField()
-    mensagem_comprovante = models.CharField(default='Não se atrase!', max_length=150, null=True, blank=True)
-    imagem = models.ImageField(upload_to='main/images/eventos')
-    data_hora = models.DateTimeField()
-    local = models.CharField(max_length=50)
-    valor = models.DecimalField(max_digits=4, decimal_places=2)
-    vagas = models.PositiveSmallIntegerField(default=None, null=True, blank=True)
-    carga_horaria = models.PositiveSmallIntegerField(default=0)
-    convidados = models.CharField(max_length=100, null=True, blank=True)
+    titulo = models.CharField('Título', max_length=50)
+    descricao_curta = models.CharField('Descrição curta', max_length=150)
+    descricao = models.TextField('Descrição longa')
+    mensagem_comprovante = models.CharField('Mensagem para o comprovante', default='Não se atrase!', max_length=150, null=True, blank=True)
+    imagem = models.ImageField('Imagem', upload_to='main/images/eventos')
+    data_hora = models.DateTimeField('Data e hora')
+    local = models.CharField('Local', max_length=50)
+    valor = models.DecimalField('Valor', max_digits=4, decimal_places=2)
+    vagas = models.PositiveSmallIntegerField('Vagas', default=None, null=True, blank=True)
+    carga_horaria = models.PositiveSmallIntegerField('Carga horária', default=0)
+    convidados = models.CharField('Convidados', max_length=100, null=True, blank=True)
     cursos = models.ManyToManyField(Curso, verbose_name="Cursos", blank=True)
     slug = models.SlugField(max_length=100, unique=True, null=False, editable=False)
     descontos = models.ManyToManyField(Desconto, verbose_name="Descontos", blank=True, default=None)
 
+    @property
     def possui_cursos_pagos(self):
         return self.cursos.filter(valor__gt=0).exists()
 
+    @property
     def vagas_restantes(self):
         if self.vagas is None or self.vagas == '':
             return -1
@@ -192,25 +194,16 @@ class Settings(models.Model):
         ('secondary', 'Preto')
     )
     
-    email = models.EmailField(default='lavib.pa@gmail.com', max_length=254)
-    telefone = models.CharField(default='91991487970', max_length=18)
-    chave_pix = models.CharField(max_length=50)
-    qrcode_pagamento = models.ImageField(upload_to='main/images')
-    nome_conta = models.CharField(max_length=100)
-    sobre_nos = models.TextField(blank=True)
-    alerta_negrito = models.CharField(max_length=50, blank=True, null=True)
-    alerta_text = models.CharField(max_length=100)
-    alerta_cor = models.CharField(max_length=40, default='warning', choices=COLORS)
-    alerta_link = models.URLField(max_length=200, blank=True, null=True)
-
-    class Meta:
-        verbose_name = "Alerta"
-        verbose_name_plural = "Alertas"
-
-    def __str__(self):
-        return self.negrito
-    
-
+    email = models.EmailField('E-mail', default='lavib.pa@gmail.com', max_length=254)
+    telefone = models.CharField('Telefone', default='91991487970', max_length=18)
+    chave_pix = models.CharField('Chave pix', max_length=50)
+    qrcode_pagamento = models.ImageField('QR Code do Pix', upload_to='main/images')
+    nome_conta = models.CharField('Nome do titular da conta', max_length=100)
+    sobre_nos = models.TextField('Texto "Sobre nós"', blank=True)
+    alerta_negrito = models.CharField('Texto em negrito do alerta', max_length=50, blank=True, null=True)
+    alerta_text = models.CharField('Texto do alerta', max_length=100)
+    alerta_cor = models.CharField('Cor do alerta', max_length=40, default='warning', choices=COLORS)
+    alerta_link = models.URLField('Link do alerta', max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.email
@@ -222,9 +215,9 @@ class Settings(models.Model):
 
 class Redes_Sociais(models.Model):
 
-    nome = models.CharField(default='', max_length=50)
-    icone = models.FileField(upload_to="main/images/RedesSociais", max_length=100)
-    url = models.URLField(default='', max_length=200)
+    nome = models.CharField('Nome', default='', max_length=50)
+    icone = models.FileField('Ícone', upload_to="main/images/RedesSociais", max_length=100)
+    url = models.URLField('Link', default='', max_length=200)
 
     def __str__(self):
         return self.nome
