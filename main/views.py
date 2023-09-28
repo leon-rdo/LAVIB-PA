@@ -1,7 +1,8 @@
 import base64
+from decimal import Decimal
 import io
 import json
-import uuid
+import crcmod
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
@@ -139,6 +140,71 @@ def create_qr_code_image(json_data):
 class ComprovanteInscricaoView(generic.DetailView):
     template_name = 'main/comprovante_inscricao.html'
     template_name_imprimir = 'main/comprovante_imprimir.html'
+    
+    class Payload():
+        def gerar_qrcode(self, nome, chavepix, valor, cidade, txtId):
+            self.nome = nome
+            self.chavepix = chavepix
+            self.valor = str(valor).replace(',', '.')
+            self.cidade = cidade
+            self.txtId = txtId
+
+            self.nome_tam = len(self.nome)
+            self.chavepix_tam = len(self.chavepix)
+            self.valor_tam = len(self.valor)
+            self.cidade_tam = len(self.cidade)
+            self.txtId_tam = len(self.txtId)
+
+            self.merchantAccount_tam = f'0014BR.GOV.BCB.PIX01{self.chavepix_tam:02}{self.chavepix}'
+            self.transactionAmount_tam = f'{self.valor_tam:02}{float(self.valor):.2f}'
+
+            self.addDataField_tam = f'05{self.txtId_tam:02}{self.txtId}'
+
+            self.nome_tam = f'{self.nome_tam:02}'
+
+            self.cidade_tam = f'{self.cidade_tam:02}'
+
+            self.payloadFormat = '000201'
+            self.merchantAccount = f'26{len(self.merchantAccount_tam):02}{self.merchantAccount_tam}'
+            self.merchantCategCode = '52040000'
+            self.transactionCurrency = '5303986'
+            self.transactionAmount = f'54{self.transactionAmount_tam}'
+            self.countryCode = '5802BR'
+            self.merchantName = f'59{self.nome_tam:02}{self.nome}'
+            self.merchantCity = f'60{self.cidade_tam:02}{self.cidade}'
+            self.addDataField = f'62{len(self.addDataField_tam):02}{self.addDataField_tam}'
+            self.crc16 = '6304'
+
+    
+        def gerarPayload(self):
+            self.payload = f'{self.payloadFormat}{self.merchantAccount}{self.merchantCategCode}{self.transactionCurrency}{self.transactionAmount}{self.countryCode}{self.merchantName}{self.merchantCity}{self.addDataField}{self.crc16}'
+
+            self.gerarCrc16(self.payload)
+
+        
+        def gerarCrc16(self, payload):
+            crc16 = crcmod.mkCrcFun(poly=0x11021, initCrc=0xFFFF, rev=False, xorOut=0x0000)
+
+            self.crc16Code = hex(crc16(str(payload).encode('utf-8')))
+
+            self.crc16Code_formatado = str(self.crc16Code).replace('0x', '').upper().zfill(4)
+
+            self.payload_completa = f'{payload}{self.crc16Code_formatado}'
+
+            self.gerarQrCode(self.payload_completa)
+
+        def gerarQrCode(self, payload):
+            qr = qrcode.QRCode(version=1, box_size=10, border=1)
+            qr.add_data(payload)
+            qr.make(fit=True)
+            
+            qr_image = qr.make_image(fill_color="black", back_color="white")
+            # Converte a imagem em base64
+            buffered = io.BytesIO()
+            qr_image.save(buffered, format="PNG")
+            base64_encoded = base64.b64encode(buffered.getvalue()).decode('utf-8')
+
+            return base64_encoded            
 
     def get(self, request, evento_slug):
         numero_inscricao = request.GET.get('numero_inscricao')
@@ -154,6 +220,11 @@ class ComprovanteInscricaoView(generic.DetailView):
         valor_total = valor_evento + valor_cursos
         if inscrito.desconto is not None:
             valor_total -= inscrito.desconto.valor
+            
+        qr_code_pagamento = self.Payload()
+        qr_code_pagamento.gerar_qrcode(Settings.objects.first().nome_conta, Settings.objects.first().chave_pix, Decimal(valor_total), 'Belem', 'LAVIBPA')
+        qr_code_pagamento.gerarPayload()
+        codigo_qr_base64 = qr_code_pagamento.gerarQrCode(qr_code_pagamento.payload_completa)
 
         # Cria um objeto com os dados do participante
         participant_data = {
@@ -175,6 +246,7 @@ class ComprovanteInscricaoView(generic.DetailView):
             'evento': evento,
             'valor_total': valor_total,
             'comprovante_form': ComprovanteForm(),
+            'qr_code_pagamento': codigo_qr_base64
         }
 
         if 'imprimir' in request.GET:
@@ -206,7 +278,7 @@ class ComprovanteInscricaoView(generic.DetailView):
         
         if cupom and evento.descontos.filter(cupom=cupom).exists():
             inscrito.desconto = Desconto.objects.filter(cupom=cupom).first()
-            inscrito.save()  # Salve o objeto modificado
+            inscrito.save()
             return HttpResponseRedirect(reverse('main:suas_inscricoes'))
         elif cupom and not evento.descontos.filter(cupom=cupom).exists():
             messages.error(self.request, 'Cupom não identificado!')         
@@ -214,7 +286,7 @@ class ComprovanteInscricaoView(generic.DetailView):
         
         comprovante_form = ComprovanteForm(request.POST, request.FILES)
 
-        if comprovante_form.is_valid():
+        if comprovante_form and comprovante_form.is_valid():
             comprovante_file = comprovante_form.cleaned_data['comprovante']
             inscrito.comprovante = comprovante_file
             inscrito.save()

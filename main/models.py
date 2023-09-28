@@ -93,6 +93,8 @@ class Desconto(models.Model):
 
     cupom = models.CharField('Cupom', max_length=25)
     valor = models.DecimalField('Valor', max_digits=4, decimal_places=2)
+    quantidade = models.PositiveSmallIntegerField('Quantidade:', null=True)
+
     
     class Meta:
         verbose_name = "Desconto"
