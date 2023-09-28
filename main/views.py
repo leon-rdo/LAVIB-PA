@@ -274,16 +274,24 @@ class ComprovanteInscricaoView(generic.DetailView):
 
         inscrito = get_object_or_404(Inscrito, numero_inscricao=numero_inscricao, evento__slug=evento_slug)
         evento = get_object_or_404(Evento, slug=evento_slug)
-        cupom = request.POST.get('cupom')
         
-        if cupom and evento.descontos.filter(cupom=cupom).exists():
-            inscrito.desconto = Desconto.objects.filter(cupom=cupom).first()
-            inscrito.save()
-            return HttpResponseRedirect(reverse('main:suas_inscricoes'))
-        elif cupom and not evento.descontos.filter(cupom=cupom).exists():
-            messages.error(self.request, 'Cupom não identificado!')         
-            return self.render_to_response(self.get_context_data())
-        
+        cupom_inserido = request.POST.get('cupom')
+        desconto = evento.descontos.filter(cupom=cupom_inserido).first() if cupom_inserido else None
+
+        if cupom_inserido:
+            if desconto and (desconto.cupons_restantes is None or desconto.cupons_restantes > 0):
+                inscrito.desconto = desconto
+                inscrito.save()
+            elif desconto and desconto.cupons_restantes == 0:
+                messages.error(self.request, 'Cupom esgotado!')
+            elif desconto is None:
+                messages.error(self.request, 'Cupom não identificado!')
+            
+            query_params = request.GET.urlencode()
+            return HttpResponseRedirect(request.path_info + f'?{query_params}')
+
+
+                
         comprovante_form = ComprovanteForm(request.POST, request.FILES)
 
         if comprovante_form and comprovante_form.is_valid():
@@ -299,22 +307,7 @@ class ComprovanteInscricaoView(generic.DetailView):
         if inscrito.desconto is not None:
             valor_total -= inscrito.desconto.valor
 
-        # Cria um objeto com os dados do participante
-        participant_data = {
-            "nome": inscrito.nome,
-            "numero_inscricao": inscrito.numero_inscricao,
-            "id": str(inscrito.id)
-        }
-
-        # Converte o objeto em uma string JSON
-        json_data = json.dumps(participant_data)
-
-        # Cria o QR Code e a imagem do QR Code
-        qr_code_image = create_qr_code_image(json_data)
-
-        # Passa o valor do QR Code como contexto para o template
         context = {
-            'qr_code_inscricao': base64.b64encode(qr_code_image.read()).decode('utf-8'),
             'inscrito': inscrito,
             'evento': evento,
             'valor_total': valor_total,

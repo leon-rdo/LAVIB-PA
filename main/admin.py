@@ -192,6 +192,11 @@ class InscritoAdmin(admin.ModelAdmin):
 
     evento_titulo.short_description = 'Evento'
 
+@admin.register(Desconto)
+class DescontoAdmin(admin.ModelAdmin):
+    list_display = ['cupom', 'valor', 'cupons_restantes']
+    readonly_fields = ['cupons_restantes']
+
 
 admin.site.register(Index_Carousel_Item)
 admin.site.register(Diretor)
@@ -199,7 +204,6 @@ admin.site.register(Settings)
 admin.site.register(Alerta)
 admin.site.register(Patrocinador)
 admin.site.register(Redes_Sociais)
-admin.site.register(Desconto)
 
 admin.site.site_header = 'Administração de LAVIB-PA'
 admin.site.index_title = 'LAVIB-PA'

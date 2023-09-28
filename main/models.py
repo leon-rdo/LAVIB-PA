@@ -94,7 +94,15 @@ class Desconto(models.Model):
     cupom = models.CharField('Cupom', max_length=25)
     valor = models.DecimalField('Valor', max_digits=4, decimal_places=2)
     quantidade = models.PositiveSmallIntegerField('Quantidade:', null=True)
-
+    
+    @property
+    def cupons_restantes(self):
+        if self.quantidade is not None:
+            cupons_usados = Inscrito.objects.filter(desconto=self).count()
+            cupons_restantes = self.quantidade - cupons_usados
+            return cupons_restantes
+        else:
+            return None
     
     class Meta:
         verbose_name = "Desconto"
