@@ -59,6 +59,15 @@ class Curso(models.Model):
     professor = models.CharField('Professor', max_length=100, blank=True, null=True, default=None)
     valor = models.DecimalField('Valor', max_digits=4, decimal_places=2)
     vagas = models.PositiveSmallIntegerField('Vagas', default=None, null=True, blank=True)
+    
+    @property
+    def vagas_restantes(self):
+        if self.vagas is None or self.vagas == '':
+            return -1
+        else:
+            inscritos_count = self.inscritos.count()
+            vagas_restantes = self.vagas - inscritos_count
+            return vagas_restantes
 
     class Meta:
         verbose_name = "Curso"
@@ -137,16 +146,16 @@ class Inscrito(models.Model):
     
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
     numero_inscricao = models.PositiveSmallIntegerField('Nº')
-    nome = models.CharField('Nome:',default='', max_length=80)
-    email = models.EmailField('E-mail:', default='')
-    telefone = models.CharField('Telefone:', default='', max_length=18)
-    graduacao = models.CharField('Cursando:', max_length=50, null=True, blank=True)
+    nome = models.CharField('Nome',default='', max_length=80)
+    email = models.EmailField('E-mail', default='')
+    telefone = models.CharField('Telefone', default='', max_length=18)
+    graduacao = models.CharField('Cursando', max_length=50, null=True, blank=True)
     cursos = models.ManyToManyField(Curso, blank=True)
-    instituicao = models.CharField('Instituição:', null=True, blank=True, max_length=50)
-    data_hora_inscricao = models.DateTimeField('Data da Inscrição:', auto_now_add=True)
+    instituicao = models.CharField('Instituição', null=True, blank=True, max_length=50)
+    data_hora_inscricao = models.DateTimeField('Data da Inscrição', auto_now_add=True)
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='inscritos')
     pagamento_confirmado = models.BooleanField('Pagou?', default=False)
-    data_limite_pagamento = models.DateTimeField('Data limite de pagamento:', null=True, blank=True)
+    data_limite_pagamento = models.DateTimeField('Data limite de pagamento', null=True, blank=True)
     comprovante = models.ImageField(
         upload_to='main/images/comprovantes',
         null=True,

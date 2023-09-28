@@ -150,6 +150,14 @@ class InscritoInline(admin.StackedInline):
 class EventoAdmin(admin.ModelAdmin):
     actions = [gerar_planilha_evento]
     inlines = [InscritoInline]
+    readonly_fields = ['vagas_restantes']
+    
+    fieldsets = [
+        ('Informações Gerais do Evento', {"fields": ['titulo', 'descricao_curta']}),
+        ('Informações Específicas do Evento', {"fields": ['descricao', 'data_hora', 'local', 'valor', 'carga_horaria', 'convidados', 'vagas', 'vagas_restantes']}),
+        ('Cursos', {"fields": ['cursos']}),
+        ('Descontos', {"fields": ['descontos']})
+    ]
 
     def get_model_perms(self, request):
         """
@@ -163,6 +171,7 @@ class EventoAdmin(admin.ModelAdmin):
 @admin.register(Curso)
 class CursoAdmin(admin.ModelAdmin):
     actions = [gerar_planilha_curso]
+    readonly_fields = ['vagas_restantes']
 
     def get_model_perms(self, request):
         """
@@ -195,6 +204,14 @@ class InscritoAdmin(admin.ModelAdmin):
     search_fields = ['nome']
     readonly_fields = ['numero_inscricao', 'data_hora_inscricao']
     list_display_links = ['nome']
+    
+    fieldsets = [
+        ('Informações do Identificação', {"fields": ['numero_inscricao', 'nome']}),
+        ('Informações de Contato', {"fields": ['email', 'telefone']}),
+        ('Informações de Graduação', {"fields": ['graduacao', 'instituicao']}),
+        ('Informações de Inscrição no Evento', {"fields": ['data_hora_inscricao', 'evento', 'cursos']}),
+        ('Informações de Pagamento', {"fields": ['data_limite_pagamento', 'comprovante', 'pagamento_confirmado']})
+    ]
 
     def evento_titulo(self, obj):
         return obj.evento.titulo
@@ -211,6 +228,11 @@ class IndexCarouselItemAdmin(admin.ModelAdmin):
 class DiretorAdmin(admin.ModelAdmin):
     list_display = ['nome', 'ano']
     search_fields = ['nome']
+    
+    fieldsets = [
+        ('Sobre o Diretor', {"fields": ['nome', 'foto', 'ano']}),
+        ('Redes Sociais', {"fields": ['lattes', 'linkedin', 'instagram', 'twitter', 'facebook']})
+    ]
 
 
 @admin.register(Settings)
