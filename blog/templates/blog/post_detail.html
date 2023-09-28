@@ -28,9 +28,9 @@
           </p>
           <small>
             Postado em {{ post.creation_date }} 
-            {% if post.last_modification.date > post.creation_date.date %}
+            {% if post.last_modification > post.creation_date %}
             |&nbsp;
-            Editado em: {{ post.last_modification }}
+            Editado em {{ post.last_modification }}
             {% endif %}
             {% if post.autor %}
             |&nbsp;
@@ -65,109 +65,23 @@
         </figure>
         <div class="col-12 col-md-10 fs-5">
           <p>{{ post.body | linebreaks }}</p>
+          <div class="text-center text-secondary">
+            <small>
+              Postado em {{ post.creation_date }} 
+              {% if post.last_modification > post.creation_date %}
+              |&nbsp;
+              Editado em {{ post.last_modification }}
+              {% endif %}
+              {% if post.autor %}
+              |&nbsp;
+              Autor: {{ post.autor }}
+              {% endif %}
+            </small>
+          </div>
         </div>
       </div>
     </section>
   </article>
-  <aside>
-    <div class="row justify-content-center align-items-center my-3" id="Commentary">
-      <div class="col-12 col-md-10 p-3 leave-comment">
-        <h1 class="mb-3 mt-3 fs-2">Deixe um comentário:</h3>
-          <form class="form mb-3" action="{% url 'blog:post_detail' post.slug %}#Commentary" method="post">
-            {% csrf_token %}
-            <div class="mb-3">
-              <label class="form-label fs-5">Seu nome:</label>
-              {{ form.author }}
-            </div>
-            <div class="mb-3">
-              <label class="form-label fs-5">Seu comentário:</label>
-              {{ form.body }}
-            </div>
-            {% if error_message %}
-            <span class="alert alert-danger p-1">
-              <small>
-                {{ error_message }}
-                <button class="p-0" type="button" data-bs-toggle="collapse" data-bs-target="#palavras-proibidas"
-                  aria-expanded="false" aria-controls="palavras-proibidas">
-                  Ver palavras proibidas.
-                </button>
-              </small>
-            </span>
-            <div class="collapse" id="palavras-proibidas">
-              <div class="card card-body bg-danger">
-                <ul class="list-group list-group-flush" style="height: 200px; overflow-y: scroll;">
-                  {% for word in forbidden_words %}
-                  <li class="list-group-item bg-danger text-white">{{ word }}</li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-            <br>
-            {% endif %}
-            <button type="submit" class="btn btn-success btn-post-commentary mt-3">Postar</button>
-          </form>
-      </div>
-      <div class="col-12 col-md-10 mt-5 comments">
-        <h3>Comentários:</h3>
-        <hr>
-        {% if commentaries %}
-        {% for commentary in commentaries %}
-        <p class="comment_info mb-1" data-author="{{ commentary.author }}"><b class="text-capitalize">{{ commentary.author }}</b> escreveu:</p>
-        <p class="mb-0 fs-5 comment" data-body="{{ commentary.body }}">{{ commentary.body }}</p>
-        <small class="comment_info mt-1">Em {{ commentary.creation_date.date }}&nbsp;</small>
-        <hr>
-        {% endfor %}
-        {% else %}
-        <p>Não há comentários para este post.</p>
-        {% endif %}
-        {% if commentaries %}
-          
-        <div id="comment-select-container" class="mb-3 d-none">
-          <label for="comment-select" class="form-label fs-5">Selecione um comentário para remoção:</label>
-          <select id="comment-select" class="form-select">
-            {% for commentary in commentaries %}
-            <option value="{{ commentary.author }}|{{ commentary.body }}">{{ commentary.body|truncatewords:5 }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="d-flex justify-content-center align-items-center">
-          <button id="remove-comment-btn" class="btn btn-sm btn-danger me-2">Solicitar Remoção</button>
-          <button id="cancel-comment-btn" class="btn btn-sm btn-secondary d-none">Ocultar</button>
-        </div>
-        <script>
-          const removeCommentButton = document.getElementById('remove-comment-btn');
-          const cancelCommentButton = document.getElementById('cancel-comment-btn');
-          const commentSelectContainer = document.getElementById('comment-select-container');
-        
-          removeCommentButton.addEventListener('click', function () {
-            commentSelectContainer.classList.remove('d-none');
-            cancelCommentButton.classList.remove('d-none'); // Adiciona a classe CSS para mostrar o botão "Ocultar"
-          });
-        
-          cancelCommentButton.addEventListener('click', function () {
-            commentSelectContainer.classList.add('d-none');
-            cancelCommentButton.classList.add('d-none'); // Remove a classe CSS para ocultar o botão "Ocultar"
-          });
-        
-          const commentSelect = document.getElementById('comment-select');
-        
-          commentSelect.addEventListener('change', function () {
-            const selectedComment = commentSelect.value.split('|');
-            const author = selectedComment[0];
-            const body = selectedComment[1];
-            const postUrl = window.location.href;
-        
-            const subject = encodeURIComponent('Solicitação de remoção de comentário');
-            const bodyContent = encodeURIComponent(`Prezada administração,\nSolicito a remoção do comentário abaixo:\nNome do autor: ${author}\n\nTexto do comentário:\n"${body}"\n\nLink do post: ${postUrl}`);
-            const mailtoLink = `mailto:lavib.pa@gmail.com?subject=${subject}&body=${bodyContent}`;
-        
-            window.location.href = mailtoLink;
-          });
-        </script>
-        {% endif %}
-      </div>
-    </div>
-  </aside>
 </div>
 {% endblock %}
 
