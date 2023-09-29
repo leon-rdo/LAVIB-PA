@@ -1,7 +1,15 @@
 {% extends "main/base.html" %}
 {% load static %}
+
 {% block title %}LAVIB-PA · Blog{% endblock %}
-{% block metatags %}{% endblock %}
+{% block meta_titulo_og %}LAVIB-PA · Blog{% endblock meta_titulo_og %}
+{% block meta_descricao_og %}Acesse nosso blog!{% endblock meta_descricao_og %}
+{% block meta_titulo_twt %}LAVIB-PA · Blog{% endblock meta_titulo_twt %}
+{% block meta_descricao_twt %}Acesse nosso blog!{% endblock meta_descricao_twt %}
+{% block meta_descricao %}Acesse nosso blog!{% endblock meta_descricao %}
+{% block og_url %}{% url 'blog:blog_index' evento.slug %}{% endblock og_url %}
+{% block twt_url %}{% url 'blog:blog_index' evento.slug %}{% endblock twt_url %}
+{% block canonical %}{% url 'blog:blog_index' evento.slug %}{% endblock canonical %}
 
 {% block content %}
 <div class="row justify-content-center align-items-center g-2 my-5 pb-5">

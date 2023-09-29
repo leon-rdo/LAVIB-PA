@@ -1,7 +1,14 @@
 {% extends "main/base.html" %}
 {% load static %}
+
 {% block title %}LAVIB-PA · Suas Inscrições{% endblock %}
-{% block metatags %}{% endblock %}
+{% block meta_titulo_og %}LAVIB-PA · Suas Inscrições{% endblock meta_titulo_og %}
+{% block meta_descricao_og %}Confira suas inscrições em nossos eventos.{% endblock meta_descricao_og %}
+{% block meta_titulo_twt %}LAVIB-PA · Suas Inscrições{% endblock meta_titulo_twt %}
+{% block meta_descricao_twt %}Confira suas inscrições em nossos eventos.{% endblock meta_descricao_twt %}
+{% block meta_descricao %}Confira suas inscrições em nossos eventos.{% endblock meta_descricao %}{% block og_url %}{% url 'main:suas_inscricoes' %}{% endblock og_url %}
+{% block twt_url %}{% url 'main:suas_inscricoes' %}{% endblock twt_url %}
+{% block canonical %}{% url 'main:suas_inscricoes' %}{% endblock canonical %}
 
 {% block content %}
 <div class="row justify-content-center g-2 pt-4 px-4 px-md-5 mt-5">

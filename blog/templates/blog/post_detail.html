@@ -1,18 +1,21 @@
 {% extends "main/base.html" %}
 {% load static %}
+
 {% block title %}{{ post.title }}{% endblock %}
-{% block meta %}
-<meta property="og:title" content="{{ post.title }}" />
-<meta property="og:type" content="article" />
-<meta property="og:description" content="{{ post.headline }}" />
-<meta property="og:image" content="{{ post.big_image.url }}" />
-<meta property="og:url" content="" />
-<meta name="twitter:title" content="{{ post.title }}" />
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:url" content="" />
-<meta name="twitter:description" content="{{ post.headline }}" />
-<meta name="twitter:image" content="{{ post.big_image.url }}" />
-{% endblock %}
+{% block meta_titulo_og %}{{ post.title }}{% endblock meta_titulo_og %}
+{% block meta_descricao_og %}{{ post.headline }}{% endblock meta_descricao_og %}
+{% block meta_titulo_twt %}{{ post.title }}{% endblock meta_titulo_twt %}
+{% block meta_descricao_twt %}{{ post.headline }}{% endblock meta_descricao_twt %}
+{% block meta_descricao %}{{ post.headline }}{% endblock meta_descricao %}
+{% block og_url %}{% url 'blog:post_detail' post.slug %}{% endblock og_url %}
+{% block twt_url %}{% url 'blog:post_detail' post.slug %}{% endblock twt_url %}
+{% block canonical %}{% url 'blog:post_detail' post.slug %}{% endblock canonical %}
+{% block meta_images %}
+  <meta property="og:image" content="https://lavib.pythonanywhere.com{{ post.image.url }}" />
+  <meta name="twitter:image" content="https://lavib.pythonanywhere.com{{ post.image.url }}" />
+  <meta property="og:type" content="article" />
+{% endblock meta_images %}
+
 
 {% block content %}
 <div class="row justify-content-center align-items-center my-5 py-5">

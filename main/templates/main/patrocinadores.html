@@ -1,8 +1,14 @@
 {% extends 'main/base.html' %}
 {% load static %}
+
 {% block title %}LAVIB-PA · Patrocinadores{% endblock %}
-{% block metatags %}
-{% endblock %}
+{% block meta_titulo_og %}LAVIB-PA · Patrocinadores{% endblock meta_titulo_og %}
+{% block meta_descricao_og %}Conheça nossos patrocinadores!{% endblock meta_descricao_og %}
+{% block meta_titulo_twt %}LAVIB-PA · Patrocinadores{% endblock meta_titulo_twt %}
+{% block meta_descricao_twt %}Conheça nossos patrocinadores!{% endblock meta_descricao_twt %}
+{% block meta_descricao %}Conheça nossos patrocinadores!{% endblock meta_descricao %}{% block og_url %}{% url 'main:patrocinadores' %}{% endblock og_url %}
+{% block twt_url %}{% url 'main:patrocinadores' %}{% endblock twt_url %}
+{% block canonical %}{% url 'main:patrocinadores' %}{% endblock canonical %}
 
 {% block content %}
 <div class="row justify-content-center g-2 px-4 px-md-5 mt-5 mb-4">

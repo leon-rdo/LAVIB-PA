@@ -1,8 +1,14 @@
 {% extends 'main/base.html' %}
 {% load static %}
+
 {% block title %}LAVIB-PA · Inscrição{% endblock %}
-{% block metatags %}
-{% endblock %}
+{% block meta_titulo_og %}Inscrição no evento {{ evento.titulo }}{% endblock meta_titulo_og %}
+{% block meta_descricao_og %}Inscreva-se no evento {{ evento.titulo }}!{% endblock meta_descricao_og %}
+{% block meta_titulo_twt %}Inscrição no evento {{ evento.titulo }}{% endblock meta_titulo_twt %}
+{% block meta_descricao_twt %}Inscreva-se no evento {{ evento.titulo }}!{% endblock meta_descricao_twt %}
+{% block meta_descricao %}Inscreva-se no evento {{ evento.titulo }}!{% endblock meta_descricao %}{% block og_url %}{% url 'main:inscricao' evento.slug %}{% endblock og_url %}
+{% block twt_url %}{% url 'main:inscricao' evento.slug %}{% endblock twt_url %}
+{% block canonical %}{% url 'main:inscricao' evento.slug %}{% endblock canonical %}
 
 {% block content %}
 <div class="row flex-column align-items-center mx-auto p-2 p-md-5 my-5">

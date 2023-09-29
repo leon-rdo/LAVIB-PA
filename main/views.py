@@ -41,6 +41,11 @@ class DetalhesEventosView(generic.DetailView):
     context_object_name = "evento"
     slug_field = 'slug'
     slug_url_kwarg = 'evento_slug'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["excluir_metatags"] = True
+        return context
 
 def enviar_email_html(destinatario, assunto, template_name, context):
     # Renderizar o template HTML em uma string
@@ -61,6 +66,7 @@ def enviar_email_html(destinatario, assunto, template_name, context):
 
     # Enviar o e-mail
     email.send()
+    
 
 class InscricaoView(generic.FormView):
     template_name = "main/inscricao.html"
@@ -137,6 +143,7 @@ def create_qr_code_image(json_data):
 
 
 class ComprovanteInscricaoView(generic.DetailView):
+    model = Evento
     template_name = 'main/comprovante_inscricao.html'
     template_name_imprimir = 'main/comprovante_imprimir.html'
     

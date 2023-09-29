@@ -1,10 +1,23 @@
 {% extends 'main/base.html' %}
 {% load static %}
+
 {% block title %}
 LAVIB-PA · {{ evento.titulo }}
 {% endblock %}
-{% block metatags %}
-{% endblock %}
+
+{% block meta_titulo_og %}LAVIB-PA · {{ evento.titulo }}{% endblock meta_titulo_og %}
+{% block meta_descricao_og %}Saiba mais sobre o evento "{{ evento.titulo }}"{% endblock meta_descricao_og %}
+{% block meta_titulo_twt %}LAVIB-PA · {{ evento.titulo }}{% endblock meta_titulo_twt %}
+{% block meta_descricao_twt %}Saiba mais sobre o evento "{{ evento.titulo }}"{% endblock meta_descricao_twt %}
+{% block meta_descricao %}Saiba mais sobre o evento "{{ evento.titulo }}"{% endblock meta_descricao %}
+{% block og_url %}{% url 'main:detalhes_eventos' evento.slug %}{% endblock og_url %}
+{% block twt_url %}{% url 'main:detalhes_eventos' evento.slug %}{% endblock twt_url %}
+{% block canonical %}{% url 'main:detalhes_eventos' evento.slug %}{% endblock canonical %}
+{% block meta_images %}
+<meta property="og:image" content="https://lavib.pythonanywhere.com{{ evento.imagem.url }}" />
+<meta name="twitter:image" content="https://lavib.pythonanywhere.com{{ evento.imagem.url }}" />
+<meta property="og:type" content="website"/>
+{% endblock meta_images %}
 
 {% block content %}
 <article>

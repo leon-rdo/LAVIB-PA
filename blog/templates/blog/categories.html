@@ -1,7 +1,15 @@
 {% extends "main/base.html" %}
 {% load static %}
-{% block title %}LAVIB-PA · Home{% endblock %}
-{% block metatags %}{% endblock %}
+
+{% block title %}Blog LAVIB-PA • {{ category.category }}{% endblock %}
+{% block meta_titulo_og %}Blog LAVIB-PA • {{ category.category }}{% endblock meta_titulo_og %}
+{% block meta_descricao_og %}Nossos artigos sobre "{{ category.category }}"{% endblock meta_descricao_og %}
+{% block meta_titulo_twt %}Blog LAVIB-PA • {{ category.category }}{% endblock meta_titulo_twt %}
+{% block meta_descricao_twt %}Nossos artigos sobre "{{ category.category }}"{% endblock meta_descricao_twt %}
+{% block meta_descricao %}Nossos artigos sobre "{{ category.category }}"{% endblock meta_descricao %}{% block og_url %}{% url 'blog:category' category.category evento.slug %}{% endblock og_url %}
+{% block twt_url %}{% url 'blog:category' category.category evento.slug %}{% endblock twt_url %}
+{% block canonical %}{% url 'blog:category' category.category evento.slug %}{% endblock canonical %}
+
 
 {% block content %}
 <div class="row justify-content-center align-items-center g-2 my-5">

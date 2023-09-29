@@ -1,196 +1,223 @@
-{% load static %}
-<!doctype html>
-<html lang="pt-br">
+  {% load static %}
+  <!doctype html>
+  <html lang="pt-br">
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="{% static 'main/images/icons/LAVIB-PA.svg' %}" type="image/x-icon">
-  <title>{% block title %}{% endblock %}</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <link rel="stylesheet" href="{% static 'main/styles/css/style.css' %}">
-  <meta http-equiv="pragma" content="no-cache">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"
-    defer></script>
-  <script src="{% static 'main/scripts/animations.js' %}" defer></script>
-  <script src="{% static 'main/scripts/vanilla-tilt.min.js' %}" defer></script>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{% static 'main/images/icons/LAVIB-PA.svg' %}" type="image/x-icon">
+    <title>{% block title %}{% endblock title %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'main/styles/css/style.css' %}">
+    <meta http-equiv="pragma" content="no-cache">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"
+      defer></script>
+    <script src="{% static 'main/scripts/animations.js' %}" defer></script>
+    <script src="{% static 'main/scripts/vanilla-tilt.min.js' %}" defer></script>
+    <!-- Meta Tags -->
+    <meta name="author" content="Leonardo Costa" />
+    <link rel="canonical" href="https://lavib.pythonanywhere.com{% block canonical %}{% endblock canonical %}"/>
+    <meta name="description" content='{% block meta_descricao %}{% endblock meta_descricao %}' />
+    <meta name="geo.placename" content="UNAMA - Alcondo Cacela">
+    <meta name="geo.region" content="BR-PA" />
+    <meta name="geo.position" content="-1.4387788-48.4810233" />
+    <meta name="ICBM" content="-1.4387788;-48.4810233" />
+    <meta http-equiv="content-language" content="pt-br" />
+    <meta name="copyright" content="© 2023 LAVIB" />
+    <meta name="generator" content="Django.py 4.2.5" />
+    <meta name="rating" content="general" />
+    <!-- Meta Tags da META (Facebook) -->
+    <meta property="og:title" content="{% block meta_titulo_og %}{% endblock meta_titulo_og %}"/>
+    <meta property="og:description" content='{% block meta_descricao_og %}{% endblock meta_descricao_og %}'/>
+    <meta property="og:url" content="http://ffbvi.pythonanywhere.com{% block og_url %}{% endblock og_url %}"/>
+    <meta property="og:site_name" content="LAVIB-PA"/>
+    <!-- Meta Tags do Twitter -->
+    <meta name="twitter:title" content="{% block meta_titulo_twt %}{% endblock meta_titulo_twt %}">
+    <meta name="twitter:description" content='{% block meta_descricao_twt %}{% endblock meta_descricao_twt %}'>
+    <meta name="twitter:url" content="https://lavib.pythonanywhere.com{% block twt_url %}{% endblock twt_url %}">
+    <meta name="twitter:card" content="summary">
+    <!-- Meta Tags de Imagem -->
+    {% if not excluir_metatags %}
+      <meta property="og:image" content="https://lavib.pythonanywhere.com{% static 'main/images/icons/LAVIB-PA.png' %}" />
+      <meta name="twitter:image" content="https://lavib.pythonanywhere.com{% static 'main/images/icons/LAVIB-PA.png' %}" />
+      <meta property="og:type" content="website"/>
+    {% endif %}
+    {% block meta_images %}{% endblock meta_images %}
+  </head>
 
-  {% block metatags %}{% endblock %}
-</head>
-
-<body>
-  <header>
-    <nav class="navbar navbar-expand-lg">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'main:index' %}"><img src="{% static 'main/images/icons/LAVIB-PA.svg' %}"
-            class="me-2" style="width: 50px;"><b>LAVIB-PA</b></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            {% with request.resolver_match.url_name as url_name %}
-            <li class="nav-item me-3">
-              <a class="nav-link {% if url_name == 'index' %}active{% endif %}" href="{% url 'main:index' %}">Início</a>
-            </li>
-            <li class="nav-item me-3">
-              <a class="nav-link {% if url_name == 'sobre' %}active{% endif %}" href="{% url 'main:sobre' %}">Sobre nós</a>
-            </li>
-            <li class="nav-item dropdown me-3">
-              <a class="nav-link dropdown-toggle {% if url_name == 'eventos' or url_name == 'suas_inscricoes' %}active{% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Eventos
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-item {% if url_name == 'eventos' %}active{% endif %}" href="{% url 'main:eventos' %}">Nossos Eventos</a>
-                </li>
-                <li>
-                  <a class="dropdown-item {% if url_name == 'suas_inscricoes' %}active{% endif %}" href="{% url 'main:suas_inscricoes' %}">Suas Inscrições</a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item me-3">
-              <a class="nav-link {% if url_name == 'patrocinadores' %}active{% endif %}"
-                href="{% url 'main:patrocinadores' %}">Parcerias</a>
-            </li>
-            <li class="nav-item me-3">
-              <a class="nav-link {% if url_name == 'blog' %}active{% endif %}" href="{% url 'blog:index' %}">Blog</a>
-            </li>
-            {% endwith %}
-            {% if user.is_staff %}
-            <li class="nav-item">
-              <a class="nav-link" href="/admin">Administração</a>
-            </li>
-            {% if user.is_superuser %}
-            <li class="nav-item">
-              <a class="nav-link" target="_blank" href="https://www.pythonanywhere.com/user/lavib/">PythonAnywhere</a>
-            </li>
-            {% endif %}
-            {% endif %}
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-  <main class="background pb-5">
-    <div class="container">
-      {% block content %}{% endblock %}
-    </div>
-  </main>
-
-  <footer class="footer container-fluid navbar-fixed-bottom d-flex flex-column flex-md-row justify-content-around p-2 p-md-5 pt-5">
-    <section class="contato d-flex align-items-center justify-content-center text-center mb-4 mb-md-0">
-      <div>
-        <h4 class="d-flex align-items-center justify-content-center justify-content-md-between">
-          Contato<img class="tech-icon invert-color ms-3" src="{% static '/main/images/icons/envelope-at.svg' %}"
-            alt="Ícone de envelope com @" />
-        </h4>
-
-        <address>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item text-white border-0 bg-transparent">
-              <p class="mb-0 text-start">
-                E-mail:
-                <a href="mailto:{{ settings.email }}" class="text-reset d-inline d-md-none d-lg-inline text-break">{{ settings.email }}</a>
-              </p>
-            </li>
-            <li class="list-group-item text-white border-0 bg-transparent">
-              <p class="mb-0 text-start">
-                Telefone:
-                <a href="tel:{{ settings.telefone }}" class="text-reset d-inline d-md-none d-lg-inline text-break">{{ settings.telefone }}</a>
-              </p>
-            </li>
-          </ul>
-        </address>
-      </div>
-    </section>
-    <hr class="d-inline d-md-none">
-    <div class="vertical-line d-none d-md-block mx-2"></div>
-    <section class="sponsors d-flex align-items-center justify-content-center text-center mb-4 mb-md-0">
-      <div>
-        <a href="{% url 'main:patrocinadores' %}" style="text-decoration: none;">
-          <h4 class="d-flex align-items-center justify-content-center justify-content-md-between">
-            Nossos patrocinadores<img class="tech-icon invert-color ms-3"
-              src="{% static '/main/images/icons/info-circle-fill.svg' %}"
-              alt="Ícone de informações: letra i dentro de um círculo" />
-          </h4>
-        </a>
-        <div class="d-flex align-items-center justify-content-center flex-wrap">
-          {% for patrocinador in patrocinadores %}
-          <a href="{{ patrocinador.link }}"
-            class="sponsor-img-block d-md-flex flex-column align-items-center font-monospace me-3" target="_blank"
-            style="text-decoration: none;">
-            <img class="sponsor-img" src="{{ patrocinador.imagem.url }}" alt="Logomarca de {{ patrocinador.nome }}" />
-            <small>{{ patrocinador.nome }}</small>
-          </a>
-          {% endfor %}
-        </div>
-      </div>
-    </section>
-    <hr class="d-inline d-md-none">
-    <div class="vertical-line d-none d-md-block mx-2"></div>
-    <section class="d-flex align-items-center justify-content-center mb-4 mb-md-0" id="repository">
-      <div class=" text-center">
-        <h4 class="d-flex align-items-center justify-content-center justify-content-md-between">
-          Repositório<img class="tech-icon invert-color ms-3" src="{% static '/main/images/icons/github.svg' %}"
-            alt="Ícone do GitHub" />
-        </h4>
-        <a class="text-reset fw-bold" href="https://github.com/leon-rdo/LAVIB-PA">LAVIB-PA</a>
-      </div>
-    </section>
-  </footer>
-  </div>
-  <div class="sticky-container">
-    <div class="dropstart">
-      <button class="btn btn-light ratio ratio-1x1 rounded-5 overflow-hidden move" type="button"
-        data-bs-toggle="dropdown" aria-expanded="false" style="width: 50px; height: 50px;" id="btn-social-media">
-        <div id="carouselExampleSlidesOnly" class="carousel carousel-fade" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="2000">
-              <img src="{% static 'main/images/icons/redes_sociais/Instagram Round Green Logo.svg' %}"
-                class="d-block w-100">
-            </div>
-            <div class="carousel-item" data-bs-interval="2000">
-              <img src="{% static 'main/images/icons/redes_sociais/Twitter Round Green Logo.svg' %}"
-                class="d-block w-100">
-            </div>
-            <div class="carousel-item" data-bs-interval="2000">
-              <img src="{% static 'main/images/icons/redes_sociais/YouTube Round Green Logo.svg' %}"
-                class="d-block w-100">
-            </div>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{% url 'main:index' %}"><img src="{% static 'main/images/icons/LAVIB-PA.svg' %}"
+              class="me-2" style="width: 50px;"><b>LAVIB-PA</b></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              {% with request.resolver_match.url_name as url_name %}
+              <li class="nav-item me-3">
+                <a class="nav-link {% if url_name == 'index' %}active{% endif %}" href="{% url 'main:index' %}">Início</a>
+              </li>
+              <li class="nav-item me-3">
+                <a class="nav-link {% if url_name == 'sobre' %}active{% endif %}" href="{% url 'main:sobre' %}">Sobre nós</a>
+              </li>
+              <li class="nav-item dropdown me-3">
+                <a class="nav-link dropdown-toggle {% if url_name == 'eventos' or url_name == 'suas_inscricoes' %}active{% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Eventos
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item {% if url_name == 'eventos' %}active{% endif %}" href="{% url 'main:eventos' %}">Nossos Eventos</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item {% if url_name == 'suas_inscricoes' %}active{% endif %}" href="{% url 'main:suas_inscricoes' %}">Suas Inscrições</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item me-3">
+                <a class="nav-link {% if url_name == 'patrocinadores' %}active{% endif %}"
+                  href="{% url 'main:patrocinadores' %}">Parcerias</a>
+              </li>
+              <li class="nav-item me-3">
+                <a class="nav-link {% if url_name == 'blog_index' or url_name == 'post_detail' or url_name == 'categories' %}active{% endif %}" href="{% url 'blog:blog_index' %}">Blog</a>
+              </li>
+              {% endwith %}
+              {% if user.is_staff %}
+              <li class="nav-item">
+                <a class="nav-link" href="/admin">Administração</a>
+              </li>
+              {% if user.is_superuser %}
+              <li class="nav-item">
+                <a class="nav-link" target="_blank" href="https://www.pythonanywhere.com/user/lavib/">PythonAnywhere</a>
+              </li>
+              {% endif %}
+              {% endif %}
+            </ul>
           </div>
         </div>
-      </button>
-      <ul class="dropdown-menu" id="dropdown-menu">
-        {% for item in redes_sociais %}
-        <li><a class="dropdown-item" target="_blank" href="{{ item.url }}">{{ item.nome }}</a></li>
-        {% empty %}
-        <li class="dropdown-item">Nada ainda!</li>
-        {% endfor %}
-      </ul>
+      </nav>
+    </header>
+
+    <main class="background pb-5">
+      <div class="container">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
+    <footer class="footer container-fluid navbar-fixed-bottom d-flex flex-column flex-md-row justify-content-around p-2 p-md-5 pt-5">
+      <section class="contato d-flex align-items-center justify-content-center text-center mb-4 mb-md-0">
+        <div>
+          <h4 class="d-flex align-items-center justify-content-center justify-content-md-between">
+            Contato<img class="tech-icon invert-color ms-3" src="{% static '/main/images/icons/envelope-at.svg' %}"
+              alt="Ícone de envelope com @" />
+          </h4>
+
+          <address>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item text-white border-0 bg-transparent">
+                <p class="mb-0 text-start">
+                  E-mail:
+                  <a href="mailto:{{ settings.email }}" class="text-reset d-inline d-md-none d-lg-inline text-break">{{ settings.email }}</a>
+                </p>
+              </li>
+              <li class="list-group-item text-white border-0 bg-transparent">
+                <p class="mb-0 text-start">
+                  Telefone:
+                  <a href="tel:{{ settings.telefone }}" class="text-reset d-inline d-md-none d-lg-inline text-break">{{ settings.telefone }}</a>
+                </p>
+              </li>
+            </ul>
+          </address>
+        </div>
+      </section>
+      <hr class="d-inline d-md-none">
+      <div class="vertical-line d-none d-md-block mx-2"></div>
+      <section class="sponsors d-flex align-items-center justify-content-center text-center mb-4 mb-md-0">
+        <div>
+          <a href="{% url 'main:patrocinadores' %}" style="text-decoration: none;">
+            <h4 class="d-flex align-items-center justify-content-center justify-content-md-between">
+              Nossos patrocinadores<img class="tech-icon invert-color ms-3"
+                src="{% static '/main/images/icons/info-circle-fill.svg' %}"
+                alt="Ícone de informações: letra i dentro de um círculo" />
+            </h4>
+          </a>
+          <div class="d-flex align-items-center justify-content-center flex-wrap">
+            {% for patrocinador in patrocinadores %}
+            <a href="{{ patrocinador.link }}"
+              class="sponsor-img-block d-md-flex flex-column align-items-center font-monospace me-3" target="_blank"
+              style="text-decoration: none;">
+              <img class="sponsor-img" src="{{ patrocinador.imagem.url }}" alt="Logomarca de {{ patrocinador.nome }}" />
+              <small>{{ patrocinador.nome }}</small>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+      <hr class="d-inline d-md-none">
+      <div class="vertical-line d-none d-md-block mx-2"></div>
+      <section class="d-flex align-items-center justify-content-center mb-4 mb-md-0" id="repository">
+        <div class=" text-center">
+          <h4 class="d-flex align-items-center justify-content-center justify-content-md-between">
+            Repositório<img class="tech-icon invert-color ms-3" src="{% static '/main/images/icons/github.svg' %}"
+              alt="Ícone do GitHub" />
+          </h4>
+          <a class="text-reset fw-bold" href="https://github.com/leon-rdo/LAVIB-PA">LAVIB-PA</a>
+        </div>
+      </section>
+    </footer>
     </div>
-  </div>
+    <div class="sticky-container">
+      <div class="dropstart">
+        <button class="btn btn-light ratio ratio-1x1 rounded-5 overflow-hidden move" type="button"
+          data-bs-toggle="dropdown" aria-expanded="false" style="width: 50px; height: 50px;" id="btn-social-media">
+          <div id="carouselExampleSlidesOnly" class="carousel carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active" data-bs-interval="2000">
+                <img src="{% static 'main/images/icons/redes_sociais/Instagram Round Green Logo.svg' %}"
+                  class="d-block w-100">
+              </div>
+              <div class="carousel-item" data-bs-interval="2000">
+                <img src="{% static 'main/images/icons/redes_sociais/Twitter Round Green Logo.svg' %}"
+                  class="d-block w-100">
+              </div>
+              <div class="carousel-item" data-bs-interval="2000">
+                <img src="{% static 'main/images/icons/redes_sociais/YouTube Round Green Logo.svg' %}"
+                  class="d-block w-100">
+              </div>
+            </div>
+          </div>
+        </button>
+        <ul class="dropdown-menu" id="dropdown-menu">
+          {% for item in redes_sociais %}
+          <li><a class="dropdown-item" target="_blank" href="{{ item.url }}">{{ item.nome }}</a></li>
+          {% empty %}
+          <li class="dropdown-item">Nada ainda!</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var btnSocialMedia = document.getElementById("btn-social-media");
-      var dropdownMenu = document.getElementById("dropdown-menu");
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var btnSocialMedia = document.getElementById("btn-social-media");
+        var dropdownMenu = document.getElementById("dropdown-menu");
 
-      btnSocialMedia.addEventListener("click", function () {
-        if (dropdownMenu.classList.contains("show")) {
-          btnSocialMedia.classList.remove("move");
-        } else {
-          btnSocialMedia.classList.add("move");
-        }
+        btnSocialMedia.addEventListener("click", function () {
+          if (dropdownMenu.classList.contains("show")) {
+            btnSocialMedia.classList.remove("move");
+          } else {
+            btnSocialMedia.classList.add("move");
+          }
+        });
       });
-    });
-  </script>
-  {% block more_script %}{% endblock more_script %}
-</body>
+    </script>
+    {% block more_script %}{% endblock more_script %}
+  </body>
 
-</html>
+  </html>

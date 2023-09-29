@@ -1,8 +1,14 @@
 {% extends "main/base.html" %}
 {% load static %}
 {% block title %}LAVIB-PA · Home{% endblock %}
-{% block metatags %}{% endblock %}
-
+{% block meta_titulo_og %}LAVIB-PA • Home{% endblock meta_titulo_og %}
+{% block meta_descricao_og %}Página Inicial do site da LAVIB-PA{% endblock meta_descricao_og %}
+{% block meta_titulo_twt %}Liga Acadêmica de Virologia e Bacteriologia do Pará{% endblock meta_titulo_twt %}
+{% block meta_descricao_twt %}Página Inicial do site da LAVIB-PA{% endblock meta_descricao_twt %}
+{% block meta_descricao %}Liga Acadêmica de Virologia e Bacteriologia do Pará{% endblock meta_descricao %}
+{% block og_url %}{% url 'main:index' %}{% endblock og_url %}
+{% block twt_url %}{% url 'main:index' %}{% endblock twt_url %}
+{% block canonical %}{% url 'main:index' %}{% endblock canonical %}
 {% block content %}
 <div class="row justify-content-center align-items-center g-2 my-5" style="position: relative;">
   {% if settings.alerta_text or settings.alerta_negrito %}

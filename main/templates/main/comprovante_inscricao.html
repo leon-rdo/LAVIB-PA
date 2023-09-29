@@ -1,7 +1,12 @@
 {% extends 'main/base.html' %}
 {% load static %}
+
 {% block title %}Comprovante de Inscrição{% endblock %}
-{% block metatags %}{% endblock %}
+{% block meta_titulo_og %}Comprovante de Inscrição{% endblock meta_titulo_og %}
+{% block meta_descricao_og %}Comprovante de Inscrição de {{ inscrito.nome }} em "{{ evento.titulo }}"{% endblock meta_descricao_og %}
+{% block meta_titulo_twt %}Comprovante de Inscrição{% endblock meta_titulo_twt %}
+{% block meta_descricao_twt %}Comprovante de Inscrição de {{ inscrito.nome }} em "{{ evento.titulo }}"{% endblock meta_descricao_twt %}
+{% block meta_descricao %}Comprovante de Inscrição de {{ inscrito.nome }} em "{{ evento.titulo }}"{% endblock meta_descricao %}
 
 {% block content %}
 <div class="row d-flex justify-content-center align-items-center my-5 p-2 p-md-5">
