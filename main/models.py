@@ -1,4 +1,5 @@
 import datetime
+from django.forms import ValidationError
 from django.utils import timezone
 from uuid import uuid4
 from django.db import models
@@ -109,6 +110,7 @@ class Evento(models.Model):
     mensagem_comprovante = models.CharField('Mensagem para o comprovante', default='Não se atrase!', max_length=150, null=True, blank=True)
     imagem = models.ImageField('Imagem', upload_to='main/images/eventos')
     data_hora = models.DateTimeField('Data e hora')
+    data_hora_final = models.DateTimeField('Data e hora do fim do evento')
     local = models.CharField('Local', max_length=50)
     valor = models.DecimalField('Valor', max_digits=4, decimal_places=2)
     vagas = models.PositiveSmallIntegerField('Vagas', default=None, null=True, blank=True)
@@ -130,14 +132,23 @@ class Evento(models.Model):
             inscritos_count = self.inscritos.count()
             vagas_restantes = self.vagas - inscritos_count
             return vagas_restantes
+        
+    def clean(self):
+        """
+        Validação personalizada para garantir que a data final seja maior que a data inicial.
+        """
+        if self.data_hora and self.data_hora_final:
+            if self.data_hora >= self.data_hora_final:
+                raise ValidationError("A data final deve ser maior que a data inicial.")
 
-    class Meta:
-        verbose_name = "Evento"
-        verbose_name_plural = "Eventos"
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.titulo)
         super(Evento, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "Evento"
+        verbose_name_plural = "Eventos"
 
     def __str__(self):
         return self.titulo

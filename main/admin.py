@@ -154,7 +154,7 @@ class EventoAdmin(admin.ModelAdmin):
     
     fieldsets = [
         ('Informações Gerais do Evento', {"fields": ['titulo', 'descricao_curta', 'imagem']}),
-        ('Informações Específicas do Evento', {"fields": ['descricao', 'data_hora', 'local', 'valor', 'carga_horaria', 'convidados', 'vagas', 'vagas_restantes', 'mensagem_comprovante']}),
+        ('Informações Específicas do Evento', {"fields": ['descricao', 'data_hora', 'data_hora_final', 'local', 'valor', 'carga_horaria', 'convidados', 'vagas', 'vagas_restantes', 'mensagem_comprovante']}),
         ('Cursos', {"fields": ['cursos']}),
         ('Descontos', {"fields": ['descontos']})
     ]
