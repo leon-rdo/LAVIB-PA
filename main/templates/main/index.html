@@ -29,49 +29,49 @@
         </figure>
     </div>
 </div>
-<div class="row justify-content-center align-items-center g-2 my-5">
-    <div class="col-12 col-md-4 text-center">
-        <h1 class="display-2">ÚLTIMAS NOTÍCIAS!</h1>
+{% if carousel_items %}      
+<div class="row align-items-center my-3">
+  <div class="col-12 col-md-4 text-center">
+      <h1 class="display-2">ÚLTIMAS NOTÍCIAS!</h1>
+  </div>
+  <div id="carouselNoticias" class="carousel slide col-12 col-md-8" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      {% for noticia in carousel_items %}
+        <button type="button" data-bs-target="#carouselNoticias" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true" {% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+        {% endfor %}
     </div>
-    <div class="col-12 col-md-8">
-        <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                {% for item in carousel_items %}
-                <button type="button" data-bs-target="#carouselId" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" {% endif %} aria-label="Slide {{ forloop.counter }}"></button>
-                {% endfor %}
-            </div>
-            <div class="carousel-inner ratio ratio-16x9" role="listbox">
-                {% for item in carousel_items %}
-                <a href="{{ item.link }}" class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <img src="{{ item.image.url }}" class="h-100 w-100 d-block object-fit-contain"
-                        alt="{{ item.image_description }}">
-                    <div class="carousel-caption d-none d-md-block p-1">
-                        <h3 class="">{{ item.caption_title }}</h3>
-                        <p class="fs-5">{{ item.caption_text }}</p>
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentcolor"
-                    class="bi bi-caret-left-fill" viewBox="0 0 16 16">
-                    <path
-                        d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z" />
-                </svg>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentcolor"
-                    class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                    <path
-                        d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                </svg>
-                <span class="visually-hidden">Next</span>
-            </button>
+    <div class="carousel-inner">
+      {% for noticia in carousel_items %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div class="ratio ratio-16x9 w-100">
+            <img src="{{ noticia.image.url }}" class="d-block object-fit-cover" alt="{{ noticia.image_description }}">
+          </div>
+          <div class="carousel-caption d-none d-md-block rounded-pill" style="background-color: #000000dd;">
+            <h5>{{ noticia.caption_title }}</h5>
+            <p>{{ noticia.caption_text }}</p>
+          </div>
         </div>
+      {% endfor %}
     </div>
-</div>
-<div class="row justify-content-center align-items-center g-2 px-1 px-md-5 mb-5">
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselNoticias" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Próximo</span>
+    </button>
+  </div>
+  <div class="col-12 d-md-none text-center carousel-outside-captions">
+    {% for noticia in carousel_items %}
+      <div class="carousel-outside-caption border border-success-subtle px-1 pt-1 {% if forloop.counter != 1 %}d-none{% endif %}" id="carousel-outside-caption-{{ forloop.counter }}" style="min-height: 105px;">
+        <h5>{{ noticia.caption_title }}</h5>
+        <p>{{ noticia.caption_text }}</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+  <div class="row justify-content-center align-items-center g-2 px-1 px-md-5 mb-5">
     <h1>Diretoria 2023</h1>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-5">
         {% for diretor in diretores %}       
