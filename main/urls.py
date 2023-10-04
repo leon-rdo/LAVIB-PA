@@ -11,5 +11,4 @@ urlpatterns = [
     path("eventos/<slug:evento_slug>/inscricao/", views.InscricaoView.as_view(), name="inscricao"),
     path("eventos/<slug:evento_slug>/inscricao/comprovante/", views.ComprovanteInscricaoView.as_view(), name="comprovante_inscricao"),
     path("patrocinadores/", views.PatrocinadoresView.as_view(), name="patrocinadores"),
-    
 ]
