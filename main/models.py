@@ -11,6 +11,7 @@ class Index_Carousel_Item(models.Model):
     caption_title = models.CharField('Título da Notícia', max_length=50, default='')
     caption_text = models.CharField('Texto da Notícia', max_length=250, default='')
     link = models.URLField('Link da Notícia', default='')
+    target_blank = models.BooleanField('Abrir em outra guia?', default=True)
 
     def __str__(self):
         return self.caption_title

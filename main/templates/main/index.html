@@ -13,108 +13,135 @@
 <div class="row justify-content-center align-items-center g-2 my-5" style="position: relative;">
   {% if settings.alerta_text or settings.alerta_negrito %}
   <div class="alert alert-{{ settings.alerta_cor }} alert-dismissible fade show" role="alert"
-      style="position: absolute; top: -50px; opacity: 90%; max-width: 95%; ">
-      <strong>{{ settings.alerta_negrito }}</strong> {{ settings.alerta_text }} {% if settings.alerta_link %}<a href="{{ settings.alerta_link }}" style="text-decoration: none; color: black;" target="_blank"><b class="small">Clique aqui.</b></a>{% endif %}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    style="position: absolute; top: -50px; opacity: 90%; max-width: 95%; ">
+    <strong>{{ settings.alerta_negrito }}</strong> {{ settings.alerta_text }} {% if settings.alerta_link %}<a
+      href="{{ settings.alerta_link }}" style="text-decoration: none; color: black;" target="_blank"><b
+        class="small">Clique aqui.</b></a>{% endif %}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
   {% endif %}
-    <div class="lavib-container col-12 col-md-7">
-        <h1 class="display-2 text-center">LAVIB-PA</h1>
-        <h1 class="display-6 text-center text-uppercase pe-3" id="title"></h1>
-        <h2 class="display-4 text-center" id="subtitle">Bem vindos! &#x1F9EB;&#x1F9A0;&#x1F499;</h2>
-    </div>
-    <div class="col-12 col-md-5 d-flex justify-content-center">
-        <figure>
-            <img class="main-logo" src="{% static 'main/images/icons/LAVIB-PA.svg' %}" alt="Logo da LAVIB-PA" rq3q3>
-        </figure>
-    </div>
+  <div class="lavib-container col-12 col-md-7">
+    <h1 class="display-2 text-center">LAVIB-PA</h1>
+    <h1 class="display-6 text-center text-uppercase pe-3" id="title"></h1>
+    <h2 class="display-4 text-center" id="subtitle">Bem vindos! &#x1F9EB;&#x1F9A0;&#x1F499;</h2>
+  </div>
+  <div class="col-12 col-md-5 d-flex justify-content-center">
+    <figure>
+      <img class="main-logo" src="{% static 'main/images/icons/LAVIB-PA.svg' %}" alt="Logo da LAVIB-PA" rq3q3>
+    </figure>
+  </div>
 </div>
-{% if carousel_items %}      
+{% if carousel_items %}
 <div class="row align-items-center my-3">
   <div class="col-12 col-md-4 text-center">
-      <h1 class="display-2">ÚLTIMAS NOTÍCIAS!</h1>
+    <h1 class="display-2">ÚLTIMAS NOTÍCIAS!</h1>
   </div>
   <div id="carouselNoticias" class="carousel slide col-12 col-md-8" data-bs-ride="carousel">
     <div class="carousel-indicators">
       {% for noticia in carousel_items %}
-        <button type="button" data-bs-target="#carouselNoticias" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true" {% endif %} aria-label="Slide {{ forloop.counter }}"></button>
-        {% endfor %}
+      <button type="button" data-bs-target="#carouselNoticias" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true" {% endif %}
+        aria-label="Slide {{ forloop.counter }}"></button>
+      {% endfor %}
     </div>
     <div class="carousel-inner">
       {% for noticia in carousel_items %}
-        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-          <div class="ratio ratio-16x9 w-100">
-            <img src="{{ noticia.image.url }}" class="d-block object-fit-cover" alt="{{ noticia.image_description }}">
-          </div>
-          <div class="carousel-caption d-none d-md-block rounded-pill" style="background-color: #000000dd;">
-            <h5>{{ noticia.caption_title }}</h5>
-            <p>{{ noticia.caption_text }}</p>
-          </div>
+      <a href="{{ noticia.link }}" class="carousel-item {% if forloop.first %}active{% endif %}" {% if noticia.target_blank %}target="_blank" {% endif %}>
+        <div class="ratio ratio-16x9 w-100">
+          <img src="{{ noticia.image.url }}" class="d-block object-fit-cover" alt="{{ noticia.image_description }}">
         </div>
+        <div class="carousel-caption d-none d-md-block rounded-pill" style="background-color: #000000dd;">
+          <h5>{{ noticia.caption_title }}</h5>
+          <p>{{ noticia.caption_text }}</p>
+        </div>
+      </a>
       {% endfor %}
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev">
+    <button class="carousel-control-prev z-5" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Anterior</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselNoticias" data-bs-slide="next">
+    <button class="carousel-control-next z-5" type="button" data-bs-target="#carouselNoticias" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Próximo</span>
     </button>
   </div>
   <div class="col-12 d-md-none text-center carousel-outside-captions">
     {% for noticia in carousel_items %}
-      <div class="carousel-outside-caption border border-success-subtle px-1 pt-1 {% if forloop.counter != 1 %}d-none{% endif %}" id="carousel-outside-caption-{{ forloop.counter }}" style="min-height: 105px;">
-        <h5>{{ noticia.caption_title }}</h5>
-        <p>{{ noticia.caption_text }}</p>
-      </div>
+    <div
+      class="carousel-outside-caption border border-success-subtle px-1 pt-1 {% if forloop.counter != 1 %}d-none{% endif %}"
+      id="carousel-outside-caption-{{ forloop.counter }}" style="min-height: 105px;">
+      <h5>{{ noticia.caption_title }}</h5>
+      <p>{{ noticia.caption_text }}</p>
+    </div>
     {% endfor %}
   </div>
-{% endif %}
+  {% endif %}
   <div class="row justify-content-center align-items-center g-2 px-1 px-md-5 mb-5">
     <h1>Diretoria 2023</h1>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-5">
-        {% for diretor in diretores %}       
-          <div class="col">
-            <div class="card" style="overflow: hidden;">
-              <div class="ratio ratio-1x1">
-                <img src="{{ diretor.foto.url }}" class="card-img-top object-fit-cover img-fluid" alt="Foto de {{ diretor.nome }}">
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">{{ diretor.nome }}</h5>
-                <div class="d-flex">
-                  <div class="btn-group btn-group-sm Box-RedesSociais" role="group" style="max-height: 60px;">
-                    {% if diretor.lattes %}
-                      <a href="{{ diretor.lattes }}" class="btn btn-outline-primary" target="_blank">
-                        <img class="RedeSocialLogo img-fluid" src="{% static 'main/images/icons/redes_sociais/LattesLogo.svg' %}" alt="Ícone do Lattes"/>
-                      </a>
-                    {% endif %}
-                    {% if diretor.linkedin %}
-                      <a href="{{ diretor.linkedin }}" class="btn btn-outline-primary" target="_blank">
-                        <img class="RedeSocialLogo img-fluid" src="{% static 'main/images/icons/redes_sociais/LinkedInLogo.svg' %}" alt="Ícone do LinkedIn"/>
-                      </a>
-                    {% endif %}
-                    {% if diretor.instagram %}
-                      <a href="{{ diretor.instagram }}" class="btn btn-outline-primary" target="_blank">
-                        <img class="RedeSocialLogo img-fluid" src="{% static 'main/images/icons/redes_sociais/InstagramLogo.svg' %}" alt="Ícone do Instagram"/>
-                      </a>
-                    {% endif %}
-                    {% if diretor.twitter %}
-                      <a href="{{ diretor.twitter }}" class="btn btn-outline-primary" target="_blank">
-                        <img class="RedeSocialLogo img-fluid" src="{% static 'main/images/icons/redes_sociais/TwitterLogo.svg' %}" alt="Ícone do Twitter"/>
-                      </a>
-                    {% endif %}
-                    {% if diretor.facebook %}
-                      <a href="{{ diretor.facebook }}" class="btn btn-outline-primary" target="_blank">
-                        <img class="RedeSocialLogo img-fluid" src="{% static 'main/images/icons/redes_sociais/FacebookLogo.svg' %}" alt="Ícone do Facebook"/>
-                      </a>
-                    {% endif %}
-                  </div>
-                </div>
+      {% for diretor in diretores %}
+      <div class="col">
+        <div class="card" style="overflow: hidden;">
+          <div class="ratio ratio-1x1">
+            <img src="{{ diretor.foto.url }}" class="card-img-top object-fit-cover img-fluid"
+              alt="Foto de {{ diretor.nome }}">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{ diretor.nome }}</h5>
+            <div class="d-flex">
+              <div class="btn-group btn-group-sm Box-RedesSociais" role="group" style="max-height: 60px;">
+                {% if diretor.lattes %}
+                <a href="{{ diretor.lattes }}" class="btn btn-outline-primary" target="_blank">
+                  <img class="RedeSocialLogo img-fluid"
+                    src="{% static 'main/images/icons/redes_sociais/LattesLogo.svg' %}" alt="Ícone do Lattes" />
+                </a>
+                {% endif %}
+                {% if diretor.linkedin %}
+                <a href="{{ diretor.linkedin }}" class="btn btn-outline-primary" target="_blank">
+                  <img class="RedeSocialLogo img-fluid"
+                    src="{% static 'main/images/icons/redes_sociais/LinkedInLogo.svg' %}" alt="Ícone do LinkedIn" />
+                </a>
+                {% endif %}
+                {% if diretor.instagram %}
+                <a href="{{ diretor.instagram }}" class="btn btn-outline-primary" target="_blank">
+                  <img class="RedeSocialLogo img-fluid"
+                    src="{% static 'main/images/icons/redes_sociais/InstagramLogo.svg' %}" alt="Ícone do Instagram" />
+                </a>
+                {% endif %}
+                {% if diretor.twitter %}
+                <a href="{{ diretor.twitter }}" class="btn btn-outline-primary" target="_blank">
+                  <img class="RedeSocialLogo img-fluid"
+                    src="{% static 'main/images/icons/redes_sociais/TwitterLogo.svg' %}" alt="Ícone do Twitter" />
+                </a>
+                {% endif %}
+                {% if diretor.facebook %}
+                <a href="{{ diretor.facebook }}" class="btn btn-outline-primary" target="_blank">
+                  <img class="RedeSocialLogo img-fluid"
+                    src="{% static 'main/images/icons/redes_sociais/FacebookLogo.svg' %}" alt="Ícone do Facebook" />
+                </a>
+                {% endif %}
               </div>
             </div>
           </div>
-        {% endfor %}
-      </div>      
-</div>
-{% endblock %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <script>
+    // Exibe as legendas abaixo do 'carouselNoticias' em telas pequenas
+    document.addEventListener('DOMContentLoaded', function () {
+      var carousel = document.getElementById('carouselNoticias');
+      var captionsContainer = document.querySelector('.carousel-outside-captions');
+      var captions = captionsContainer.querySelectorAll('.carousel-outside-caption');
+
+      carousel.addEventListener('slide.bs.carousel', function (event) {
+        var activeSlideIndex = event.to;
+        captions.forEach(function (caption) {
+          caption.classList.add('d-none');
+        });
+        captions[activeSlideIndex].classList.remove('d-none');
+      });
+    });
+  </script>
+  {% endblock %}
