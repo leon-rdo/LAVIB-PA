@@ -94,6 +94,10 @@ h2 {
   font-weight: 300 !important;
 }
 
+.btn-RedeSocialLogo {
+  max-width: 53.31px;
+}
+
 .main-logo {
   width: 100%;
 }
@@ -117,20 +121,17 @@ footer {
   color: #ffffff;
   padding-bottom: 15vh;
 }
-footer h4 {
-  color: #c3fbdc;
-}
-
 footer a {
   color: white;
 }
-
-.sponsor-img-block small {
-  font-size: 0.7rem;
+footer h4 {
+  color: #c3fbdc;
 }
-
-.sponsor-img {
-  width: 20px;
+footer .sponsor-img {
+  width: 90px;
+}
+footer .sponsor-img-block small {
+  font-size: 0.7rem;
 }
 
 .invert-color {

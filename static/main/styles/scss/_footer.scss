@@ -3,21 +3,22 @@ footer {
   color: #ffffff;
   padding-bottom: 15vh;
 
+  a {
+    color: white;
+  }
+
   h4 {
     color: #c3fbdc;
   }
-}
 
-footer a {
-  color: white;
-}
+  .sponsor-img {
+    width: 90px;
+  }
 
-.sponsor-img-block small {
-  font-size: 0.7rem;
-}
+  .sponsor-img-block small {
+    font-size: 0.7rem;
+  }
 
-.sponsor-img {
-  width: 20px;
 }
 
 .invert-color {
