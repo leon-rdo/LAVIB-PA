@@ -130,20 +130,23 @@
       {% endfor %}
     </div>
   </div>
-  <script>
-    // Exibe as legendas abaixo do 'carouselNoticias' em telas pequenas
-    document.addEventListener('DOMContentLoaded', function () {
-      var carousel = document.getElementById('carouselNoticias');
-      var captionsContainer = document.querySelector('.carousel-outside-captions');
-      var captions = captionsContainer.querySelectorAll('.carousel-outside-caption');
-
-      carousel.addEventListener('slide.bs.carousel', function (event) {
-        var activeSlideIndex = event.to;
-        captions.forEach(function (caption) {
-          caption.classList.add('d-none');
-        });
-        captions[activeSlideIndex].classList.remove('d-none');
-      });
-    });
-  </script>
   {% endblock %}
+
+{% block more_script %}
+<script>
+  // Exibe as legendas abaixo do 'carouselNoticias' em telas pequenas
+  document.addEventListener('DOMContentLoaded', function () {
+    var carousel = document.getElementById('carouselNoticias');
+    var captionsContainer = document.querySelector('.carousel-outside-captions');
+    var captions = captionsContainer.querySelectorAll('.carousel-outside-caption');
+
+    carousel.addEventListener('slide.bs.carousel', function (event) {
+      var activeSlideIndex = event.to;
+      captions.forEach(function (caption) {
+        caption.classList.add('d-none');
+      });
+      captions[activeSlideIndex].classList.remove('d-none');
+    });
+  });
+</script>
+{% endblock more_script %}

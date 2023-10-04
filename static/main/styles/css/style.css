@@ -193,6 +193,10 @@ footer .sponsor-img-block small {
     min-width: 20rem;
   }
 }
+#lotacao-title, #lotacao {
+  transition: all 0.6s ease;
+}
+
 .detalhes-evento {
   background-color: rgba(0, 255, 153, 0.18);
 }

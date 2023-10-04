@@ -2,62 +2,45 @@
 {% load static %}
 
 {% block title %}
-LAVIB-PA · {{ evento.titulo }}
+LAVIB-PA · {{ object.titulo }}
 {% endblock %}
 
-{% block meta_titulo_og %}LAVIB-PA · {{ evento.titulo }}{% endblock meta_titulo_og %}
-{% block meta_descricao_og %}Saiba mais sobre o evento "{{ evento.titulo }}"{% endblock meta_descricao_og %}
-{% block meta_titulo_twt %}LAVIB-PA · {{ evento.titulo }}{% endblock meta_titulo_twt %}
-{% block meta_descricao_twt %}Saiba mais sobre o evento "{{ evento.titulo }}"{% endblock meta_descricao_twt %}
-{% block meta_descricao %}Saiba mais sobre o evento "{{ evento.titulo }}"{% endblock meta_descricao %}
-{% block og_url %}{% url 'main:detalhes_eventos' evento.slug %}{% endblock og_url %}
-{% block twt_url %}{% url 'main:detalhes_eventos' evento.slug %}{% endblock twt_url %}
-{% block canonical %}{% url 'main:detalhes_eventos' evento.slug %}{% endblock canonical %}
+{% block meta_titulo_og %}LAVIB-PA · {{ object.titulo }}{% endblock meta_titulo_og %}
+{% block meta_descricao_og %}Saiba mais sobre o evento "{{ object.titulo }}"{% endblock meta_descricao_og %}
+{% block meta_titulo_twt %}LAVIB-PA · {{ object.titulo }}{% endblock meta_titulo_twt %}
+{% block meta_descricao_twt %}Saiba mais sobre o evento "{{ object.titulo }}"{% endblock meta_descricao_twt %}
+{% block meta_descricao %}Saiba mais sobre o evento "{{ object.titulo }}"{% endblock meta_descricao %}
+{% block og_url %}{% url 'main:detalhes_eventos' object.slug %}{% endblock og_url %}
+{% block twt_url %}{% url 'main:detalhes_eventos' object.slug %}{% endblock twt_url %}
+{% block canonical %}{% url 'main:detalhes_eventos' object.slug %}{% endblock canonical %}
 {% block meta_images %}
-<meta property="og:image" content="https://lavib.pythonanywhere.com{{ evento.imagem.url }}" />
-<meta name="twitter:image" content="https://lavib.pythonanywhere.com{{ evento.imagem.url }}" />
-<meta property="og:type" content="website"/>
+<meta property="og:image" content="https://lavib.pythonanywhere.com{{ object.imagem.url }}" />
+<meta name="twitter:image" content="https://lavib.pythonanywhere.com{{ object.imagem.url }}" />
+<meta property="og:type" content="website" />
 {% endblock meta_images %}
 
 {% block content %}
 <article>
   <div class="row justify-content-center px-1 px-md-5 py-3 mt-5">
     <div class="col-12 text-center">
-      <h1 class="display-1" id="subtitle">{{ evento.titulo }}</h1>
-      <h2 class="display-5">{{ evento.descricao_curta }}</h2>
+      <h1 class="display-1" id="subtitle">{{ object.titulo }}</h1>
+      <h2 class="display-5">{{ object.descricao_curta }}</h2>
     </div>
   </div>
   <div class="row d-flex justify-content-center px-1 px-md-5 mb-5">
     <figure
       class="col-12 col-md-6 container-Image d-flex align-items-center justify-content-center ratio ratio-16x9 rounded-5 p-1">
-      <img src="{{ evento.imagem.url }}" class="img-fluid" id="big_image" alt='Convite para {{ evento.titulo }}' />
+      <img src="{{ object.imagem.url }}" class="img-fluid" id="big_image" alt='Convite para {{ object.titulo }}' />
     </figure>
     <div class="col-12 my-5">
-      <p class="fs-5" style="text-align: justify;">{{ evento.descricao | linebreaks }}</p>
-      <p class="lead">Valor: {% if evento.valor == 0 %}<b class="text-success">GRÁTIS!</b>{% else %}<b
-          class="text-success">R$ {{ evento.valor }}</b>{% endif %}</p>
-      {% if evento.convidados == '' %}
-      <!-- Nada é exibido -->
-      {% else %}
-      <p class="lead">Convidado(s): <b>{{ evento.convidados }}</b></p>
-      {% endif %}
-      {% if evento.carga_horaria %}
-      <p class="lead">Carga Horária: <b>{{ evento.carga_horaria }} horas.</b></p>
-      {% endif %}
-      {% if evento.vagas_restantes == -1 %}
-      <p class="fs-5"><b class="text-success">VAGAS ILIMITADAS!</b>
-        {% elif evento.vagas_restantes == 0 %}
-      <p class="fs-5"><b class="text-danger">VAGAS ESGOTADAS!</b>
-        {% else %}
-      <p class="fs-5">Vagas restantes: {{ evento.vagas_restantes }}</p>
-      {% endif %}
+      <p class="fs-5" style="text-align: justify;">{{ object.descricao | linebreaks }}</p>
 
       <hr>
 
-      {% if evento.cursos.all.exists %}
+      {% if object.cursos.all.exists %}
       <h2>Cursos</h2>
       <div class="card-group box-cursos flex-nowrap">
-        {% for curso in evento.cursos.all %}
+        {% for curso in object.cursos.all %}
         <div class="card card-cursos my-2 me-2">
           <div class="ratio ratio-1x1 bg-secondary-subtle">
             <img src="{{ curso.imagem.url }}" class="card-img-top object-fit-contain"
@@ -77,22 +60,75 @@ LAVIB-PA · {{ evento.titulo }}
         </div>
         {% endfor %}
       </div>
-      
+
       <hr>
 
       {% endif %}
-
-      <h2 class="text-center lead fs-4"><b>Data do evento:</b> <time>{{ evento.data_hora }}</time> | <b>Local:</b> {{ evento.local }}</h2>
-
-      <div class="col-12 d-flex justify-content-center mt-5">
-        {% if evento.vagas_restantes == -1 or evento.vagas_restantes > 0 %}
-        <a href="{% url 'main:inscricao' evento_slug=evento.slug %}" class="btn btn-lg btn-success">INSCREVA-SE AQUI</a>
-        {% else %}
-        <button href="#" class="btn btn-lg btn-danger" disabled>VAGAS ESGOTADAS</button>
+    </div>
+    <div class="row justify-content-center align-items-center">
+      <div class="col-12 col-md-8 d-flex flex-column align-items-center">
+        <h2 class="text-center lead fs-4">Detalhes do Evento</h2>
+        <table class="table table-success table-bordered table-hover fs-5">
+          <tr class="table-active">
+            <th>Evento:</th>
+            <td>{{ object.titulo }}</td>
+          </tr>
+          <tr>
+            <th>Data de início:</th>
+            <td><time>{{ object.data_hora|date:"d/m/Y H:i" }}</time></td>
+          </tr>
+          <tr>
+            <th>Data de fim:</th>
+            <td><time>{{ object.data_hora_final|date:"d/m/Y H:i" }}</time></td>
+          </tr>
+          <tr>
+            <th>Local:</th>
+            <td>{{ object.local }}</td>
+          </tr>
+          <tr>
+            <th>Valor:</th>
+            <td>{% if object.valor == 0 %}<b class="text-success">GRÁTIS!</b>{% else %}R$ {{ object.valor }}{% endif %}
+            </td>
+          </tr>
+          {% if object.convidados %}
+          <tr>
+            <th>Convidado(s):</th>
+            <td>{{ object.convidados }}</td>
+          </tr>
+          {% endif %}
+          {% if object.carga_horaria %}
+          <tr>
+            <th>Carga horária:</th>
+            <td>{{ object.carga_horaria }}</td>
+          </tr>
+          {% endif %}
+        </table>
+        <div class="col-12 col-md-10">
+          <h4 id="lotacao-title">Lotação do Evento:</h4>
+          <div class="progress" role="progressbar" aria-label="Lotação do Evento:" aria-valuenow="{{ porcentagem }}"
+            aria-valuemin="0" aria-valuemax="100" id="lotacao">
+            <div
+              class="progress-bar progress-bar-striped progress-bar-animated bg-{% if porcentagem == 100 %}danger{% elif porcentagem >= 76 %}danger{% elif porcentagem >= 51 %}warning{% elif porcentagem >= 26 %}info{% elif porcentagem >= 0 %}success{% endif %}"
+              style="width: {{ porcentagem }}%" id="lotacao-progress-bar">{{ porcentagem }}%</div>
+          </div>
+        </div>
+        {% if object.vagas_restantes == -1 %}
+        <p class="fs-5"><b class="text-success">VAGAS ILIMITADAS!</b>
+          {% elif object.vagas_restantes == 0 %}
+        <p class="fs-5"><b class="text-danger">VAGAS ESGOTADAS!</b>
+          {% else %}
+        <p class="fs-5">Vagas restantes: {{ object.vagas_restantes }}</p>
         {% endif %}
+        <div class="col-12 d-flex justify-content-center mt-5">
+          {% if object.vagas_restantes == -1 or object.vagas_restantes > 0 %}
+          <a href="{% url 'main:inscricao' evento_slug=object.slug %}" class="btn btn-lg btn-success">INSCREVA-SE
+            AQUI</a>
+          {% else %}
+          <button href="#" class="btn btn-lg btn-danger" disabled>VAGAS ESGOTADAS</button>
+          {% endif %}
+        </div>
       </div>
     </div>
-  </div>
 </article>
 <div class="col-12 d-flex justify-content-center">
   <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
@@ -101,9 +137,25 @@ LAVIB-PA · {{ evento.titulo }}
         <a href="{% url 'main:eventos' %}" class="text-decoration-none">Eventos</a>
       </li>
       <li class="breadcrumb-item">
-        <a href="{% url 'main:detalhes_eventos' evento.slug %}" class="text-decoration-none">{{ evento.titulo }}</a>
+        <a href="{% url 'main:detalhes_eventos' object.slug %}" class="text-decoration-none">{{ object.titulo }}</a>
       </li>
     </ol>
   </nav>
 </div>
 {% endblock %}
+
+{% block more_script %}
+<script>
+  window.onload = function () {
+    setTimeout(function () {
+      if (document.getElementById('lotacao').getAttribute('aria-valuenow') == '100') {
+        document.getElementById('lotacao').classList.add('d-none');
+        document.getElementById('lotacao-title').innerHTML = 'Evento lotado!';
+        document.getElementById('lotacao-title').classList.add('text-center');
+        document.getElementById('lotacao-title').classList.add('text-danger');
+        document.getElementById('lotacao-title').classList.add('display-5');
+      }
+    }, 5000);
+  };
+</script>
+{% endblock more_script %}

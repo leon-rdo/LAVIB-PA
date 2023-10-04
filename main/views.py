@@ -44,6 +44,12 @@ class DetalhesEventosView(generic.DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.get_object().vagas is None or self.get_object().vagas == '':
+            porcentagem_lotacao = -1
+        else:
+            inscritos_count = self.get_object().inscritos.count()
+            porcentagem_lotacao = (inscritos_count / self.get_object().vagas) * 100
+        context["porcentagem"] = int(porcentagem_lotacao)
         context["excluir_metatags"] = True
         return context
 
