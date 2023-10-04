@@ -153,7 +153,7 @@ class EventoAdmin(admin.ModelAdmin):
     readonly_fields = ['vagas_restantes']
     
     fieldsets = [
-        ('Informações Gerais do Evento', {"fields": ['titulo', 'descricao_curta']}),
+        ('Informações Gerais do Evento', {"fields": ['titulo', 'descricao_curta', 'imagem']}),
         ('Informações Específicas do Evento', {"fields": ['descricao', 'data_hora', 'local', 'valor', 'carga_horaria', 'convidados', 'vagas', 'vagas_restantes']}),
         ('Cursos', {"fields": ['cursos']}),
         ('Descontos', {"fields": ['descontos']})
