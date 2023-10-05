@@ -242,7 +242,8 @@ class SettingsAdmin(admin.ModelAdmin):
         ('Informações da Liga', {"fields": ['email', 'telefone']}),
         ('Informações de Pagamento', {"fields": ['chave_pix', 'qrcode_pagamento', 'nome_conta']}),
         ('Alerta', {"fields": ['alerta_negrito', 'alerta_text', 'alerta_cor', 'alerta_link']}),
-        ('Sobre a LAVIB-PA', {"fields": ['sobre_nos']})
+        ('Sobre a LAVIB-PA', {"fields": ['sobre_nos']}),
+        ('Informações do Site', {"fields": ['plano_de_fundo']})
     ]
 
 

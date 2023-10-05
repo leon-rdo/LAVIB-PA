@@ -46,6 +46,13 @@
       <meta property="og:type" content="website"/>
     {% endif %}
     {% block meta_images %}{% endblock meta_images %}
+    {% if settings.plano_de_fundo %}
+    <style>
+      main, .background {
+        background-image: url('{{ settings.plano_de_fundo.url }}');
+      }
+    </style>
+    {% endif %}
   </head>
 
   <body>

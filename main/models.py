@@ -214,6 +214,11 @@ class Settings(models.Model):
         ('info', 'Azul'),
         ('secondary', 'Preto')
     )
+
+    def validate_media_file(value):
+        extension = value.name.split('.')[-1].lower()
+        if extension not in ['jpg', 'jpeg', 'png', 'svg']:
+            raise ValidationError("O arquivo deve ser uma imagem (jpg, jpeg, png, svg).")
     
     email = models.EmailField('E-mail', default='lavib.pa@gmail.com', max_length=254)
     telefone = models.CharField('Telefone', default='91991487970', max_length=18)
@@ -221,6 +226,7 @@ class Settings(models.Model):
     qrcode_pagamento = models.ImageField('QR Code do Pix', upload_to='main/images')
     nome_conta = models.CharField('Nome do titular da conta', max_length=100)
     sobre_nos = models.TextField('Texto "Sobre nós"', blank=True)
+    plano_de_fundo = models.FileField("Plano de fundo do site", upload_to='main/images', blank=True, null=True, validators=[validate_media_file])
     alerta_negrito = models.CharField('Texto em negrito do alerta', max_length=50, blank=True, null=True)
     alerta_text = models.CharField('Texto do alerta', max_length=100)
     alerta_cor = models.CharField('Cor do alerta', max_length=40, default='warning', choices=COLORS)
