@@ -144,6 +144,7 @@ def confirmar_pagamento(modeladmin, request, queryset):
 class InscritoInline(admin.StackedInline):
     model = Inscrito
     readonly_fields = ['numero_inscricao', 'data_hora_inscricao']
+    extra = 0
 
     
 @admin.register(Evento)
