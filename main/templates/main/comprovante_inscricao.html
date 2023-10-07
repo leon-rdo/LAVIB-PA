@@ -423,7 +423,7 @@
 
     // Função para compartilhar evento no WhatsApp
     function shareOnWhatsApp() {
-        var shareText = 'Já me inscrevi no evento "{{ evento.titulo }}", inscreva-se também em: http://127.0.0.1:8003{% url "main:eventos" %}.';
+        var shareText = 'Já me inscrevi no evento "{{ evento.titulo }}", inscreva-se também em: https://lavib.pythonanywhere.com{% url "main:eventos" %}.';
         var whatsappUrl = 'https://api.whatsapp.com/send?text=' + shareText;
         window.open(whatsappUrl, '_blank');
     }
