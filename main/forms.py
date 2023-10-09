@@ -11,6 +11,7 @@ class InscritoForm(ModelForm):
     telefone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success', 'placeholder': 'dummy'}), label=_('Telefone'))
     graduacao = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success', 'placeholder': 'dummy'}), label=_('Cursando'), help_text=_('Caso não esteja cursando nada, deixe em branco.'), required=False)
     instituicao = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success', 'placeholder': 'dummy'}), label=_('Instituição'), help_text=_('Caso não esteja cursando nada, deixe em branco.'), required=False)
+    indicacao = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control border border-success', 'placeholder': 'dummy'}), label=_('Quem indicou você?'), required=False)
     cursos = forms.ModelMultipleChoiceField(
         queryset=Curso.objects.all(),
         widget=forms.CheckboxSelectMultiple(attrs={'class': 'my-1'}),

@@ -190,8 +190,8 @@ class Inscrito(models.Model):
     data_hora_inscricao = models.DateTimeField('Data da Inscrição', auto_now_add=True)
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='inscritos')
     pagamento_confirmado = models.BooleanField('Pagou?', default=False)
-    data_limite_pagamento = models.DateTimeField('Data limite de pagamento', null=True, blank=True)
     comprovante = models.ImageField(upload_to='main/images/comprovantes', null=True, blank=True)
+    indicacao = models.CharField('Quem indicou?', max_length=70, null=True, blank=True)
     desconto = models.ForeignKey(Desconto, verbose_name="Desconto", on_delete=models.CASCADE, blank=True, null=True, default=None)
 
     class Meta:
@@ -202,7 +202,12 @@ class Inscrito(models.Model):
 
     def __str__(self):
         return self.evento.titulo
-
+    
+    def get_absolute_url(self):
+        url = reverse("main:comprovante_inscricao", kwargs={"evento_slug": self.evento.slug})
+        url += f"?numero_inscricao={self.numero_inscricao}"
+        return url
+    
 
 class Settings(models.Model):
     

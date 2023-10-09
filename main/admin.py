@@ -213,7 +213,8 @@ class InscritoAdmin(admin.ModelAdmin):
         ('Informações de Contato', {"fields": ['email', 'telefone']}),
         ('Informações de Graduação', {"fields": ['graduacao', 'instituicao']}),
         ('Informações de Inscrição no Evento', {"fields": ['data_hora_inscricao', 'evento', 'cursos']}),
-        ('Informações de Pagamento', {"fields": ['data_limite_pagamento', 'comprovante', 'pagamento_confirmado']})
+        ('Informações de Pagamento', {"fields": ['comprovante', 'pagamento_confirmado']}),
+        ('Informações de Indicação', {"fields": ['indicacao']})
     ]
 
     def evento_titulo(self, obj):
