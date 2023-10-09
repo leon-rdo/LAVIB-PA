@@ -25,6 +25,17 @@
   }
 }
 
-#lotacao-title, #lotacao {
+#lotacao-title,
+#lotacao {
   transition: all 0.6s ease;
+}
+
+#palestrantes {
+  h2 {
+    flex-basis: 100%;
+  }
+
+  .card {
+    max-width: 300px;
+  }
 }

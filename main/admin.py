@@ -8,6 +8,7 @@ from .views import enviar_email_html
 
 admin.site.site_header = 'Administração de LAVIB-PA'
 admin.site.index_title = 'LAVIB-PA'
+admin.site.site_title = 'Administração'
 
 
 def gerar_planilha_evento(modeladmin, request, queryset):
@@ -152,10 +153,11 @@ class EventoAdmin(admin.ModelAdmin):
     actions = [gerar_planilha_evento]
     inlines = [InscritoInline]
     readonly_fields = ['vagas_restantes']
+    save_on_top = True
     
     fieldsets = [
         ('Informações Gerais do Evento', {"fields": ['titulo', 'descricao_curta', 'imagem']}),
-        ('Informações Específicas do Evento', {"fields": ['descricao', 'data_hora', 'data_hora_final', 'local', 'valor', 'carga_horaria', 'convidados', 'vagas', 'vagas_restantes', 'mensagem_comprovante']}),
+        ('Informações Específicas do Evento', {"fields": ['descricao', 'data_hora', 'data_hora_final', 'local', 'valor', 'carga_horaria', 'palestrantes', 'vagas', 'vagas_restantes', 'mensagem_comprovante']}),
         ('Cursos', {"fields": ['cursos']}),
         ('Descontos', {"fields": ['descontos']})
     ]
@@ -227,6 +229,7 @@ class IndexCarouselItemAdmin(admin.ModelAdmin):
 
 @admin.register(Diretor)
 class DiretorAdmin(admin.ModelAdmin):
+    ordering = ['nome']
     list_display = ['nome', 'ano']
     search_fields = ['nome']
     
@@ -262,3 +265,9 @@ class RedesSociaisAdmin(admin.ModelAdmin):
 class DescontoAdmin(admin.ModelAdmin):
     list_display = ['cupom', 'valor', 'cupons_restantes']
     readonly_fields = ['cupons_restantes']
+    
+
+@admin.register(Participante)
+class ParticipanteAdmin(admin.ModelAdmin):
+    ordering = ['nome']
+    list_display = ['nome', 'descricao']

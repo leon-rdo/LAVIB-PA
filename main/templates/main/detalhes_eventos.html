@@ -21,114 +21,143 @@ LAVIB-PA · {{ object.titulo }}
 
 {% block content %}
 <article>
-  <div class="row justify-content-center px-1 px-md-5 py-3 mt-5">
+  <section id="evento-header" class="row justify-content-center px-1 px-md-5 py-3 mt-5">
     <div class="col-12 text-center">
       <h1 class="display-1" id="subtitle">{{ object.titulo }}</h1>
       <h2 class="display-5">{{ object.descricao_curta }}</h2>
     </div>
-  </div>
-  <div class="row d-flex justify-content-center px-1 px-md-5 mb-5">
-    <figure
-      class="col-12 col-md-6 container-Image d-flex align-items-center justify-content-center ratio ratio-16x9 rounded-5 p-1">
+  </section>
+  <section id="evento-body" class="row d-flex justify-content-center px-1 px-md-5">
+    <figure class="col-12 col-md-6 container-Image d-flex align-items-center justify-content-center ratio ratio-16x9 rounded-5 p-1">
       <img src="{{ object.imagem.url }}" class="img-fluid" id="big_image" alt='Convite para {{ object.titulo }}' />
     </figure>
-    <div class="col-12 my-5">
+    <div class="col-12 mt-3">
       <p class="fs-5" style="text-align: justify;">{{ object.descricao | linebreaks }}</p>
-
-      <hr>
-
-      {% if object.cursos.all.exists %}
-      <h2>Cursos</h2>
-      <div class="card-group box-cursos flex-nowrap">
-        {% for curso in object.cursos.all %}
-        <div class="card card-cursos my-2 me-2">
-          <div class="ratio ratio-1x1 bg-secondary-subtle">
-            <img src="{{ curso.imagem.url }}" class="card-img-top object-fit-contain"
-              alt='Imagem de divulgação do curso: "{{ curso.nome }}"'>
-          </div>
-          <div class="card-body">
-            <h3 class="card-title mb-2">{{ curso.nome }}</h3>
-            <p class="card-text mb-1">{{ curso.descricao }}</p>
-            {% if curso.professor %}
-            <p class="card-text mb-0">Professor: {{ curso.professor }}</p>
-            {% endif %}
-          </div>
-          <div class="card-footer d-flex justify-content-between">
-            <p class="card-text mb-0">Valor: R$ {{ curso.valor }}</p>
-            <p class="card-text mb-0">{{ curso.vagas }} vagas</p>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-
-      <hr>
-
-      {% endif %}
     </div>
-    <div class="row justify-content-center align-items-center">
-      <div class="col-12 col-md-8 d-flex flex-column align-items-center">
-        <h2 class="text-center lead fs-4">Detalhes do Evento</h2>
-        <table class="table table-success table-bordered table-hover fs-5">
-          <tr class="table-active">
-            <th>Evento:</th>
-            <td>{{ object.titulo }}</td>
-          </tr>
-          <tr>
-            <th>Data de início:</th>
-            <td><time>{{ object.data_hora|date:"d/m/Y H:i" }}</time></td>
-          </tr>
-          <tr>
-            <th>Data de fim:</th>
-            <td><time>{{ object.data_hora_final|date:"d/m/Y H:i" }}</time></td>
-          </tr>
-          <tr>
-            <th>Local:</th>
-            <td>{{ object.local }}</td>
-          </tr>
-          <tr>
-            <th>Valor:</th>
-            <td>{% if object.valor == 0 %}<b class="text-success">GRÁTIS!</b>{% else %}R$ {{ object.valor }}{% endif %}
-            </td>
-          </tr>
-          {% if object.convidados %}
-          <tr>
-            <th>Convidado(s):</th>
-            <td>{{ object.convidados }}</td>
-          </tr>
-          {% endif %}
-          {% if object.carga_horaria %}
-          <tr>
-            <th>Carga horária:</th>
-            <td>{{ object.carga_horaria }}</td>
-          </tr>
-          {% endif %}
-        </table>
-        <div class="col-12 col-md-10">
-          <h4 id="lotacao-title">Lotação do Evento:</h4>
-          <div class="progress" role="progressbar" aria-label="Lotação do Evento:" aria-valuenow="{{ porcentagem }}"
-            aria-valuemin="0" aria-valuemax="100" id="lotacao">
-            <div
-              class="progress-bar progress-bar-striped progress-bar-animated bg-{% if porcentagem == 100 %}danger{% elif porcentagem >= 76 %}danger{% elif porcentagem >= 51 %}warning{% elif porcentagem >= 26 %}info{% elif porcentagem >= 0 %}success{% endif %}"
-              style="width: {{ porcentagem }}%" id="lotacao-progress-bar">{{ porcentagem }}%</div>
-          </div>
+  </section>
+
+  <hr class="my-5">
+
+  {% if object.cursos.all.exists %}
+  <section id="cursos" class="row justify-content-center px-1 px-md-5">
+    <h2>Cursos</h2>
+    <div class="card-group box-cursos flex-nowrap">
+      {% for curso in object.cursos.all %}
+      <div class="card card-cursos my-2 me-2">
+        <div class="ratio ratio-1x1 bg-secondary-subtle">
+          <img src="{{ curso.imagem.url }}" class="card-img-top object-fit-contain"
+            alt='Imagem de divulgação do curso: "{{ curso.nome }}"'>
         </div>
-        {% if object.vagas_restantes == -1 %}
-        <p class="fs-5"><b class="text-success">VAGAS ILIMITADAS!</b>
-          {% elif object.vagas_restantes == 0 %}
-        <p class="fs-5"><b class="text-danger">VAGAS ESGOTADAS!</b>
-          {% else %}
-        <p class="fs-5">Vagas restantes: {{ object.vagas_restantes }}</p>
+        <div class="card-body">
+          <h3 class="card-title mb-2">{{ curso.nome }}</h3>
+          <p class="card-text mb-1">{{ curso.descricao }}</p>
+          {% if curso.professor %}
+          <p class="card-text mb-0">Professor: {{ curso.professor }}</p>
+          {% endif %}
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <p class="card-text mb-0">Valor: R$ {{ curso.valor }}</p>
+          <p class="card-text mb-0">{{ curso.vagas }} vagas</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <hr class="my-5">
+  {% endif %}
+
+  {% if object.palestrantes.all %}
+  <section id="palestrantes" class="row row-cols-1 row-cols-md-3 row-cols-lg-4 justify-content-evenly px-1 px-md-5 g-4">
+    <h2 class="text-center">
+      Palestrantes
+    </h2>
+    {% for palestrante in object.palestrantes.all %}
+    <div class="col col-card-palestrante d-flex justify-content-center align-items-center">
+      <div class="card">
+        <div class="ratio ratio-1x1 bg-secondary-subtle">
+          <img src="{{ palestrante.foto.url }}" class="card-img-top object-fit-cover"
+            alt="Foto de {{ palestrante.nome }}">
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ palestrante.nome }}</h5>
+          <p class="card-text">{{ palestrante.descricao }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+  <hr class="my-5">
+  {% endif %}
+
+  <section id="eventos-detalhes" class="row justify-content-center align-items-center">
+    <div class="col-12 col-md-8 d-flex flex-column align-items-center">
+      <h2 class="text-center lead fs-4">Detalhes do Evento</h2>
+      <table class="table table-success table-bordered table-hover fs-5">
+        <tr class="table-active">
+          <th>Evento:</th>
+          <td>{{ object.titulo }}</td>
+        </tr>
+        <tr>
+          <th>Data de início:</th>
+          <td><time>{{ object.data_hora|date:"d/m/Y H:i" }}</time></td>
+        </tr>
+        <tr>
+          <th>Data de fim:</th>
+          <td><time>{{ object.data_hora_final|date:"d/m/Y H:i" }}</time></td>
+        </tr>
+        <tr>
+          <th>Local:</th>
+          <td>{{ object.local }}</td>
+        </tr>
+        <tr>
+          <th>Valor:</th>
+          <td>{% if object.valor == 0 %}<b class="text-success">GRÁTIS!</b>{% else %}R$ {{ object.valor }}{% endif %}
+          </td>
+        </tr>
+        {% if object.palestrantes.all %}
+        <tr>
+          <th>{% if object.palestrantes.count > 1 %}Palestrantes:{% else %}Palestrante:{% endif %}</th>
+          <td>
+            {% for palestrante in object.palestrantes.all %}
+            {{ palestrante.nome }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </td>
+        </tr>
         {% endif %}
-        <div class="col-12 d-flex justify-content-center mt-5">
-          {% if object.vagas_restantes == -1 or object.vagas_restantes > 0 %}
-          <a href="{% url 'main:inscricao' evento_slug=object.slug %}" class="btn btn-lg btn-success">INSCREVA-SE
-            AQUI</a>
-          {% else %}
-          <button href="#" class="btn btn-lg btn-danger" disabled>VAGAS ESGOTADAS</button>
-          {% endif %}
+        {% if object.carga_horaria %}
+        <tr>
+          <th>Carga horária:</th>
+          <td>{{ object.carga_horaria }}</td>
+        </tr>
+        {% endif %}
+      </table>
+      <div class="col-12 col-md-10">
+        <h4 id="lotacao-title">Lotação do Evento:</h4>
+        <div class="progress" role="progressbar" aria-label="Lotação do Evento:" aria-valuenow="{{ porcentagem }}"
+          aria-valuemin="0" aria-valuemax="100" id="lotacao">
+          <div
+            class="progress-bar progress-bar-striped progress-bar-animated bg-{% if porcentagem == 100 %}danger{% elif porcentagem >= 76 %}danger{% elif porcentagem >= 51 %}warning{% elif porcentagem >= 26 %}info{% elif porcentagem >= 0 %}success{% endif %}"
+            style="width: {{ porcentagem }}%" id="lotacao-progress-bar">{{ porcentagem }}%</div>
         </div>
       </div>
+      {% if object.vagas_restantes == -1 %}
+      <p class="fs-5"><b class="text-success">VAGAS ILIMITADAS!</b>
+        {% elif object.vagas_restantes == 0 %}
+      <p class="fs-5"><b class="text-danger">VAGAS ESGOTADAS!</b>
+        {% else %}
+      <p class="fs-5">Vagas restantes: {{ object.vagas_restantes }}</p>
+      {% endif %}
+      <div class="col-12 d-flex justify-content-center mt-5">
+        {% if object.vagas_restantes == -1 or object.vagas_restantes > 0 %}
+        <a href="{% url 'main:inscricao' evento_slug=object.slug %}" class="btn btn-lg btn-success">INSCREVA-SE
+          AQUI</a>
+        {% else %}
+        <button href="#" class="btn btn-lg btn-danger" disabled>VAGAS ESGOTADAS</button>
+        {% endif %}
+      </div>
     </div>
+  </section>
 </article>
 <div class="col-12 d-flex justify-content-center">
   <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">

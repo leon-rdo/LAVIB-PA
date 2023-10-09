@@ -1,9 +1,10 @@
 import datetime
 from django.forms import ValidationError
-from django.utils import timezone
 from uuid import uuid4
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
+
 
 class Index_Carousel_Item(models.Model):
 
@@ -20,6 +21,7 @@ class Index_Carousel_Item(models.Model):
     class Meta:
         verbose_name = 'Notícia'
         verbose_name_plural = 'Notícias'
+
 
 class Diretor(models.Model):
 
@@ -39,6 +41,7 @@ class Diretor(models.Model):
         verbose_name = "Diretor"
         verbose_name_plural = "Diretores"
 
+
 class Patrocinador(models.Model):
 
     nome = models.CharField('Nome', max_length=20)
@@ -51,6 +54,24 @@ class Patrocinador(models.Model):
 
     def __str__(self):
         return self.nome
+    
+    def get_absolute_url(self):
+        return reverse("main:patrocinadores")
+    
+
+class Participante(models.Model):
+    
+    nome = models.CharField('Nome', max_length=100)
+    descricao = models.CharField('Descrição', max_length=255)
+    foto = models.ImageField('Foto', upload_to='main/images/participantes')
+
+    class Meta:
+        verbose_name = "Participante"
+        verbose_name_plural = "Participantes"
+
+    def __str__(self):
+        return self.nome
+
 
 class Curso(models.Model):
 
@@ -58,7 +79,7 @@ class Curso(models.Model):
     imagem = models.ImageField('Imagem', upload_to='main/images/cursos')
     nome = models.CharField('Nome', max_length=50)
     descricao = models.CharField('Descrição', max_length=300)
-    professor = models.CharField('Professor', max_length=100, blank=True, null=True, default=None)
+    professor = models.ManyToManyField(Participante, blank=True)
     valor = models.DecimalField('Valor', max_digits=4, decimal_places=2)
     vagas = models.PositiveSmallIntegerField('Vagas', default=None, null=True, blank=True)
     
@@ -115,7 +136,7 @@ class Evento(models.Model):
     valor = models.DecimalField('Valor', max_digits=4, decimal_places=2)
     vagas = models.PositiveSmallIntegerField('Vagas', default=None, null=True, blank=True)
     carga_horaria = models.PositiveSmallIntegerField('Carga horária', default=0)
-    convidados = models.CharField('Convidados', max_length=100, null=True, blank=True)
+    palestrantes = models.ManyToManyField(Participante, blank=True)
     cursos = models.ManyToManyField(Curso, verbose_name="Cursos", blank=True)
     slug = models.SlugField(max_length=100, unique=True, null=False, editable=False)
     descontos = models.ManyToManyField(Desconto, verbose_name="Descontos", blank=True, default=None)
@@ -141,7 +162,6 @@ class Evento(models.Model):
             if self.data_hora >= self.data_hora_final:
                 raise ValidationError("A data final deve ser maior que a data inicial.")
 
-
     def save(self, *args, **kwargs):
         self.slug = slugify(self.titulo)
         super(Evento, self).save(*args, **kwargs)
@@ -152,6 +172,9 @@ class Evento(models.Model):
 
     def __str__(self):
         return self.titulo
+    
+    def get_absolute_url(self):
+        return reverse("main:detalhes_eventos", kwargs={"evento_slug": self.slug})
 
 
 class Inscrito(models.Model):
@@ -168,34 +191,8 @@ class Inscrito(models.Model):
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='inscritos')
     pagamento_confirmado = models.BooleanField('Pagou?', default=False)
     data_limite_pagamento = models.DateTimeField('Data limite de pagamento', null=True, blank=True)
-    comprovante = models.ImageField(
-        upload_to='main/images/comprovantes',
-        null=True,
-        blank=True,
-    )
+    comprovante = models.ImageField(upload_to='main/images/comprovantes', null=True, blank=True)
     desconto = models.ForeignKey(Desconto, verbose_name="Desconto", on_delete=models.CASCADE, blank=True, null=True, default=None)
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            # É uma nova instância, defina a data e hora limite para o pagamento como 24 horas a partir do momento atual
-            self.data_limite_pagamento = timezone.now() + datetime.timedelta(hours=24)
-
-        if not self.numero_inscricao:
-            ultimo_numero = Inscrito.objects.filter(evento=self.evento).order_by('-numero_inscricao').first()
-            if ultimo_numero:
-                self.numero_inscricao = int(ultimo_numero.numero_inscricao) + 1
-            else:
-                self.numero_inscricao = 1
-
-        super().save(*args, **kwargs)
-
-    def verificar_pagamento(self):
-        if self.pagamento_confirmado:
-            # O pagamento já foi confirmado, não há necessidade de verificar
-            return
-
-        if self.data_limite_pagamento and timezone.now() > self.data_limite_pagamento:
-            # A data e hora limite para o pagamento foram ultrapassadas, cancela a inscrição
-            self.delete()
 
     class Meta:
         verbose_name = "Inscrito"
@@ -205,6 +202,7 @@ class Inscrito(models.Model):
 
     def __str__(self):
         return self.evento.titulo
+
 
 class Settings(models.Model):
     
