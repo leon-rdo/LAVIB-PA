@@ -193,6 +193,18 @@ class Inscrito(models.Model):
     comprovante = models.ImageField(upload_to='main/images/comprovantes', null=True, blank=True)
     indicacao = models.CharField('Quem indicou?', max_length=70, null=True, blank=True)
     desconto = models.ForeignKey(Desconto, verbose_name="Desconto", on_delete=models.CASCADE, blank=True, null=True, default=None)
+    
+    def save(self, *args, **kwargs):
+
+        if not self.numero_inscricao:
+            ultimo_numero = Inscrito.objects.filter(
+                evento=self.evento).order_by('-numero_inscricao').first()
+            if ultimo_numero:
+                self.numero_inscricao = int(ultimo_numero.numero_inscricao) + 1
+            else:
+                self.numero_inscricao = 1
+
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Inscrito"
